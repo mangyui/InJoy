@@ -1,12 +1,12 @@
 <template>
   <div>
- <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
+    <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
       <div class="post-box">
         <div class="post-item" v-for="(item,index) in 15" :key="index" @click="$store.commit('GOLEFT', '/postdetails/'+index)">
           <div class="post-user">
-            <img :src="user.avatar">
+            <img :src="user.avatar||'./imgs/ico.png'">
             <div class="post-user-text">
-              <p>{{user.name}}</p>
+              <p>{{user.name||user.phone}}</p>
               <span>9/13 21:46</span>
             </div>
           </div>

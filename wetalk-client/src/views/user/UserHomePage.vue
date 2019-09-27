@@ -1,19 +1,20 @@
 <template>
   <div class="usercenter">
-    <van-nav-bar :class="isScroll?'litheme':'my-nav-bar'" fixed title="我的主页" :border="false" left-arrow  @click-left="$store.commit('GOBACK')">
-      <van-icon name="edit" slot="right" @click="$store.commit('GOLEFT', '/UserEdit')"/>
+    <van-nav-bar class="litheme" fixed :title="(user.name||user.phone||'')+'主页'" :border="false" left-arrow  @click-left="$store.commit('GOBACK')">
+      <van-icon v-if="$route.params.id==me._id" name="edit" slot="right" @click="$store.commit('GOLEFT', '/UserEdit')"/>
     </van-nav-bar>
+    <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
     <div class="usercenter-top">
       <div class="user-bg">
-        <div class="bg-mask" :style="{backgroundImage: 'url('+user.avatar+')'}"></div>
+        <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/ico.png')+')'}"></div>
         <div class="top-mask"></div>
-        <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon>
+        <!-- <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon> -->
       </div>
       <div class="user-box max1100">
-        <img :src="user.avatar">
+        <img :src="user.avatar||'./imgs/ico.png'">
         <div>
-          <b>{{user.name}}</b>
-          <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.province}}&nbsp;&nbsp; {{user.city}}</p>
+          <b>{{user.name||user.phone}}</b>
+          <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp;{{user.province}}&nbsp;&nbsp; {{user.city}}</p>
         </div>
       </div>
     </div>
@@ -27,6 +28,7 @@
         </van-tab>
       </van-tabs>
     </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -46,7 +48,8 @@ let persons : Person[] = require('@/util/Persons').persons
   }
 })
 export default class UserHomePage extends Vue {
-  private user: User = this.$store.getters.user
+  private user: any = {}
+  private me: any = this.$store.getters.user
   isLoading: boolean = false
   isScroll: boolean = false
   active: string = 'post'
@@ -56,10 +59,21 @@ export default class UserHomePage extends Vue {
     comment: 165
   }
   onRefresh () {
-    setTimeout(() => {
-      this.$toast('刷新成功')
+    this.getUser()
+  }
+  getUser () {
+    this.$toPost.getUserById({ id: this.$route.params.id }).then((res: any) => {
+      if (res.data) {
+        this.user = res.data
+        if (res.data._id && this.me._id === res.data._id && this.me !== res.data) { // 此处还得再优化
+          this.$store.commit('initUserInfo', res.data)
+        }
+      }
       this.isLoading = false
-    }, 1000)
+    }).catch((err: any) => {
+      console.log(err)
+      this.isLoading = false
+    })
   }
   tabChange (name: string) {
     let app: any = document.getElementById('app')
@@ -69,11 +83,11 @@ export default class UserHomePage extends Vue {
     }
     this.oldActive = name
   }
-  refreshUser () {
-    var index = Math.floor(Math.random() * persons.length)
-    this.$store.commit('updateUserAvatar', persons[index].avatar)
-    this.$store.commit('updateUserName', persons[index].name)
-  }
+  // refreshUser () {
+  //   var index = Math.floor(Math.random() * persons.length)
+  //   this.$store.commit('updateUserAvatar', persons[index].avatar)
+  //   this.$store.commit('updateUserName', persons[index].name)
+  // }
   mounted () {
     window.addEventListener('scroll', (e: any) => {
       if (e.target.scrollTop > 100) {
@@ -83,12 +97,16 @@ export default class UserHomePage extends Vue {
       }
     }, true)
   }
+  created () {
+    this.getUser()
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .litheme{
   z-index: 99!important;
+  box-shadow: 0 0 3px rgba(0,0,0,0.1)
 }
 .usercenter{
   .usercenter-top{
@@ -133,6 +151,7 @@ export default class UserHomePage extends Vue {
   position: relative;
   z-index: 20;
   img {
+    background: #fefefe;
     width: 100px;
     height: 100px;
     border-radius: 4px;

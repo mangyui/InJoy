@@ -1,39 +1,65 @@
 import request from './request'
 import Vue from 'vue'
 import qs from 'qs'
-import md5 from 'js-md5'
-import store from '../store'
+// import md5 from 'js-md5'
+// import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:9612' // api的base_url
+// export const payUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141' : 'http://122.237.106.250:8080'
 
 // eslint-disable-next-line
 function addSign (data) {
-  let date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')
-  data.timestamp = date
-  let signstr = md5('goodtimp' + date)
-  data.sign = signstr
-  if (store.getters.token) { // 加入token
-    data.token = store.getters.token
-  }
-  return data
-}
-
-// eslint-disable-next-line
-function addonlySign (data) {
-  let date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')
-  data.timestamp = date
-  let signstr = md5('goodtimp' + date)
-  data.sign = signstr
+  data.valid = 'mangyu'
   return data
 }
 
 const toPost = {
-  // 垃圾图片识别
-  garbageImg (datas) {
+  // 获取垃圾（通用）
+  getRubbish (datas) {
     return request({
-      url: baseUrl + '/other/garbageImg',
+      url: baseUrl + '/rubbish/getRubbish',
       method: 'post',
-      data: datas
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取垃圾（精确垃圾名）
+  getRubbishByName (datas) {
+    return request({
+      url: baseUrl + '/rubbish/getRubbishByName',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取验证码
+  getVCode (datas) {
+    return request({
+      url: baseUrl + '/user/getVCode',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 验证码方式登录
+  loginVCode (datas) {
+    return request({
+      url: baseUrl + '/user/loginVCode',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取用户信息
+  getUserById (datas) {
+    return request({
+      url: baseUrl + '/user/getById',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取用户信息
+  updateUser (datas) {
+    return request({
+      url: baseUrl + '/user/update',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
     })
   }
 }

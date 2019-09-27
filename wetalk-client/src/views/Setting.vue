@@ -20,7 +20,7 @@
           </template>
         </van-cell>
       </van-cell-group>
-      <van-button class="max-btn" plain hairline type="danger" @click="$store.commit('GOLEFT', '/login')">退出账号</van-button>
+      <van-button class="max-btn" plain hairline type="danger" @click="toLogin">{{this.$store.getters.user._id?'退出账号':'登录'}}</van-button>
     </div>
   </div>
 </template>
@@ -37,8 +37,13 @@ export default class Music extends Vue {
   suChange (checked: boolean) {
     this.$store.commit('SETShowInOut', checked)
   }
+  toLogin () {
+    if (this.$store.getters.user._id) {
+      this.$store.commit('logoutUser')
+    }
+    this.$store.commit('GOLEFT', '/login')
+  }
   mounted () {
-    console.log(this.isShowInOut)
     this.isOpen = this.isShowInOut
   }
 }

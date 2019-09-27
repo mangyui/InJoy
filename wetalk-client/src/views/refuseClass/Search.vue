@@ -2,7 +2,7 @@
   <div class="bgMax max1100 refuse-search-wrap">
     <form class="fix-top search-box" action="/">
       <van-search
-        v-model="text"
+        v-model="getData.name"
         placeholder="搜索垃圾"
         show-action
         @search="onSearch"
@@ -12,21 +12,16 @@
     <div v-show="isSearch">
       <p class="s-text">搜索最热</p>
       <van-cell-group>
-        <van-cell v-for="(item, index) in refuseMost" :key="index" :title="item.gName">
-          <span v-if="item.gType=='可回收'" class="class-tag class-tag1" slot="default">{{item.gType}}</span>
-          <span v-if="item.gType=='有害垃圾'" class="class-tag class-tag2" slot="default">{{item.gType}}</span>
-          <span v-if="item.gType=='干垃圾'" class="class-tag class-tag3" slot="default">{{item.gType}}</span>
-          <span v-if="item.gType=='湿垃圾'" class="class-tag class-tag4" slot="default">{{item.gType}}</span>
+        <van-cell v-for="(item, index) in refuseList" :key="index" :title="item.name">
+          <span :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
         </van-cell>
       </van-cell-group>
     </div>
     <div v-show="!isSearch">
+      <p class="s-text">共匹配到{{maxNumber}}项</p>
       <van-cell-group>
-        <van-cell v-for="(item, index) in refuseList" :key="index" :title="item.gname">
-          <span v-if="item.gtype=='可回收'" class="class-tag class-tag1" slot="default">{{item.gtype}}</span>
-          <span v-if="item.gtype=='有害垃圾'" class="class-tag class-tag2" slot="default">{{item.gtype}}</span>
-          <span v-if="item.gtype=='干垃圾'" class="class-tag class-tag3" slot="default">{{item.gtype}}</span>
-          <span v-if="item.gtype=='湿垃圾'" class="class-tag class-tag4" slot="default">{{item.gtype}}</span>
+        <van-cell v-for="(item, index) in refuseList" :key="index" :title="item.name">
+          <span :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
         </van-cell>
       </van-cell-group>
     </div>
@@ -42,27 +37,31 @@ import MSTminxin from '@/util/MSTminxin'
   mixins: [MSTminxin]
 })
 export default class Search extends Vue {
-  text: string =''
-
+  maxNumber: number = 0
+  getData: any = {
+    page: 1,
+    number: 20,
+    name: '',
+    classId: 0
+  }
   refuseList: Array<any> = []
   refuseMost: Array<any> = []
   isSearch: boolean = true
   onSearch () {
-    if (this.text.trim() !== '') {
+    if (this.getData.name.trim() !== '') {
       this.$toast.loading({
         mask: true,
+        duration: 0,
         message: '加载中...'
       })
-      this.$toGet.getGarbage({ garbageName: this.text }).then((res: any) => {
-        if (res.code === 200) {
-          this.refuseList = res.data
-          this.isSearch = false
-          this.$toast.clear()
-        } else {
-          this.$toast('你搜的是什么鬼东西？')
-        }
+      this.$toPost.getRubbish(this.getData).then((res: any) => {
+        this.maxNumber = parseInt(res.data.pop())
+        this.refuseList = res.data
+        this.isSearch = false
+        this.$toast.clear()
       }).catch((err: any) => {
         console.log(err)
+        this.$toast.clear()
       })
     }
   }
@@ -74,7 +73,7 @@ export default class Search extends Vue {
     })
   }
   created () {
-    this.getMost()
+    // this.getMost()
   }
 }
 </script>

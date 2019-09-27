@@ -1,15 +1,19 @@
 class User {
-  public id: string // 当前以时间为id
+  public _id: string // 当前以时间为id
+  public phone: string = ''
   public name: string = ''
   public sex: number = 0
-  private avatar : string
+  public avatar : string
+  public age: number
   public cityCode: string
   public province: string
   public city: string
   constructor (id: string, name: string, avatar: string, sex: number) {
-    this.id = id
+    this._id = id
     this.name = name
     this.avatar = avatar
+    this.phone = ''
+    this.age = 0
     this.sex = sex
     this.cityCode = ''
     this.province = ''
@@ -19,7 +23,7 @@ class User {
     }
   }
   getUserId (): string {
-    return this.id
+    return this._id
   }
 }
 

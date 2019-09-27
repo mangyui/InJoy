@@ -20,7 +20,7 @@ const toGet = {
       params: datas
     })
   },
-  // 获取垃圾
+  // 获取垃圾  视乎不能用了
   getGarbage (datas) {
     return request({
       url: baseUrl + '/other/getGarbage',
@@ -28,12 +28,20 @@ const toGet = {
       params: datas
     })
   },
-  // 获取垃圾
+  // 获取垃圾  视乎不能用了
   recentGs (datas) {
     return request({
       url: baseUrl + '/other/recentGs',
       method: 'get',
       params: datas
+    })
+  },
+  // 获取垃圾分类
+  getGarbageClass (datas) {
+    return request({
+      url: baseUrl + '/garbage/getClass',
+      method: 'get',
+      data: datas
     })
   }
 }

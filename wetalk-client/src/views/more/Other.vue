@@ -90,11 +90,11 @@ export default class Other extends Vue {
       overflow: hidden;
       margin-bottom: 5px;
       text-align: center;
+      background: #afa7ff;
       // background: radial-gradient(#dbd8ff, #a39cf9);
     }
     img{
       width: 100%;
-      background: #dbd8ff;
     }
     p{
       height: 40px;

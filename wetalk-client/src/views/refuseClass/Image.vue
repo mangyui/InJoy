@@ -12,7 +12,7 @@
       <div v-show="refuseList[0]">
         <div>
           <van-cell-group>
-            <van-cell v-for="(item, index) in refuseList" :key="index" :title="item.gname">
+            <van-cell v-for="(item, index) in refuseList" :key="index" :title="item">
               <span v-if="item.gtype=='可回收'" class="class-tag class-tag1" slot="default">{{item.gtype}}</span>
               <span v-if="item.gtype=='有害垃圾'" class="class-tag class-tag2" slot="default">{{item.gtype}}</span>
               <span v-if="item.gtype=='干垃圾'" class="class-tag class-tag3" slot="default">{{item.gtype}}</span>
@@ -48,10 +48,16 @@ export default class GarbageImg extends Vue {
     this.imgFlie = file.file
   }
   scanGarbage () {
+    this.$toast.loading({
+      mask: true,
+      duration: 0,
+      message: '识别中...'
+    })
     let data = new FormData()
     data.append('file', this.imgFlie)
     this.$toPost.garbageImg(data).then((res: any) => {
-      console.log(res)
+      this.refuseList = res.data
+      this.$toast.clear()
     }).catch((err: any) => {
       console.log(err)
     })
@@ -63,11 +69,13 @@ export default class GarbageImg extends Vue {
 
 <style lang="less" scoped>
 .garbage-box{
-  padding: 10px 0;
+  padding-bottom: 60px;
   .garbage-img{
+    padding: 10px 0;
     background-color: #fff;
     width: 100%;
-    height: 240px;
+    height: 200px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
     img{
       border-radius: 5px;
     }

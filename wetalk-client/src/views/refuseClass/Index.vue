@@ -20,7 +20,7 @@
         <ul>
           <li v-for="(it,id) in item.todo" :key="id">{{it}}</li>
         </ul>
-         <van-icon class="class-icon" :name="'./icons/camera.svg'" />
+         <van-icon class="class-icon" :name="item.icon" />
          <van-icon name="arrow" />
       </div>
     </div>
@@ -40,23 +40,38 @@ export default class RefuseClass extends Vue {
     name: '可回收垃圾',
     desc: '指可回收可循环利用的废弃物',
     todo: ['保持清洁干燥，避免污染', '压力罐装容器，应清空并清洁压扁后投放', '易碎尖锐的，应包裹后投放'],
-    color: '#64d1b6'
+    color: '#64d1b6',
+    icon: './imgs/khslj.png'
   }, {
     name: '有害垃圾',
     desc: '指对人体健康或自然环境造成直接或潜在危害的废弃物',
     todo: ['分类投放有害垃圾时，应注意轻放', '易碎尖锐的，应带包装或包裹后投放', '压力罐装容器，应排空内容物后投放'],
-    color: '#f57f75'
+    color: '#f57f75',
+    icon: './imgs/yh.png'
   }, {
     name: '湿垃圾(厨余垃圾)',
     desc: '即易腐垃圾，易腐生物质生活废弃物',
     todo: ['沥干水分', '有外包装的应去除外包装', '与其他种类垃圾分开投放'],
-    color: '#a18073'
+    color: '#a18073',
+    icon: './imgs/cylj.png'
   }, {
     name: '干垃圾(其他垃圾)',
     desc: '其他三类垃圾外的生活废弃物',
     todo: ['已污染的，应包裹后投放', '应保持周围环境整洁', '与其他种类垃圾分开投放'],
-    color: '#7e8ca7'
+    color: '#7e8ca7',
+    icon: './imgs/glj.png'
   }]
+
+  getGarbageClass () {
+    this.$toGet.getGarbageClass().then((res: any) => {
+      this.classList = res.data
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  created () {
+    this.getGarbageClass()
+  }
 }
 </script>
 
@@ -81,19 +96,22 @@ export default class RefuseClass extends Vue {
   padding: 10px 15px;
   padding-bottom: 55px;
   .refuse-class-item{
-    border-radius: 8px 8px 0 0;
+    border-radius: 1px;
     padding: 18px;
     padding-bottom: 25px;
     line-height: 21px;
-    margin-bottom: -10px;
+    margin-bottom: 10px;
     position: relative;
     color: #fff;
-    box-shadow: -3px 0 25px rgba(0,0,0,0.18);
+    box-shadow: 0 -2px 5px rgba(0,0,0,.2);
     b{
       font-size: 16px;
     }
     p{
       margin: 5px 0;
+      height: 42px;
+      overflow: hidden;
+      width: 90%;
     }
     ul{
       list-style: disc;
@@ -109,6 +127,7 @@ export default class RefuseClass extends Vue {
     .class-icon{
       bottom: 20px;
       top: auto;
+      font-size: 36px;
     }
   }
 }

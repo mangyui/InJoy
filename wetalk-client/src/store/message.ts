@@ -13,7 +13,7 @@ export default {
       let index = '-1'
       for (const key in state.msgList) {
         if (state.msgList.hasOwnProperty(key)) {
-          if (state.msgList[key].time === msg.time && msg.user && state.msgList[key].user.id === msg.user.id) {
+          if (state.msgList[key].time === msg.time && msg.user && state.msgList[key].user.id === msg.user._id) {
             // console.log('key', state.msgList[key])
             index = key
           }

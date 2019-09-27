@@ -20,6 +20,7 @@ export default {
     logoutUser (state: any) {
       state.user = {}
       localStorage.setItem('user', JSON.stringify(state.user))
+      location.reload()
     }
   },
   actions: {}

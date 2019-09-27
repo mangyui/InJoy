@@ -4,9 +4,9 @@
       <div class="comment-box post-box">
         <div class="post-item" v-for="(item,index) in 15" :key="index">
           <div class="post-user">
-            <img :src="user.avatar">
+            <img :src="user.avatar||'./imgs/ico.png'">
             <div class="post-user-text">
-              <p>{{user.name}}</p>
+              <p>{{user.name||user.phone}}</p>
             </div>
             <div class="comment-right-icon">
               <van-icon name="upgrade" />

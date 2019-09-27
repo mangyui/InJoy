@@ -49,7 +49,7 @@ const router:Router = new Router({
         {
           path: 'lobby',
           name: 'Lobby',
-          component: Lobby // () => import('@/views/post/Index.vue')
+          component: () => import('@/views/post/Index.vue')
         },
         {
           path: 'refuseclass',
@@ -109,7 +109,7 @@ const router:Router = new Router({
       component: WorldRoom // () => import('@/views/WorldRoom.vue')
     },
     {
-      path: '/userhomepage',
+      path: '/userhomepage/:id',
       name: 'UserHomePage',
       component: UserHomePage // () => import('@/views/user/UserHomePage.vue')
     },

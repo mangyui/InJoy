@@ -9,15 +9,15 @@
         <div class="login-box">
           <div class="login-item">
             <van-icon name="phone-o" />
-            <input placeholder="手机号" type="text">
+            <input v-model="loginForm.phone" placeholder="手机号" type="text">
           </div>
           <div class="login-item">
             <van-icon name="certificate" />
-            <input placeholder="验证码" type="text">
-            <van-button class="code-btn" size="small" color="#16cff0">发送验证码</van-button>
+            <input v-model="loginForm.vcode" placeholder="验证码" type="text">
+            <van-button class="code-btn" size="small" color="#16cff0" @click="getVcode">{{msgText}}</van-button>
           </div>
         </div>
-        <van-button class="max-btn"  color="#16cff0">登录</van-button>
+        <van-button class="max-btn"  color="#16cff0" @click="toLogin">登录</van-button>
         <div class="login-footer">
           <van-divider>其他登录方式</van-divider>
           <div class="login-more">
@@ -37,10 +37,65 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+const MSGINIT = '发送验证码'
+const MSGTIME = 60
+const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
 
 @Component
 export default class Login extends Vue {
-
+  isGetting: boolean = false
+  msgText: string = '发送验证码'
+  msgTime: number = 60
+  loginForm: any = {
+    phone: '',
+    vcode: ''
+  }
+  getVcode () {
+    if (this.isGetting) {
+      return
+    }
+    if (!reg.test(this.loginForm.phone)) {
+      this.$toast.fail('手机号不正确')
+      return
+    }
+    this.isGetting = true
+    this.$toPost.getVCode({ phone: this.loginForm.phone }).then((res: any) => {
+      this.msgText = this.msgTime + 's'
+      this.loginForm.vcode = res.data.code
+      const time = setInterval(() => {
+        this.msgTime--
+        this.msgText = this.msgTime + 's'
+        if (this.msgTime === 0) {
+          this.msgTime = MSGTIME
+          this.msgText = MSGINIT
+          this.isGetting = false
+          clearInterval(time)
+        }
+      }, 1000)
+    }).catch((err: any) => {
+      console.log(err)
+      this.isGetting = false
+      this.msgTime = MSGTIME
+      this.msgText = MSGINIT
+      this.$toast.fail('发送验证码失败')
+    })
+  }
+  toLogin () {
+    if (!reg.test(this.loginForm.phone) || !this.loginForm.vcode) {
+      this.$toast('请正确填写')
+      return
+    }
+    this.$toPost.loginVCode(this.loginForm).then((res: any) => {
+      if (res.data.success) {
+        this.$store.commit('initUserInfo', res.data.user)
+        this.$store.commit('GOLEFT', '/')
+      } else {
+        this.$toast.fail(res.data.result)
+      }
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
 }
 
 </script>

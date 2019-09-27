@@ -2,7 +2,7 @@
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" fixed title="编辑资料" left-arrow  right-text="保存"
       @click-left="$store.commit('GOBACK')"
-      @click-right="$store.commit('initUserInfo', user)"></van-nav-bar>
+      @click-right="saveUser"></van-nav-bar>
     <div class="my-edit max1100">
       <van-cell-group>
         <van-field
@@ -16,6 +16,13 @@
           placeholder="请填写性别"
           disabled
           @click="showSex = true"
+        />
+        <van-field
+          :value="user.age"
+          label="年龄"
+          placeholder="请填写年龄"
+          disabled
+          @click="showDate = true"
         />
       </van-cell-group>
       <van-cell-group>
@@ -41,7 +48,6 @@
           label="签名"
           type="textarea"
           placeholder="介绍下自己吧"
-          rows="1"
           autosize
         />
       </van-cell-group>
@@ -53,6 +59,17 @@
         title="性别"
         @cancel="showSex = false"
         @confirm="onConfirm"
+      />
+    </van-popup>
+    <van-popup v-model="showDate" position="bottom">
+      <van-datetime-picker
+        v-model="currDate"
+        :min-date="minDate"
+        :max-date="maxDate"
+        type="year-month"
+        :formatter="formatter"
+        @cancel="showDate = false"
+        @confirm="dateConfirm"
       />
     </van-popup>
     <van-popup v-model="showArea" position="bottom">
@@ -74,13 +91,38 @@ export default class UserEdit extends Vue {
   private user: User = this.$store.getters.user
   areaList: JSON = areaList
   showSex: boolean = false
+  showDate: boolean = false
   showArea: boolean = false
+  currDate: any = new Date()
+  maxDate: any = new Date()
+  minDate: any = new Date(1900, 10, 1)
   beforeDestroy () {
     this.$store.commit('initUserInfo', this.user)
+  }
+  saveUser () {
+    let data = this.user
+    this.$toPost.updateUser(this.user).then((res: any) => {
+      this.$store.commit('initUserInfo', this.user)
+    }).catch((err: any) => {
+      console.log(err)
+    })
+    console.log(this.$store.getters.user)
+  }
+  formatter (type: any, value: any) {
+    if (type === 'year') {
+      return `${value}年`
+    } else if (type === 'month') {
+      return `${value}月`
+    }
+    return value
   }
   onConfirm (value: string, index: number) {
     this.user.sex = index
     this.showSex = false
+  }
+  dateConfirm (value: any) {
+    this.user.age = Math.floor(Math.abs(this.maxDate - this.currDate) / 1000 / 60 / 60 / 24 / 365)
+    this.showDate = false
   }
   areaConfirm (value: Array<any>) {
     this.user.province = value[0].name
