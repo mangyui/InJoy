@@ -43,6 +43,14 @@ const toGet = {
       method: 'get',
       data: datas
     })
+  },
+  // 获取热门垃圾
+  getRubbishMost (datas) {
+    return request({
+      url: baseUrl + '/rubbish/getMost',
+      method: 'get',
+      data: datas
+    })
   }
 }
 

@@ -63,11 +63,16 @@ export default class UserHomePage extends Vue {
   }
   getUser () {
     this.$toPost.getUserById({ id: this.$route.params.id }).then((res: any) => {
-      if (res.data) {
+      if (res.data && res.data._id) {
         this.user = res.data
         if (res.data._id && this.me._id === res.data._id && this.me !== res.data) { // 此处还得再优化
           this.$store.commit('initUserInfo', res.data)
         }
+      } else {
+        this.$notify({ type: 'warning', message: '用户不存在' })
+        setTimeout(() => {
+          this.$store.commit('GOBACK')
+        }, 200)
       }
       this.isLoading = false
     }).catch((err: any) => {

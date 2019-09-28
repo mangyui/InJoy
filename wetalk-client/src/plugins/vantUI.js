@@ -10,7 +10,8 @@ import {
   Tab, Tabs, ImagePreview,
   Image, SwipeCell, Uploader,
   Dialog, Sidebar, SidebarItem,
-  DatetimePicker
+  DatetimePicker, List, Notify,
+  IndexBar, IndexAnchor
 } from 'vant'
 
 Vue.use(Button).use(Tabbar).use(TabbarItem)
@@ -23,6 +24,7 @@ Vue.use(ActionSheet).use(SwitchCell).use(Divider)
 Vue.use(Tab).use(Tabs).use(ImagePreview)
 Vue.use(Image).use(SwipeCell).use(Uploader)
 Vue.use(Dialog).use(Sidebar).use(SidebarItem)
-Vue.use(DatetimePicker)
+Vue.use(DatetimePicker).use(List).use(Notify)
+Vue.use(IndexBar).use(IndexAnchor)
 
 Vue.prototype.$ImagePreview = ImagePreview

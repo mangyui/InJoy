@@ -4,7 +4,7 @@ import qs from 'qs'
 // import md5 from 'js-md5'
 // import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
 // export const payUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141' : 'http://122.237.106.250:8080'
 
 // eslint-disable-next-line
@@ -26,6 +26,21 @@ const toPost = {
   getRubbishByName (datas) {
     return request({
       url: baseUrl + '/rubbish/getRubbishByName',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取垃圾（精确垃圾名）
+  getClassAndList (datas) {
+    return request({
+      url: baseUrl + '/garbage/getClassAndList',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  garbageImg (datas) {
+    return request({
+      url: 'http://47.106.130.141:9610/retrieval',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

@@ -14,7 +14,10 @@
       </div>
     </div>
     <div class="refuse-class-box">
-      <div class="refuse-class-item" :style="{background: 'linear-gradient(to bottom right, '+ item.color+', '+item.color+')'}" v-for="(item, index) in classList" :key="index">
+      <div class="refuse-class-item"
+        :style="{background: 'linear-gradient(to bottom right, '+ item.color+', '+item.color+')'}"
+        v-for="(item, index) in classList"
+        :key="index" @click="$store.commit('GOLEFT', '/garbagelist/'+item._id)">
         <b>{{item.name}}</b>
         <p>{{item.desc}}</p>
         <ul>
@@ -29,14 +32,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import MSTminxin from '@/util/MSTminxin'
 
-@Component({
-  mixins: [MSTminxin]
-})
+@Component
 export default class RefuseClass extends Vue {
   activeKey: number = 1
-  classList: Array<any> = [{
+  classList: Array<any> = []
+  ccList: Array<any> = [{
     name: '可回收垃圾',
     desc: '指可回收可循环利用的废弃物',
     todo: ['保持清洁干燥，避免污染', '压力罐装容器，应清空并清洁压扁后投放', '易碎尖锐的，应包裹后投放'],
@@ -105,11 +106,11 @@ export default class RefuseClass extends Vue {
     color: #fff;
     box-shadow: 0 -2px 5px rgba(0,0,0,.2);
     b{
-      font-size: 16px;
+      font-size: 17px;
     }
     p{
       margin: 5px 0;
-      height: 42px;
+      height: 63px;
       overflow: hidden;
       width: 90%;
     }

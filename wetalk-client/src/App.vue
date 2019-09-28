@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <keep-alive exclude="WorldRoom,MyMap,UserEdit">
-        <router-view class="Router"/>
+      <keep-alive exclude="WorldRoom,MyMap,UserEdit,UserHomePage">
+        <router-view :key="$route.fullPath" class="Router"/>
       </keep-alive>
     </transition>
     <transition name="slideleft">

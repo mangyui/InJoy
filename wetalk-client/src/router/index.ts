@@ -13,7 +13,7 @@ import PostComment from '@/views/post/Comment.vue'
 import PostAdd from '@/views/post/Add.vue'
 
 import GarbageImg from '@/views/refuseClass/Image.vue'
-// import DynamicComment from '@/views/dynamic/Comment.vue'
+import GarbageList from '@/views/refuseClass/List.vue'
 import RefuseSearch from '@/views/refuseClass/Search.vue'
 import WorldRoom from '@/views/WorldRoom.vue'
 
@@ -93,11 +93,11 @@ const router:Router = new Router({
       name: 'GarbageImg',
       component: GarbageImg // () => import('@/views/refuseClass/Image.vue')
     },
-    // {
-    //   path: '/dynamiccomment/:id',
-    //   name: 'DynamicComment',
-    //   component: DynamicComment // () => import('@/views/dynamic/Comment.vue')
-    // },
+    {
+      path: '/garbagelist/:id',
+      name: 'GarbageList',
+      component: GarbageList // () => import('@/views/refuseClass/List.vue')
+    },
     {
       path: '/refusesearch',
       name: 'RefuseSearch',

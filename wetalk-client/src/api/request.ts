@@ -11,7 +11,7 @@ const service = axios.create({
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (res.rec !== 0) {
+    if (res.rec === -1) {
       Notify({
         message: '请求错误',
         color: '#ad0000',

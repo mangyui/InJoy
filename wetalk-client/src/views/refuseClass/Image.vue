@@ -12,18 +12,15 @@
       <div v-show="refuseList[0]">
         <div>
           <van-cell-group>
-            <van-cell v-for="(item, index) in refuseList" :key="index" :title="item">
-              <span v-if="item.gtype=='可回收'" class="class-tag class-tag1" slot="default">{{item.gtype}}</span>
-              <span v-if="item.gtype=='有害垃圾'" class="class-tag class-tag2" slot="default">{{item.gtype}}</span>
-              <span v-if="item.gtype=='干垃圾'" class="class-tag class-tag3" slot="default">{{item.gtype}}</span>
-              <span v-if="item.gtype=='湿垃圾'" class="class-tag class-tag4" slot="default">{{item.gtype}}</span>
+            <van-cell v-for="(item, index) in refuseList" :key="index" :title="item.keyword" :is-link="item.classId?false:true">
+              <span v-if="item.classId" :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
             </van-cell>
           </van-cell-group>
         </div>
       </div>
     </div>
     <div class="garbage-img-btn">
-      <van-button class="btn-theme" type="info">拍照</van-button>
+      <van-button class="btn-theme" type="info" @click="cameraTakePicture">拍照</van-button>
       <van-uploader
         :after-read="readImg"
         capture="camera"
@@ -53,14 +50,34 @@ export default class GarbageImg extends Vue {
       duration: 0,
       message: '识别中...'
     })
-    let data = new FormData()
-    data.append('file', this.imgFlie)
-    this.$toPost.garbageImg(data).then((res: any) => {
-      this.refuseList = res.data
+    let _data = {
+      'image': this.contentImg.replace(/data:image\/.*;base64,/, '')
+    }
+    this.$toPost.garbageImg(_data).then((res: any) => {
+      this.refuseList = res.result
       this.$toast.clear()
     }).catch((err: any) => {
       console.log(err)
+      this.$toast.clear()
     })
+  }
+  cameraTakePicture () {
+    // if (navigator.camera) {
+    //   navigator.camera.getPicture(this.onSuccess, this.onFail, {
+    //     quality: 50,
+    //     destinationType: Camera.DestinationType.DATA_URL,//eslint-disable-line
+    //     encodingType: Camera.EncodingType.JPEG,//eslint-disable-line
+    //     sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
+    //   })
+    // } else {
+    this.$toast('该设备不支持打开相机！')
+    // }
+  }
+  onSuccess (imageURI: any) {
+    this.contentImg = imageURI
+  }
+  onFail (mess: any) {
+    console.log(mess)
   }
   created () {
   }

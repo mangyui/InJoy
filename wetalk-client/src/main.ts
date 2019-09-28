@@ -14,7 +14,8 @@ import './guard.ts'
 import './api/get.js'
 import './api/post.js'
 
-import { Toast } from 'vant'
+import { Toast, Notify } from 'vant'
+
 // import MSTminxin from '@/util/MSTminxin'
 // Vue.mixin(MSTminxin)
 
@@ -29,6 +30,7 @@ window.addEventListener('popstate', (e: any) => {
 declare module 'vue/types/vue' {
   interface Vue {
     $toast: Toast
+    $notify: Notify
     $toGet: any
     $toPost: any
     $win: any
@@ -36,9 +38,12 @@ declare module 'vue/types/vue' {
   }
 }
 
+// document.addEventListener('deviceready', () => {
 new Vue({
   // el: '#app',
   router,
   store,
   render: h => h(App)
-}).$mount('#app') // 与el: '#app'对应，手动挂载
+}).$mount('#app')
+//   window.navigator.splashscreen.hide()
+// }, false)
