@@ -1,5 +1,5 @@
 <template>
-  <div class="mess-wrap">
+  <div class="mess-wrap my-content-box" @scroll="scroll" ref="content">
     <van-tabs v-model="active" :border="false" sticky line-width="26" :offset-top="0">
       <van-tab title="聊天室" name="m1">
         <talkRoom />
@@ -23,8 +23,17 @@ import privateChat from './PrivateChat.vue'
   }
 })
 export default class Message extends Vue {
+  scrollTop: number = 0
   active: string = 'm1'
   created () {
+  }
+  scroll () {
+    // @ts-ignore
+    this.scrollTop = this.$refs.content.scrollTop
+  }
+  activated () {
+    // @ts-ignore
+    this.$refs.content.scrollTop = this.scrollTop
   }
 }
 </script>

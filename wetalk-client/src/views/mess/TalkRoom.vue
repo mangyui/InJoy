@@ -2,7 +2,7 @@
   <div>
     <div class="max1100 roomList">
       <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
-        <div class="room-card" @click="$store.commit('GOLEFT', '/worldroom')">
+        <div class="room-card" @click="$router.push('/worldroom')">
           <p>世界频道</p>
           <b>13人</b>
           <img :src="require('@/assets/img/katong2.png')" alt="">

@@ -1,8 +1,8 @@
 <template>
   <div class="bgMax max1100">
-    <van-nav-bar class="litheme" :border="false" title="垃圾识别" fixed left-arrow  @click-left="$store.commit('GOBACK')">
+    <van-nav-bar class="litheme" :border="false" title="垃圾识别" fixed left-arrow  @click-left="$router.go(-1)">
     </van-nav-bar>
-    <div v-show="contentImg" class="garbage-box">
+    <div v-show="contentImg" class="garbage-box my-content-box">
       <van-image
         class="garbage-img"
         fit="contain"

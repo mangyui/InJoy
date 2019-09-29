@@ -1,9 +1,9 @@
 <template>
   <div class="bgMax max1100">
     <van-nav-bar class="litheme" :border="false" title="帖子详情" fixed left-arrow right-text="评论"
-      @click-left="$store.commit('GOBACK')"
-      @click-right="$store.commit('GOLEFT', '/postcomment/1')" />
-    <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh"  @click.native="isComment=false">
+      @click-left="$router.go(-1)"
+      @click-right="$router.push('/postcomment/1')" />
+    <van-pull-refresh class="my-content-box" pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh"  @click.native="isComment=false">
       <div class="post-box">
         <div class="post-item">
           <div class="post-user">

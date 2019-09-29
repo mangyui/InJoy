@@ -1,8 +1,13 @@
 <template>
   <div id="app">
+    <!-- <transition :name="transitionName">
+      <navigation>
+        <router-view v-if="$route.meta.isKeep !== true" class="Router"/>
+      </navigation>
+    </transition> -->
     <transition :name="transitionName">
-      <keep-alive exclude="WorldRoom,MyMap,UserEdit,UserHomePage">
-        <router-view :key="$route.fullPath" class="Router"/>
+      <keep-alive exclude="WorldRoom,MyMap,UserEdit,GarbageList">
+        <router-view class="Router"/>
       </keep-alive>
     </transition>
     <transition name="slideleft">
@@ -15,15 +20,12 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 
-import AudioBox from '@/components/AudioBox.vue' // 要写完整.vue
+import AudioBox from '@/components/AudioBox.vue'
 
 export default Vue.extend({
   name: 'App',
   components: {
     AudioBox
-  },
-  computed: {
-    ...mapGetters(['isleft', 'isright'])
   },
   data () {
     return {
@@ -32,14 +34,22 @@ export default Vue.extend({
   },
   watch: {
     $route () { // 监听路由变化重新赋值
-      if (this.isleft) {
-        this.transitionName = 'slideleft'
-      }
-      if (this.isright) {
-        this.transitionName = 'slideright'
-      }
       this.$toast.clear()
     }
+  },
+  created () {
+    this.$navigation.on('forward', (to: any, from: any) => {
+      this.transitionName = 'slideleft'
+      this.$store.commit('GO_ENTER')
+    })
+    this.$navigation.on('back', (to: any, from: any) => {
+      this.transitionName = 'slideright'
+      this.$store.commit('GO_BACK')
+    })
+    this.$navigation.on('replace', (to: any, from: any) => {
+      this.transitionName = 'slideleft'
+      this.$store.commit('GO_ENTER')
+    })
   }
 })
 </script>
@@ -57,28 +67,19 @@ export default Vue.extend({
   right: 0;
   width: 100%;
   height: 100%;
-  transition: all .1s ease-out;
+  transition: all 0.12s ease-out;
   opacity: 1;
 }
-// .slideleft-enter,.slideright-enter {
-//   transition: all 11s ease-in;
-// }
-// .slideright-leave-active,.slideleft-leave-active {
-//   transition: 0s;
-// }
 
 .slideleft-enter,
  .slideright-leave-active {
   opacity: 0;
-  left: 100%;
   z-index: 11;
-  // transform: translate(100%, 0);
+  transform: translate(100%, 0);
 }
 .slideleft-leave-active,
 .slideright-enter {
+  z-index: 9;
   opacity: 0;
-  transition: 0s;
-  // left: -100%;
-  // transform: translate(-100%, 0);
 }
 </style>

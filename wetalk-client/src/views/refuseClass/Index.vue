@@ -1,30 +1,32 @@
 <template>
   <div class="bgWhite max1100">
     <van-nav-bar class="litheme" :border="false" title="垃圾分类" fixed />
-    <div class="refuse-top-wrap">
-      <div class="flex-cc refuse-top">
-        <div @click="$store.commit('GOLEFT', '/garbageimg')">
-          <van-icon :name="'./icons/camera.svg'" />
-          <p>拍照识别</p>
-        </div>
-        <div @click="$store.commit('GOLEFT', '/refusesearch')">
-          <van-icon :name="'./icons/search.svg'" />
-          <p>搜索垃圾</p>
+    <div class="my-content-box">
+      <div class="refuse-top-wrap">
+        <div class="flex-cc refuse-top">
+          <div @click="$router.push('/garbageimg')">
+            <van-icon :name="'./icons/camera.svg'" />
+            <p>拍照识别</p>
+          </div>
+          <div @click="$router.push('/refusesearch')">
+            <van-icon :name="'./icons/search.svg'" />
+            <p>搜索垃圾</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="refuse-class-box">
-      <div class="refuse-class-item"
-        :style="{background: 'linear-gradient(to bottom right, '+ item.color+', '+item.color+')'}"
-        v-for="(item, index) in classList"
-        :key="index" @click="$store.commit('GOLEFT', '/garbagelist/'+item._id)">
-        <b>{{item.name}}</b>
-        <p>{{item.desc}}</p>
-        <ul>
-          <li v-for="(it,id) in item.todo" :key="id">{{it}}</li>
-        </ul>
-         <van-icon class="class-icon" :name="item.icon" />
-         <van-icon name="arrow" />
+      <div class="refuse-class-box">
+        <div class="refuse-class-item"
+          :style="{background: 'linear-gradient(to bottom right, '+ item.color+', '+item.color+')'}"
+          v-for="(item, index) in classList"
+          :key="index" @click="$router.push('/garbagelist/'+item._id)">
+          <b>{{item.name}}</b>
+          <p>{{item.desc}}</p>
+          <ul>
+            <li v-for="(it,id) in item.todo" :key="id">{{it}}</li>
+          </ul>
+          <van-icon class="class-icon" :name="item.icon" />
+          <van-icon name="arrow" />
+        </div>
       </div>
     </div>
   </div>

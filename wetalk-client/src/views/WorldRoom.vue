@@ -1,6 +1,6 @@
 <template>
   <div class="talk-room">
-    <van-nav-bar class="litheme" :border="false" fixed :title="'世界频道(' + myTalk.numberP + ')'" left-arrow  @click-left="$store.commit('GOBACK')">
+    <van-nav-bar class="litheme" :border="false" fixed :title="'世界频道(' + myTalk.numberP + ')'" left-arrow  @click-left="$router.go(-1)">
       <van-icon name="weapp-nav" slot="right" />
     </van-nav-bar>
     <div class="content-wrap" @click="$refs.inputB.noMore()">

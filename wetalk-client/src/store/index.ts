@@ -30,8 +30,7 @@ export default new Vuex.Store({
     user: state => state.user,
     city: state => state.user.city,
     msgList: state => state.msgList,
-    isleft: state => state.isleft,
-    isright: state => state.isright,
+    isForward: state => state.isForward,
     isPlay: state => state.isPlay,
     currentSong: state => state.currentSong,
     isShowInOut: state => state.isShowInOut

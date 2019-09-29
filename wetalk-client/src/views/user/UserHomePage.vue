@@ -1,34 +1,36 @@
 <template>
   <div class="usercenter">
-    <van-nav-bar class="litheme" fixed :title="(user.name||user.phone||'')+'主页'" :border="false" left-arrow  @click-left="$store.commit('GOBACK')">
-      <van-icon v-if="$route.params.id==me._id" name="edit" slot="right" @click="$store.commit('GOLEFT', '/UserEdit')"/>
+    <van-nav-bar class="litheme" fixed :title="(user.name||user.phone||'')+'主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
+      <van-icon v-if="$route.params.id==me._id" name="edit" slot="right" @click="$router.push('/UserEdit')"/>
     </van-nav-bar>
-    <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
-    <div class="usercenter-top">
-      <div class="user-bg">
-        <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/ico.png')+')'}"></div>
-        <div class="top-mask"></div>
-        <!-- <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon> -->
-      </div>
-      <div class="user-box max1100">
-        <img :src="user.avatar||'./imgs/ico.png'">
-        <div>
-          <b>{{user.name||user.phone}}</b>
-          <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp;{{user.province}}&nbsp;&nbsp; {{user.city}}</p>
+    <div class="my-content-box" @scroll="scroll" ref="content">
+      <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
+        <div class="usercenter-top">
+          <div class="user-bg">
+            <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/ico.png')+')'}"></div>
+            <div class="top-mask"></div>
+            <!-- <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon> -->
+          </div>
+          <div class="user-box max1100">
+            <img :src="user.avatar||'./imgs/ico.png'">
+            <div>
+              <b>{{user.name||user.phone}}</b>
+              <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp;{{user.province}}&nbsp;&nbsp; {{user.city}}</p>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="max1100">
+          <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
+            <van-tab title="帖子" name="post">
+              <UserPost :user="user"/>
+            </van-tab>
+            <van-tab title="评论" name="comment">
+              <UserComment :user="user"/>
+            </van-tab>
+          </van-tabs>
+        </div>
+      </van-pull-refresh>
     </div>
-    <div class="max1100">
-      <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
-        <van-tab title="帖子" name="post">
-          <UserPost :user="user"/>
-        </van-tab>
-        <van-tab title="评论" name="comment">
-          <UserComment :user="user"/>
-        </van-tab>
-      </van-tabs>
-    </div>
-    </van-pull-refresh>
   </div>
 </template>
 
@@ -50,6 +52,7 @@ let persons : Person[] = require('@/util/Persons').persons
 export default class UserHomePage extends Vue {
   private user: any = {}
   private me: any = this.$store.getters.user
+  scrollTop: number = 0
   isLoading: boolean = false
   isScroll: boolean = false
   active: string = 'post'
@@ -71,7 +74,7 @@ export default class UserHomePage extends Vue {
       } else {
         this.$notify({ type: 'warning', message: '用户不存在' })
         setTimeout(() => {
-          this.$store.commit('GOBACK')
+          this.$router.go(-1)
         }, 200)
       }
       this.isLoading = false
@@ -93,6 +96,17 @@ export default class UserHomePage extends Vue {
   //   this.$store.commit('updateUserAvatar', persons[index].avatar)
   //   this.$store.commit('updateUserName', persons[index].name)
   // }
+  scroll () {
+    // @ts-ignore
+    this.scrollTop = this.$refs.content.scrollTop
+  }
+  activated () {
+    // @ts-ignore
+    this.$refs.content.scrollTop = this.scrollTop
+    if (this.$store.getters.isForward) {
+      this.getUser()
+    }
+  }
   mounted () {
     window.addEventListener('scroll', (e: any) => {
       if (e.target.scrollTop > 100) {
@@ -103,7 +117,6 @@ export default class UserHomePage extends Vue {
     }, true)
   }
   created () {
-    this.getUser()
   }
 }
 </script>
@@ -121,7 +134,7 @@ export default class UserHomePage extends Vue {
 }
 .user-bg{
   width: 100%;
-  height: 150px;
+  height: 200px;
   position: relative;
   overflow: hidden;
   .edit-btn{

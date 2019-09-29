@@ -1,16 +1,18 @@
 <template>
   <div class="bgWhite max1100">
-    <van-nav-bar class="litheme" :border="false" fixed title="酷站" left-arrow @click-left="$store.commit('GOBACK')" ></van-nav-bar>
-    <div class="list-box">
-      <a class="list-item" :href="item.url" target="_blank" v-for="(item, index) in lists" :key="index">
-        <div>
-          <img :src="item.pic">
-        </div>
-        <p>{{item.title}}</p>
-      </a>
-      <div v-show="lists.length%3==2" class="list-item"></div>
+    <van-nav-bar class="litheme" :border="false" fixed title="酷站" left-arrow @click-left="$router.go(-1)" ></van-nav-bar>
+    <div class="my-content-box">
+      <div class="list-box">
+        <a class="list-item" :href="item.url" target="_blank" v-for="(item, index) in lists" :key="index">
+          <div>
+            <img :src="item.pic">
+          </div>
+          <p>{{item.title}}</p>
+        </a>
+        <div v-show="lists.length%3==2" class="list-item"></div>
+      </div>
+      <van-divider>陆续添加中</van-divider>
     </div>
-    <van-divider>陆续添加中</van-divider>
   </div>
 </template>
 
@@ -57,7 +59,7 @@ export default class Other extends Vue {
   text: string = ''
   toIndex (index: number) {
     this.baseurl.params.url = this.lists[index].url
-    this.$store.commit('GOLEFT', this.baseurl)
+    this.$router.push(this.baseurl)
   }
   created () {
   }

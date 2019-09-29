@@ -1,22 +1,24 @@
 <template>
   <div class="bgWhite max1100">
-    <van-nav-bar class="litheme" :border="false" fixed title="听一听" left-arrow @click-left="$store.commit('GOBACK')" ></van-nav-bar>
-    <van-search
-      v-model="text"
-      placeholder="搜索音乐"
-      @search="getMusic"
-    />
-    <div class="list-box">
-      <div class="list-item" v-for="(item, index) in musics" :key="index" @click="toPlay(item)">
-        <img v-lazy="item.pic">
-        <div class="list-item-left">
-          <b>{{item.title}}</b>
-          <p>{{item.author}}</p>
-        </div>
-        <div class="list-item-right">
-          <div v-if="isPlay!=0&&currentSong.songid==item.songid">
-            <van-icon v-if="isPlay==1" name="pause-circle" color="#00a7ff"/>
-            <van-icon v-else name="play-circle" color="#ccc"/>
+    <van-nav-bar class="litheme" :border="false" fixed title="听一听" left-arrow @click-left="$router.go(-1)" ></van-nav-bar>
+    <div class="my-content-box">
+      <van-search
+        v-model="text"
+        placeholder="搜索音乐"
+        @search="getMusic"
+      />
+      <div class="list-box">
+        <div class="list-item" v-for="(item, index) in musics" :key="index" @click="toPlay(item)">
+          <img v-lazy="item.pic">
+          <div class="list-item-left">
+            <b>{{item.title}}</b>
+            <p>{{item.author}}</p>
+          </div>
+          <div class="list-item-right">
+            <div v-if="isPlay!=0&&currentSong.songid==item.songid">
+              <van-icon v-if="isPlay==1" name="pause-circle" color="#00a7ff"/>
+              <van-icon v-else name="play-circle" color="#ccc"/>
+            </div>
           </div>
         </div>
       </div>

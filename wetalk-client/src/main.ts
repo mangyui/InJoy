@@ -2,9 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router/'
 import store from './store/'
-// import 'amfe-flexible'
 import '@/util/pcRem.js'
-// import '@/util/initMap.js'
 
 import './plugins/vantUI.js'
 import '@/styles/index.less'
@@ -16,16 +14,12 @@ import './api/post.js'
 
 import { Toast, Notify } from 'vant'
 
-// import MSTminxin from '@/util/MSTminxin'
-// Vue.mixin(MSTminxin)
+// @ts-ignore
+import Navigation from 'vue-navigation'
 
 Vue.prototype.$win = window
 
 Vue.config.productionTip = false
-
-window.addEventListener('popstate', (e: any) => {
-  store.commit('WINBACK')
-}, false)
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -35,8 +29,11 @@ declare module 'vue/types/vue' {
     $toPost: any
     $win: any
     $ImagePreview: any
+    $navigation: any
   }
 }
+
+Vue.use(Navigation, { router, store, keyName: 'my' })
 
 // document.addEventListener('deviceready', () => {
 new Vue({

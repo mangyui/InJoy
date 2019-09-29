@@ -1,8 +1,8 @@
 <template>
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" fixed title="设置" left-arrow
-      @click-left="$store.commit('GOBACK')"></van-nav-bar>
-    <div class="my-edit max1100">
+      @click-left="$router.go(-1)"></van-nav-bar>
+    <div class="my-edit max1100 my-content-box">
       <van-cell-group>
         <van-cell title="账户安全" is-link />
       </van-cell-group>
@@ -41,7 +41,7 @@ export default class Music extends Vue {
     if (this.$store.getters.user._id) {
       this.$store.commit('logoutUser')
     }
-    this.$store.commit('GOLEFT', '/login')
+    this.$router.push('/login')
   }
   mounted () {
     this.isOpen = this.isShowInOut

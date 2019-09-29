@@ -1,12 +1,9 @@
 <template>
   <div class="open_window">
-    <van-nav-bar class="litheme" :border="false" title="" fixed left-arrow  @click-left="$store.commit('GOBACK')">
+    <van-nav-bar class="litheme" :border="false" title="" fixed left-arrow  @click-left="$router.go(-1)">
       <!-- <van-icon name="ellipsis" slot="right"/> -->
     </van-nav-bar>
     <iframe :src="$route.params.url" frameborder="0"></iframe>
-    <!-- <div class="close-btn">
-      <van-icon name="cross" color="#f8f8f8" @click="$store.commit('GOBACK')"/>
-    </div> -->
   </div>
 </template>
 

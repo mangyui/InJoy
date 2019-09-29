@@ -1,26 +1,26 @@
 <template>
   <div class="bgMax max1100">
-    <van-nav-bar class="litheme" :border="false" :title="gClass.name" fixed left-arrow  @click-left="$store.commit('GOBACK')"></van-nav-bar>
-    <van-index-bar :sticky-offset-top="46">
-      <template v-for="(item, index) in gList">
-        <van-index-anchor :index="index" :key="index"/>
-        <van-cell v-for="(lg, li) in item" :key="li" :title="lg" />
-      </template>
-    </van-index-bar>
+    <van-nav-bar class="litheme" :border="false" :title="gClass.name" fixed left-arrow  @click-left="$router.go(-1)"></van-nav-bar>
+    <div class="my-content-box" @scroll="scroll" ref="content">
+      <van-index-bar>
+        <template v-for="(item, index) in gList">
+          <van-index-anchor :index="index" :key="index"/>
+          <van-cell v-for="(lg, li) in item" :key="li" :title="lg" />
+        </template>
+      </van-index-bar>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import MSTminxin from '@/util/MSTminxin'
 const Letter = require('@/util/chineseFirst.js')
 
-@Component({
-  mixins: [MSTminxin]
-})
+@Component
 export default class GarbageList extends Vue {
   gClass: any = {}
   gList: Array<any> = []
+  scrollTop: number = 0
   getClassAndList () {
     this.$toPost.getClassAndList({ id: this.$route.params.id }).then((res: any) => {
       this.gClass = res.data.gClass
@@ -45,6 +45,17 @@ export default class GarbageList extends Vue {
       }
     }
     return group
+  }
+  scroll () {
+    // @ts-ignore
+    this.scrollTop = this.$refs.content.scrollTop
+  }
+  activated () {
+    // @ts-ignore
+    this.$refs.content.scrollTop = this.scrollTop
+    // if (this.$store.getters.isForward) {
+    //   this.getClassAndList()
+    // }
   }
   created () {
     this.getClassAndList()

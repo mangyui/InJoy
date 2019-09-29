@@ -1,12 +1,12 @@
 <template>
   <div class="bgMax max1100">
     <van-nav-bar class="litheme" :border="false" title="动态圈" fixed right-text="发动态"
-      @click-right="$store.commit('GOLEFT', '/dynamicadd')"
+      @click-right="$router.push('/dynamicadd')"
     >
     </van-nav-bar>
     <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
       <div class="post-box dongtai-box">
-        <div class="post-item" v-for="(item,index) in 15" :key="index"  @click="$store.commit('GOLEFT', '/dynamicdetails/'+index)">
+        <div class="post-item" v-for="(item,index) in 15" :key="index"  @click="$router.push('/dynamicdetails/'+index)">
           <div class="post-user">
             <img src="http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300">
             <div class="post-user-text">

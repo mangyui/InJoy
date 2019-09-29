@@ -1,7 +1,7 @@
 <template>
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" fixed title="" left-arrow
-      @click-left="$store.commit('GOBACK')"></van-nav-bar>
+      @click-left="$router.go(-1)"></van-nav-bar>
       <div class="login-wrap">
         <div class="my-logo">
           <img :src="'./imgs/ico.png'">
@@ -88,7 +88,7 @@ export default class Login extends Vue {
     this.$toPost.loginVCode(this.loginForm).then((res: any) => {
       if (res.data.success) {
         this.$store.commit('initUserInfo', res.data.user)
-        this.$store.commit('GOLEFT', '/')
+        this.$router.replace('/')
       } else {
         this.$toast.fail(res.data.result)
       }

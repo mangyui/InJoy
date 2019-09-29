@@ -1,7 +1,7 @@
 <template>
   <div class="bgWhite max1100">
     <van-nav-bar class="litheme" :border="false" title="发动态" fixed left-arrow right-text="发布"
-      @click-left="$store.commit('GOBACK')"
+      @click-left="$router.go(-1)"
       @click-right="toPublish"
        />
     <van-field

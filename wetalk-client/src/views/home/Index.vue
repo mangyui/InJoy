@@ -20,7 +20,7 @@
           :src="props.active ? './icons/dongtai_a.svg' : './icons/dongtai.svg'"
         >
       </van-tabbar-item>
-      <div class="home-add-icon" @click="$store.commit('GOLEFT', '/postadd')">
+      <div class="home-add-icon" @click="$router.push('/postadd')">
         <van-icon name="plus" />
       </div>
       <van-tabbar-item replace to="/home/message">

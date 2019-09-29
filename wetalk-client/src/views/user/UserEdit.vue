@@ -1,9 +1,9 @@
 <template>
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" fixed title="编辑资料" left-arrow  right-text="保存"
-      @click-left="$store.commit('GOBACK')"
+      @click-left="$router.go(-1)"
       @click-right="saveUser"></van-nav-bar>
-    <div class="my-edit max1100">
+    <div class="my-edit max1100 my-content-box">
       <van-cell-group>
         <van-field
           v-model="user.name"

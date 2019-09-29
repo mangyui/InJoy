@@ -1,9 +1,9 @@
 <template>
   <div class="bgMax max1100">
-    <van-nav-bar class="litheme" :border="false" fixed title="天气" left-arrow @click-left="$store.commit('GOBACK')" >
+    <van-nav-bar class="litheme" :border="false" fixed title="天气" left-arrow @click-left="$router.go(-1)" >
       <van-icon name="hotel-o" slot="right" @click="showArea=true"/>
     </van-nav-bar>
-    <div>
+    <div class="my-content-box">
       <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
         <van-notice-bar v-show="weather.ganmao" :text="weather.ganmao"/>
         <div class="wea-wrap">

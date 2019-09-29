@@ -44,26 +44,31 @@ const router:Router = new Router({
       path: '/home',
       name: 'Home',
       component: Home,
+      meta: { isKeep: true },
       redirect: '/home/lobby',
       children: [
         {
           path: 'lobby',
           name: 'Lobby',
+          meta: { isKeep: true },
           component: () => import('@/views/post/Index.vue')
         },
         {
           path: 'refuseclass',
           name: 'RefuseClass',
+          meta: { isKeep: true },
           component: RefuseClass // () => import('@/views/refuseClass/Index.vue')
         },
         {
           path: 'message',
           name: 'Message',
+          meta: { isKeep: true },
           component: Message // () => import('@/views/mess/Index.vue')
         },
         {
           path: 'usercenter',
           name: 'UserCenter',
+          meta: { isKeep: true },
           component: UserCenter // () => import('@/views/user/UserCenter.vue')
         }
       ]

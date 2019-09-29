@@ -6,36 +6,37 @@
         placeholder="搜索垃圾"
         show-action
         @search="onSearch"
-        @cancel="$store.commit('GOBACK')"
+        @cancel="$router.go(-1)"
       />
     </form>
-    <div v-show="isSearch">
-      <p class="s-text">搜索最热</p>
-      <van-cell-group>
-        <van-cell v-for="(item, index) in refuseMost" :key="index" :title="item.name">
-          <span :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
-        </van-cell>
-      </van-cell-group>
-    </div>
-    <div v-show="!isSearch">
-      <p class="s-text">共匹配到 {{maxNumber}} 项</p>
-      <van-cell-group>
-        <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="getMore"
-        >
-          <van-cell v-for="(item, index) in refuseList" :key="index">
-            <template slot="title">
-              <span class="custom-title" v-html="item.name"></span>
-            </template>
+    <div class="my-content-box">
+      <div v-show="isSearch">
+        <p class="s-text">搜索最热</p>
+        <van-cell-group>
+          <van-cell v-for="(item, index) in refuseMost" :key="index" :title="item.name">
             <span :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
           </van-cell>
-        </van-list>
-      </van-cell-group>
+        </van-cell-group>
+      </div>
+      <div v-show="!isSearch">
+        <p class="s-text">共匹配到 {{maxNumber}} 项</p>
+        <van-cell-group>
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="getMore"
+          >
+            <van-cell v-for="(item, index) in refuseList" :key="index">
+              <template slot="title">
+                <span class="custom-title" v-html="item.name"></span>
+              </template>
+              <span :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
+            </van-cell>
+          </van-list>
+        </van-cell-group>
+      </div>
     </div>
-
   </div>
 </template>
 

@@ -13,7 +13,7 @@
         <template slot="right">
           <van-button square type="danger" text="删除" />
         </template>
-    </van-swipe-cell>
+      </van-swipe-cell>
     </div>
   </div>
 </template>

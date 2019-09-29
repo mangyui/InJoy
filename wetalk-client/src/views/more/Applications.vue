@@ -1,24 +1,26 @@
 <template>
   <div class="bgWhite max1100">
-    <van-nav-bar class="litheme" :border="false" fixed title="用一用" left-arrow @click-left="$store.commit('GOBACK')" ></van-nav-bar>
-    <van-search
-      v-model="text"
-      placeholder="搜索小应用"
-      @search="getSearch"
-    />
-    <div class="list-box">
-      <div class="list-item" v-for="(item, index) in lists" :key="index">
-        <img :src="item.pic">
-        <div class="list-item-left">
-          <b>{{item.title}}</b>
-          <p>{{item.desc}}</p>
+    <van-nav-bar class="litheme" :border="false" fixed title="用一用" left-arrow @click-left="$router.go(-1)" ></van-nav-bar>
+    <div class="my-content-box">
+      <van-search
+        v-model="text"
+        placeholder="搜索小应用"
+        @search="getSearch"
+      />
+      <div class="list-box">
+        <div class="list-item" v-for="(item, index) in lists" :key="index">
+          <img :src="item.pic">
+          <div class="list-item-left">
+            <b>{{item.title}}</b>
+            <p>{{item.desc}}</p>
+          </div>
+          <div class="list-item-right">
+            <van-button size="small" @click="$router.push(item.url)">启动</van-button>
+          </div>
         </div>
-        <div class="list-item-right">
-          <van-button size="small" @click="$store.commit('GOLEFT', item.url)">启动</van-button>
-        </div>
+        <br />
+        <van-divider>敬请期待</van-divider>
       </div>
-      <br />
-      <van-divider>敬请期待</van-divider>
     </div>
   </div>
 </template>

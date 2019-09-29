@@ -1,7 +1,7 @@
 <template>
   <div class="bgWhite max1100">
     <van-nav-bar class="litheme" :border="false" title="评论动态" fixed left-arrow
-      @click-left="$store.commit('GOBACK')"
+      @click-left="$router.go(-1)"
        />
     <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
       <div class="dongtai-box post-box">

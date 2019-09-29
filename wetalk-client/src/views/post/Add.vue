@@ -1,28 +1,30 @@
 <template>
   <div class="bgWhite max1100">
     <van-nav-bar class="litheme" :border="false" title="发帖子" fixed left-arrow right-text="发表"
-      @click-left="$store.commit('GOBACK')"
+      @click-left="$router.go(-1)"
       @click-right="toPublish"
        />
-    <van-field
-      v-model="text"
-      type="textarea"
-      placeholder="请输入内容"
-      rows="6"
-      autosize
-    />
-    <div class="pad15">
-      <van-uploader
-        :preview-size="100"
-        v-model="fileList"
-        multiple
-        :max-count="9"
+    <div class="my-content-box">
+      <van-field
+        v-model="text"
+        type="textarea"
+        placeholder="请输入内容"
+        rows="6"
+        autosize
       />
-    </div>
-    <div class="pad15">
-      <van-cell-group>
-        <van-cell icon="smile-comment" title="添加话题" is-link value="沙雕俱乐部" />
-      </van-cell-group>
+      <div class="pad15">
+        <van-uploader
+          :preview-size="100"
+          v-model="fileList"
+          multiple
+          :max-count="9"
+        />
+      </div>
+      <div class="pad15">
+        <van-cell-group>
+          <van-cell icon="smile-comment" title="添加话题" is-link value="沙雕俱乐部" />
+        </van-cell-group>
+      </div>
     </div>
   </div>
 </template>
