@@ -133,6 +133,7 @@ export default class UserEdit extends Vue {
   getCity () {
     this.$toast.loading({
       mask: true,
+      duration: 0,
       message: '加载中...'
     })
     const geolocation = new this.$win.BMap.Geolocation()

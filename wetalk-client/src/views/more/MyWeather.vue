@@ -60,6 +60,7 @@ export default class MyWeather extends Vue {
     this.isLoading = true
     this.$toast.loading({
       mask: true,
+      duration: 0,
       message: '加载中...'
     })
     mcity = mcity || '北京'

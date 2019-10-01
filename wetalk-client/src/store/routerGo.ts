@@ -1,6 +1,3 @@
-
-import router from '@/router'
-
 export default {
   state: {
     isForward: true // 路由前进

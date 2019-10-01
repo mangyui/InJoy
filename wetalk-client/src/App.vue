@@ -67,19 +67,23 @@ export default Vue.extend({
   right: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.12s ease-out;
+  transition: all .12s ease-in;
   opacity: 1;
 }
 
 .slideleft-enter,
  .slideright-leave-active {
-  opacity: 0;
+  // opacity: 0;
   z-index: 11;
   transform: translate(100%, 0);
 }
-.slideleft-leave-active,
-.slideright-enter {
-  z-index: 9;
-  opacity: 0;
+// .slideleft-leave-active,
+// .slideright-enter {
+//   z-index: 9;
+//   // opacity: 0;
+// }
+
+.slideleft-enter-active{
+  z-index: 20;
 }
 </style>

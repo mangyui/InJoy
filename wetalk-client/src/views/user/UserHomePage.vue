@@ -4,32 +4,30 @@
       <van-icon v-if="$route.params.id==me._id" name="edit" slot="right" @click="$router.push('/UserEdit')"/>
     </van-nav-bar>
     <div class="my-content-box" @scroll="scroll" ref="content">
-      <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
-        <div class="usercenter-top">
-          <div class="user-bg">
-            <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/ico.png')+')'}"></div>
-            <div class="top-mask"></div>
-            <!-- <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon> -->
-          </div>
-          <div class="user-box max1100">
-            <img :src="user.avatar||'./imgs/ico.png'">
-            <div>
-              <b>{{user.name||user.phone}}</b>
-              <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp;{{user.province}}&nbsp;&nbsp; {{user.city}}</p>
-            </div>
+      <div class="usercenter-top">
+        <div class="user-bg">
+          <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/ico.png')+')'}"></div>
+          <div class="top-mask"></div>
+          <!-- <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon> -->
+        </div>
+        <div class="user-box max1100">
+          <img :src="user.avatar||'./imgs/ico.png'">
+          <div>
+            <b>{{user.name||user.phone}}</b>
+            <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp;{{user.province}}&nbsp;&nbsp; {{user.city}}</p>
           </div>
         </div>
-        <div class="max1100">
-          <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
-            <van-tab title="帖子" name="post">
-              <UserPost :user="user"/>
-            </van-tab>
-            <van-tab title="评论" name="comment">
-              <UserComment :user="user"/>
-            </van-tab>
-          </van-tabs>
-        </div>
-      </van-pull-refresh>
+      </div>
+      <div class="max1100">
+        <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
+          <van-tab title="帖子" name="post">
+            <PostList ref="postBox" :user="user" />
+          </van-tab>
+          <van-tab title="评论" name="comment">
+            <UserComment :user="user"/>
+          </van-tab>
+        </van-tabs>
+      </div>
     </div>
   </div>
 </template>
@@ -38,14 +36,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 import User from '@/model/user'
 import Person from '@/util/Person'
-import UserPost from './UserPost.vue'
+import PostList from '@/components/PostList.vue'
 import UserComment from './UserComment.vue'
 
 let persons : Person[] = require('@/util/Persons').persons
 
 @Component({
   components: {
-    UserPost,
+    PostList,
     UserComment
   }
 })
@@ -54,7 +52,6 @@ export default class UserHomePage extends Vue {
   private me: any = this.$store.getters.user
   scrollTop: number = 0
   isLoading: boolean = false
-  isScroll: boolean = false
   active: string = 'post'
   oldActive: string = 'post'
   tabScrollList: any = {
@@ -71,6 +68,7 @@ export default class UserHomePage extends Vue {
         if (res.data._id && this.me._id === res.data._id && this.me !== res.data) { // 此处还得再优化
           this.$store.commit('initUserInfo', res.data)
         }
+        this.childPostList()
       } else {
         this.$notify({ type: 'warning', message: '用户不存在' })
         setTimeout(() => {
@@ -91,6 +89,10 @@ export default class UserHomePage extends Vue {
     }
     this.oldActive = name
   }
+  childPostList () {
+    // @ts-ignore
+    this.$refs.postBox.getPostList()
+  }
   // refreshUser () {
   //   var index = Math.floor(Math.random() * persons.length)
   //   this.$store.commit('updateUserAvatar', persons[index].avatar)
@@ -108,13 +110,6 @@ export default class UserHomePage extends Vue {
     }
   }
   mounted () {
-    window.addEventListener('scroll', (e: any) => {
-      if (e.target.scrollTop > 100) {
-        this.isScroll = true
-      } else {
-        this.isScroll = false
-      }
-    }, true)
   }
   created () {
   }

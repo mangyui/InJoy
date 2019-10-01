@@ -15,7 +15,7 @@
           </div>
           <div class="post-content">
             <p>突然有一天西游记没经费了，于是师徒四人.....</p>
-            <ImgBox :num="index" />
+            <!-- <ImgBox :num="index" /> -->
           </div>
         </div>
       </div>

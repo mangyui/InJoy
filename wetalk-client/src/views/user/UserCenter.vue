@@ -4,17 +4,19 @@
       <van-icon name="setting-o" slot="right"/>
     </van-nav-bar>
     <div class="my-content-box">
-      <div class="find-user max1100 bgtheme" @click="toUserPage">
-        <img :src="user.avatar||'./imgs/ico.png'">
-        <div v-if="user._id">
-          <p>{{user.name||user.phone}} <img class="icon-sex"  :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')"></p>
-          <span>{{user.profile || '这个人超级懒，什么都没留下'}}</span>
-          <van-icon class="me-icon" name="arrow" />
-        </div>
-        <div v-if="!user._id">
-          <p>请先登录</p>
-          <span>未登录不影响使用下面的功能</span>
-          <van-icon class="me-icon" name="arrow" />
+      <div class="bgtheme">
+        <div class="find-user max1100" @click="toUserPage">
+          <img :src="user.avatar||'./imgs/ico.png'">
+          <div v-if="user._id">
+            <p>{{user.name||user.phone}} <img class="icon-sex"  :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')"></p>
+            <span>{{user.profile || '这个人超级懒，什么都没留下'}}</span>
+            <van-icon class="me-icon" name="arrow" />
+          </div>
+          <div v-if="!user._id">
+            <p>请先登录</p>
+            <span>未登录不影响使用下面的功能</span>
+            <van-icon class="me-icon" name="arrow" />
+          </div>
         </div>
       </div>
       <div class="my-info max1100">
@@ -22,16 +24,16 @@
           <van-cell title="动态" is-link icon="./icons/星星.svg" />
         </van-cell-group> -->
         <van-cell-group title="">
-          <van-cell title="天气" is-link icon="./icons/weather.svg" @click="$router.push('/weather')"/>
-          <van-cell title="地图" is-link icon="./icons/map.svg" @click="$router.push('/MyMap')"/>
+          <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' />
+          <van-cell title="地图" is-link icon="./icons/map.svg" to='/MyMap' />
         </van-cell-group>
         <van-cell-group title="">
-          <van-cell title="用一用" is-link icon="./icons/expression.svg" @click="$router.push('/applications')"/>
-          <van-cell title="玩一玩" is-link icon="./icons/game.svg" @click="$router.push('/games')"/>
-          <van-cell title="听一听" is-link icon="./icons/music.svg" @click="$router.push('/music')"/>
+          <van-cell title="用一用" is-link icon="./icons/expression.svg" to='/applications' />
+          <van-cell title="玩一玩" is-link icon="./icons/game.svg" to='/games' />
+          <van-cell title="听一听" is-link icon="./icons/music.svg" to='/music' />
         </van-cell-group>
         <van-cell-group title="">
-          <van-cell title="酷站" is-link icon="./icons/star.svg" @click="$router.push('/other')"/>
+          <van-cell title="酷站" is-link icon="./icons/star.svg" to='/other' />
           <!-- <van-cell title="事务" is-link icon="./icons/list.svg" /> -->
         </van-cell-group>
       </div>

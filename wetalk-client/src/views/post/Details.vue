@@ -1,67 +1,69 @@
 <template>
-  <div class="bgMax max1100">
+  <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" title="帖子详情" fixed left-arrow right-text="评论"
       @click-left="$router.go(-1)"
-      @click-right="$router.push('/postcomment/1')" />
-    <van-pull-refresh class="my-content-box" pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh"  @click.native="isComment=false">
-      <div class="post-box">
-        <div class="post-item">
-          <div class="post-user">
-            <img src="http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300">
-            <div class="post-user-text">
-              <p>沙雕</p>
-              <span>9/13 21:46</span>
+      @click-right="$router.push('/postcomment/'+ $route.params.id)" />
+    <div class="my-content-box">
+      <van-pull-refresh v-if="PostDetails" class="max1100" pulling-text="下拉刷新" v-model="isLoading" @refresh="getPostById"  @click.native="isComment=false">
+        <div class="post-box">
+          <div class="post-item">
+            <div class="post-user" @click="$router.push('/userhomepage/' + PostDetails.user._id)">
+              <img :src="PostDetails.user.avatar || './imgs/ico.png'">
+              <div class="post-user-text">
+                <p>{{PostDetails.user?PostDetails.user.name:'该用户不存在'}}</p>
+                <span>{{PostDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+              </div>
+              <van-button round size="mini" type="info">关注</van-button>
             </div>
-            <van-button round size="mini" type="info">关注</van-button>
-          </div>
-          <div class="post-content">
-            <p>突然有一天西游记没经费了，于是师徒四人.....</p>
-            <ImgBox :num="4" />
-          </div>
-          <br />
-          <div class="post-san">
-            <div><van-icon name="share"/>15</div>
-            <div><van-icon name="comment-o" />15</div>
-            <div><van-icon name="upgrade" />15</div>
-          </div>
-        </div>
-      </div>
-      <div class="post-details-tag">
-        <van-image
-          fit="cover"
-          src="https://img.zcool.cn/community/0104925d750033a801211d539d57f2.jpg@260w_195h_1c_1e_1o_100sh.jpg"
-        />
-        <div class="tag-right">
-            <p># 沙雕俱乐部</p>
-            <span>666 只沙雕</span>
-        </div>
-        <van-icon name="arrow" />
-      </div>
-      <div class="comment-line">评论</div>
-      <div class="comment-box post-box">
-        <div class="post-item" v-for="(item,index) in 15" :key="index">
-          <div class="post-user">
-            <img src="http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300">
-            <div class="post-user-text">
-              <p>沙雕</p>
-              <span>9/13 21:46</span>
+            <div class="post-content">
+              <p>{{PostDetails.content}}</p>
+              <ImgBox v-if="PostDetails.imgList" :imgList="PostDetails.imgList.split(',')"/>
             </div>
-            <div class="comment-right-icon">
-              <van-icon name="upgrade" />
-              <span>8</span>
+            <br />
+            <div class="post-san">
+              <div><van-icon name="share"/>{{PostDetails.count_forward}}</div>
+              <div><van-icon name="comment-o" />{{PostDetails.count_comment}}</div>
+              <div><van-icon name="upgrade" />{{PostDetails.count_agree}}</div>
             </div>
           </div>
-          <div class="post-content">
-            <p>突然有一天西游记没经费了，于是师徒四人.....</p>
-            <ImgBox :num="index" />
+        </div>
+        <div class="post-details-tag">
+          <van-image
+            fit="cover"
+            :src="PostDetails.topic.img||'./imgs/ico.png'"
+          />
+          <div class="tag-right">
+              <p># {{PostDetails.topic.name}}</p>
+              <!-- <span>666 只沙雕</span> -->
           </div>
-          <div class="my-right">
-            <span class="comment-item-btn" @click.stop="isComment=true">评论Ta</span>
+          <van-icon name="arrow" />
+        </div>
+        <div class="comment-line">评论</div>
+        <div class="comment-box post-box">
+          <div class="post-item" v-for="(item,index) in 15" :key="index">
+            <div class="post-user">
+              <img src="http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300">
+              <div class="post-user-text">
+                <p>沙雕</p>
+                <span>9/13 21:46</span>
+              </div>
+              <div class="comment-right-icon">
+                <van-icon name="upgrade" />
+                <span>8</span>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>突然有一天西游记没经费了，于是师徒四人.....</p>
+              <!-- <ImgBox :num="index" /> -->
+            </div>
+            <div class="my-right">
+              <span class="comment-item-btn" @click.stop="isComment=true">评论Ta</span>
+            </div>
           </div>
         </div>
-      </div>
-    </van-pull-refresh>
-    <InputBox v-if="isComment" @toSend="toSend"/>
+      </van-pull-refresh>
+      <InputBox v-if="isComment" @toSend="toSend"/>
+    </div>
   </div>
 </template>
 
@@ -79,14 +81,24 @@ import InputBox from '@/components/InputBox.vue'
 export default class PostDetails extends Vue {
   isLoading: boolean = false
   isComment: boolean = false
-  onRefresh () {
-    setTimeout(() => {
-      this.$toast('刷新成功')
+  PostDetails: any = null
+  getPostById () {
+    this.$toPost.getPostById({ id: this.$route.params.id }).then((res: any) => {
+      this.PostDetails = res.data
       this.isLoading = false
-    }, 1000)
+    }).catch((err: any) => {
+      console.log(err)
+    })
   }
   toSend () {
-
+  }
+  activated () {
+    if (this.$store.getters.isForward) {
+      this.getPostById()
+    }
+  }
+  created () {
+    // this.getPostById()
   }
 }
 </script>

@@ -5,7 +5,7 @@
     </keep-alive>
     <van-tabbar v-model="isActive" route @change="tabbarChange">
       <van-tabbar-item replace to="/home/lobby" @click="toTop(0)">
-        <span>大厅</span>
+        <span>乐贴</span>
         <img
           slot="icon"
           slot-scope="props"
@@ -24,7 +24,7 @@
         <van-icon name="plus" />
       </div>
       <van-tabbar-item replace to="/home/message">
-        <span>消息</span>
+        <span>乐聊</span>
         <img
           slot="icon"
           slot-scope="props"
@@ -32,7 +32,7 @@
         >
       </van-tabbar-item>
       <van-tabbar-item replace to="/home/usercenter">
-        <span>我的</span>
+        <span>乐中</span>
         <img
           slot="icon"
           slot-scope="props"

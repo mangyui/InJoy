@@ -11,6 +11,7 @@ import Search from '@/views/home/Search.vue'
 import PostDetails from '@/views/post/Details.vue'
 import PostComment from '@/views/post/Comment.vue'
 import PostAdd from '@/views/post/Add.vue'
+import Topic from '@/views/post/Topic.vue'
 
 import GarbageImg from '@/views/refuseClass/Image.vue'
 import GarbageList from '@/views/refuseClass/List.vue'
@@ -92,6 +93,11 @@ const router:Router = new Router({
       path: '/postadd',
       name: 'PostAdd',
       component: PostAdd // () => import('@/views/post/Add.vue')
+    },
+    {
+      path: '/topic',
+      name: 'Topic',
+      component: Topic // () => import('@/views/post/Topic.vue')
     },
     {
       path: '/garbageimg',

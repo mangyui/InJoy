@@ -4,7 +4,7 @@ import qs from 'qs'
 // import md5 from 'js-md5'
 // import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://47.106.130.141:9612' // api的base_url
 // export const payUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141' : 'http://122.237.106.250:8080'
 
 // eslint-disable-next-line
@@ -73,6 +73,38 @@ const toPost = {
   updateUser (datas) {
     return request({
       url: baseUrl + '/user/update',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取用户列表
+  getUserList (datas) {
+    return request({
+      url: baseUrl + '/user/getUserList',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 发表帖子
+  addPost (datas) {
+    return request({
+      url: baseUrl + '/post/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取图文列表
+  getPostList (datas) {
+    return request({
+      url: baseUrl + '/post/getPostList',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取图文详情
+  getPostById (datas) {
+    return request({
+      url: baseUrl + '/post/getById',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

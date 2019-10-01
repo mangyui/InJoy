@@ -40,13 +40,13 @@ export default class PrivateChat extends Vue {
       background-color: #ebe9ff;
     }
     >img{
-      width: 60px;
-      height: 60px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
     }
     .mess-right-l{
       flex-grow: 1;
-      padding: 10px 0px 17px 15px;
+      padding: 8px 0px 13px 15px;
       border-bottom: 1px solid #f9f9f9;
       p{
         overflow: hidden;

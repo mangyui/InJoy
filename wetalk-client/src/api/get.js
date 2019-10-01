@@ -51,6 +51,13 @@ const toGet = {
       method: 'get',
       data: datas
     })
+  },
+  getTopic (datas) {
+    return request({
+      url: baseUrl + '/topic/get',
+      method: 'get',
+      data: datas
+    })
   }
 }
 

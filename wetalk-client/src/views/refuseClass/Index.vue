@@ -1,5 +1,5 @@
 <template>
-  <div class="bgWhite max1100">
+  <div class="bgWhite">
     <van-nav-bar class="litheme" :border="false" title="垃圾分类" fixed />
     <div class="my-content-box">
       <div class="refuse-top-wrap">
@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="refuse-class-box">
+      <div class="refuse-class-box max1100">
         <div class="refuse-class-item"
           :style="{background: 'linear-gradient(to bottom right, '+ item.color+', '+item.color+')'}"
           v-for="(item, index) in classList"

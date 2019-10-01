@@ -1,13 +1,18 @@
 <template>
-  <div class="bgMax max1100">
+  <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" :title="gClass.name" fixed left-arrow  @click-left="$router.go(-1)"></van-nav-bar>
     <div class="my-content-box" @scroll="scroll" ref="content">
-      <van-index-bar>
-        <template v-for="(item, index) in gList">
-          <van-index-anchor :index="index" :key="index"/>
-          <van-cell v-for="(lg, li) in item" :key="li" :title="lg" />
-        </template>
-      </van-index-bar>
+      <div class="max1100">
+        <div v-show="!isOver" class="skeleton-box">
+          <van-skeleton v-for="(item, index) in 10" :key="index" title :row="1" />
+        </div>
+        <van-index-bar>
+          <template v-for="(item, index) in gList">
+            <van-index-anchor :index="index" :key="index"/>
+            <van-cell v-for="(lg, li) in item" :key="li" :title="lg" />
+          </template>
+        </van-index-bar>
+      </div>
     </div>
   </div>
 </template>
@@ -18,13 +23,16 @@ const Letter = require('@/util/chineseFirst.js')
 
 @Component
 export default class GarbageList extends Vue {
+  classId: string = ''
+  isOver: boolean = false
   gClass: any = {}
-  gList: Array<any> = []
+  gList: any = {}
   scrollTop: number = 0
   getClassAndList () {
     this.$toPost.getClassAndList({ id: this.$route.params.id }).then((res: any) => {
       this.gClass = res.data.gClass
       this.gList = this.toGroup(res.data.gList)
+      this.isOver = true
       // console.log(this.gList)
     }).catch((err: any) => {
       console.log(err)
@@ -53,8 +61,10 @@ export default class GarbageList extends Vue {
   activated () {
     // @ts-ignore
     this.$refs.content.scrollTop = this.scrollTop
-    // if (this.$store.getters.isForward) {
+    // console.log(this.classId, this.$route.params.id)
+    // if (this.classId !== this.$route.params.id) {
     //   this.getClassAndList()
+    //   this.classId = this.$route.params.id
     // }
   }
   created () {
@@ -70,5 +80,14 @@ export default class GarbageList extends Vue {
 }
 .van-index-bar{
   background: #f8f8f8;
+}
+.skeleton-box{
+  background: #fff;
+  padding: 10px 0;
+  max-height: 100%;
+  overflow: hidden;
+  .van-skeleton{
+    margin-bottom: 10px;
+  }
 }
 </style>

@@ -41,6 +41,7 @@ export default class Music extends Vue {
     if (this.text.trim() !== '') {
       this.$toast.loading({
         mask: true,
+        duration: 0,
         message: '加载中...'
       })
       this.$toGet.getMusics({ name: this.text })
@@ -72,7 +73,7 @@ export default class Music extends Vue {
 
 <style lang="less" scoped>
 @import '../../styles/listitem.less';
-.list-box .list-item .list-item-left img{
+.list-box .list-item  img{
   border-radius: 50%;
 }
 </style>

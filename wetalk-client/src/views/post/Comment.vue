@@ -1,42 +1,45 @@
 <template>
-  <div class="bgWhite max1100">
+  <div class="bgWhite">
     <van-nav-bar class="litheme" :border="false" title="评论帖子" fixed left-arrow
       @click-left="$router.go(-1)"
        />
-    <van-pull-refresh class="my-content-box" pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
-      <div class="post-box">
-        <div class="post-item">
-          <div class="post-user">
-            <img src="http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300">
-            <div class="post-user-text">
-              <p>沙雕</p>
-              <span>9/13 21:46</span>
+    <div class="my-content-box">
+      <van-pull-refresh class="max1100" pulling-text="下拉刷新" v-model="isLoading" @refresh="getPostById">
+        <div class="post-box">
+          <div class="post-item">
+            <div class="post-user" @click="$router.push('/userhomepage/' + PostDetails.user._id)">
+              <img :src="PostDetails.user.avatar || './imgs/ico.png'">
+              <div class="post-user-text">
+                <p>{{PostDetails.user?PostDetails.user.name:'该用户不存在'}}</p>
+                <span>{{PostDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+              </div>
+              <van-button round size="mini" type="info">关注</van-button>
+            </div>
+            <div class="post-content">
+              <p>{{PostDetails.content}}</p>
+              <ImgBox v-if="PostDetails.imgList" :imgList="PostDetails.imgList.split(',')"/>
             </div>
           </div>
-          <div class="post-content">
-            <p>突然有一天西游记没经费了，于是师徒四人.....</p>
-            <ImgBox :num="4" />
-          </div>
         </div>
-      </div>
-    </van-pull-refresh>
-    <div class="comment-line">评论TA</div>
-    <van-field
-      v-model="text"
-      type="textarea"
-      placeholder="请输入评论内容"
-      rows="3"
-      autosize
-    />
-    <div class="pad15">
-      <van-uploader
-        v-model="fileList"
-        multiple
-        :max-count="9"
+      </van-pull-refresh>
+      <div class="comment-line">评论TA</div>
+      <van-field
+        v-model="text"
+        type="textarea"
+        placeholder="请输入评论内容"
+        rows="3"
+        autosize
       />
+      <div class="pad15">
+        <van-uploader
+          v-model="fileList"
+          multiple
+          :max-count="9"
+        />
+      </div>
+      <van-button class="max-btn" type="info" @click="toPublish">发表评论</van-button>
+      <br />
     </div>
-    <van-button class="max-btn" type="info" @click="toPublish">发表评论</van-button>
-    <br />
   </div>
 </template>
 
@@ -53,11 +56,14 @@ export default class PostComment extends Vue {
   text: string =''
   fileList: Array<any> = []
   isLoading: boolean = false
-  onRefresh () {
-    setTimeout(() => {
-      this.$toast('刷新成功')
+  PostDetails: any ={}
+  getPostById () {
+    this.$toPost.getPostById({ id: this.$route.params.id }).then((res: any) => {
+      this.PostDetails = res.data
       this.isLoading = false
-    }, 1000)
+    }).catch((err: any) => {
+      console.log(err)
+    })
   }
   toPublish () {
     if (this.text.trim() === '') {
@@ -74,7 +80,13 @@ export default class PostComment extends Vue {
       // on cancel
     })
   }
+  activated () {
+    if (this.$store.getters.isForward) {
+      this.getPostById()
+    }
+  }
   created () {
+    // this.getPostById()
   }
 }
 </script>

@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+const tools = require('@/util/tools.js')
 
 @Component({
 })
@@ -41,7 +42,9 @@ export default class GarbageImg extends Vue {
   imgFlie: any = ''
   refuseList: Array<any> = []
   readImg (file: any) {
-    this.contentImg = file.content
+    tools.dealImage(file.content, 500, (newBase64: any) => {
+      this.contentImg = newBase64
+    })
     this.imgFlie = file.file
   }
   scanGarbage () {
@@ -62,19 +65,26 @@ export default class GarbageImg extends Vue {
     })
   }
   cameraTakePicture () {
-    // if (navigator.camera) {
-    //   navigator.camera.getPicture(this.onSuccess, this.onFail, {
-    //     quality: 50,
-    //     destinationType: Camera.DestinationType.DATA_URL,//eslint-disable-line
-    //     encodingType: Camera.EncodingType.JPEG,//eslint-disable-line
-    //     sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
-    //   })
-    // } else {
-    this.$toast('该设备不支持打开相机！')
-    // }
+    // @ts-ignore
+    if (navigator.camera) {
+      // @ts-ignore
+      navigator.camera.getPicture(this.onSuccess, this.onFail, {
+        quality: 50,
+        // @ts-ignore
+        destinationType: Camera.DestinationType.DATA_URL,//eslint-disable-line
+        // @ts-ignore
+        encodingType: Camera.EncodingType.JPEG,//eslint-disable-line
+        // @ts-ignore
+        sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
+      })
+    } else {
+      this.$toast('该设备不支持打开相机！')
+    }
   }
   onSuccess (imageURI: any) {
-    this.contentImg = imageURI
+    tools.dealImage(imageURI, 500, (newBase64: any) => {
+      this.contentImg = newBase64
+    })
   }
   onFail (mess: any) {
     console.log(mess)

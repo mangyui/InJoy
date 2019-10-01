@@ -20,16 +20,16 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class ImgBox extends Vue {
-  @Prop() num!: number
+  @Prop() imgList!: Array<any>
+  // @Prop() num!: number
   showImg: boolean = false
-  imgList: Array<any> = []
   created () {
-    for (let i = 0; i < this.num; i++) {
-      this.imgList.push('https://img.zcool.cn/community/01ad565d4e60c3a8012187f462bf0e.jpg@1280w_1l_2o_100sh.jpg')
-    }
-    if (this.imgList.length > 9) {
-      this.imgList.splice(9)
-    }
+    // for (let i = 0; i < this.num; i++) {
+    //   this.imgList.push('https://img.zcool.cn/community/01ad565d4e60c3a8012187f462bf0e.jpg@1280w_1l_2o_100sh.jpg')
+    // }
+    // if (this.imgList.length > 9) {
+    //   this.imgList.splice(9)
+    // }
   }
   toShowImg (index: number) {
     this.$ImagePreview({

@@ -92,6 +92,7 @@ export default class MyMap extends Vue {
   mounted () {
     this.$toast.loading({
       mask: true,
+      duration: 0,
       message: '加载中...'
     })
     this.BMap = this.$win.BMap

@@ -126,6 +126,7 @@ export default class Login extends Vue {
   }
   input{
     flex-grow: 1;
+    width: 0;
     background: transparent;
     border: 0;
     font-size: 15px;

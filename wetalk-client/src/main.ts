@@ -11,6 +11,7 @@ import './guard.ts'
 
 import './api/get.js'
 import './api/post.js'
+import './api/upload.js'
 
 import { Toast, Notify } from 'vant'
 
@@ -27,6 +28,7 @@ declare module 'vue/types/vue' {
     $notify: Notify
     $toGet: any
     $toPost: any
+    $toUpload: any
     $win: any
     $ImagePreview: any
     $navigation: any
@@ -42,5 +44,6 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+// @ts-ignore
 //   window.navigator.splashscreen.hide()
 // }, false)
