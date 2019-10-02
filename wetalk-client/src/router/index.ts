@@ -170,7 +170,7 @@ const router:Router = new Router({
       component: Other // () => import('@/views/more/Other.vue')
     },
     {
-      path: '/web/:url',
+      path: '/web',
       name: 'Web',
       component: Web // () => import('@/views/web/Index.vue')
     },

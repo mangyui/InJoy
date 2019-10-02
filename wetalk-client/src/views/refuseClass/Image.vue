@@ -12,7 +12,11 @@
       <div v-show="refuseList[0]">
         <div>
           <van-cell-group>
-            <van-cell v-for="(item, index) in refuseList" :key="index" :title="item.keyword" :is-link="item.classId?false:true">
+            <van-cell
+              v-for="(item, index) in refuseList"
+              :key="index" :title="item.keyword"
+              :is-link="item.classId?false:true"
+              @click="$router.push('/refusesearch?text=' + item.keyword)">
               <span v-if="item.classId" :style="{background: item.classId.color+'22', color: item.classId.color }" class="class-tag" slot="default">{{item.classId.name}}</span>
             </van-cell>
           </van-cell-group>
@@ -82,8 +86,14 @@ export default class GarbageImg extends Vue {
     }
   }
   onSuccess (imageURI: any) {
-    tools.dealImage(imageURI, 500, (newBase64: any) => {
+    this.$toast.loading({
+      mask: true,
+      duration: 0,
+      message: '上传图片中...'
+    })
+    tools.dealImage('data:image/jpeg;base64,' + imageURI, 500, (newBase64: any) => {
       this.contentImg = newBase64
+      this.$toast.clear()
     })
   }
   onFail (mess: any) {

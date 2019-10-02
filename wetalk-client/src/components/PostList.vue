@@ -1,6 +1,6 @@
 <template>
   <div class="my-content-box" @scroll="scroll" ref="content">
-    <van-pull-refresh class="max1100" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostList">
+    <van-pull-refresh class="max1100 white-wrap" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostList">
       <div class="post-box">
         <van-list
             v-model="loading"
@@ -9,11 +9,11 @@
             @load="getMore"
           >
           <div class="post-item" v-for="(item,index) in postList" :key="index" @click="$router.push('/postdetails/'+item._id)">
-            <div class="post-user" @click.stop="$router.push('/userhomepage/' + item.user._id)">
-              <img :src="item.avatar || './imgs/ico.png'">
+            <div class="post-user">
+              <img :src="item.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="post-user-text">
-                <p>{{item.user.name}}</p>
-                <span>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
+                <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
               </div>
             </div>
             <div class="post-content">
@@ -22,7 +22,7 @@
             </div>
             <b v-if="item.topic" class="post-tag">
               <div>
-                <span>#</span><p>{{item.topic.name}}</p>
+                <span>#</span><p>{{item.topic.name}}</p><span>#</span>
               </div>
             </b>
             <div class="post-san">
@@ -96,6 +96,7 @@ export default class PostList extends Vue {
       }
     }).catch((err: any) => {
       console.log(err)
+      this.loading = false
     })
   }
   scroll () {

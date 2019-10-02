@@ -6,8 +6,9 @@
         placeholder="搜索垃圾"
         show-action
         @search="onSearch"
-        @cancel="$router.go(-1)"
-      />
+      >
+        <div slot="action" @click="$router.go(-1)">返回</div>
+      </van-search>
     </form>
     <div class="my-content-box">
       <div class="max1100">
@@ -49,7 +50,7 @@ import MSTminxin from '@/util/MSTminxin'
 @Component({
   mixins: [MSTminxin]
 })
-export default class Search extends Vue {
+export default class GarbageSearch extends Vue {
   loading: boolean = false
   finished: boolean = false
   text: string = ''
@@ -67,7 +68,7 @@ export default class Search extends Vue {
     if (this.text.trim() !== '') {
       this.refuseList = []
       this.finished = false
-      this.getData.name = this.text
+      this.getData.name = this.text.trim()
       this.getData.page = 1
       this.$toast.loading({
         mask: true,
@@ -119,6 +120,12 @@ export default class Search extends Vue {
     }).catch((err: any) => {
       console.log(err)
     })
+  }
+  activated () {
+    if (this.$route.query.text && this.$route.query.text !== this.text) {
+      this.text = this.$route.query.text.toString()
+      this.onSearch()
+    }
   }
   created () {
     this.getMost()

@@ -24,7 +24,7 @@ import privateChat from './PrivateChat.vue'
 })
 export default class Message extends Vue {
   scrollTop: number = 0
-  active: string = 'm1'
+  active: string = 'm2'
   created () {
   }
   scroll () {

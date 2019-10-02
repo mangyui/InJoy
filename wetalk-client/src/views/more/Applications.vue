@@ -15,7 +15,7 @@
             <p>{{item.desc}}</p>
           </div>
           <div class="list-item-right">
-            <van-button size="small" @click="$router.push(item.url)">启动</van-button>
+            <van-button size="small" @click="toStart(item)">启动</van-button>
           </div>
         </div>
         <br />
@@ -37,18 +37,20 @@ export default class Applications extends Vue {
     url: '/applications/base64'
   }, {
     title: '文字识别',
-    pic: 'http://www.haoapp.mobi/upload/2017/07/8c38a552-3f18-4642-8df5-80a8d0dbb7b5.jpg',
+    pic: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570016680280&di=4a93a34a2481e02ae54c92e69d83f6b5&imgtype=0&src=http%3A%2F%2Fimg.lenovomm.com%2Fs3%2Fimg%2Ficon%2Fapp%2Fapp-img-lestore%2F5349-2018-12-24053741-1545644261811.png',
     desc: '在线图像文字识别',
-    url: {
-      name: 'Web',
-      params: {
-        url: 'http://47.106.130.141:9530/#/'
-      }
-    }
+    otherWeb: 'http://47.106.130.141:9530/#/'
   }]
   text: string = ''
   getSearch () {
-
+  }
+  toStart (item: any) {
+    if (item.url) {
+      this.$router.push(item.url)
+    } else if (item.otherWeb) {
+      this.$store.commit('SET_OTHER_URL', item.otherWeb)
+      this.$router.push('/web')
+    }
   }
   created () {
   }

@@ -53,8 +53,8 @@ export default class Other extends Vue {
     url: 'https://fanyi.sogou.com/'
   }, {
     title: '漫画斗破',
-    pic: 'https://www.zymk.cn/static/images/default/logo.png',
-    url: 'https://m.zymk.cn/1/'
+    pic: 'https://resource.mhxk.com/shenmanhua_pc/static/images/comm/logo-read-header.png',
+    url: 'https://m.taomanhua.com/doupocangqiong/'
   }]
   text: string = ''
   toIndex (index: number) {

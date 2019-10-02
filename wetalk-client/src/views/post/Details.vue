@@ -4,65 +4,72 @@
       @click-left="$router.go(-1)"
       @click-right="$router.push('/postcomment/'+ $route.params.id)" />
     <div class="my-content-box">
-      <van-pull-refresh v-if="PostDetails" class="max1100" pulling-text="下拉刷新" v-model="isLoading" @refresh="getPostById"  @click.native="isComment=false">
+      <van-pull-refresh v-if="postDetails" class="max1100" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostById"  @click.native="isComment=false">
         <div class="post-box">
           <div class="post-item">
-            <div class="post-user" @click="$router.push('/userhomepage/' + PostDetails.user._id)">
-              <img :src="PostDetails.user.avatar || './imgs/ico.png'">
+            <div class="post-user">
+              <img :src="postDetails.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">
               <div class="post-user-text">
-                <p>{{PostDetails.user?PostDetails.user.name:'该用户不存在'}}</p>
-                <span>{{PostDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                <b @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">{{postDetails.user?postDetails.user.name:'该用户不存在'}}</b>
+                <p>{{postDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
               </div>
               <van-button round size="mini" type="info">关注</van-button>
             </div>
             <div class="post-content">
-              <p>{{PostDetails.content}}</p>
-              <ImgBox v-if="PostDetails.imgList" :imgList="PostDetails.imgList.split(',')"/>
+              <p class="my-max-height">{{postDetails.content}}</p>
+              <ImgBox v-if="postDetails.imgList" :imgList="postDetails.imgList.split(',')"/>
             </div>
             <br />
             <div class="post-san">
-              <div><van-icon name="share"/>{{PostDetails.count_forward}}</div>
-              <div><van-icon name="comment-o" />{{PostDetails.count_comment}}</div>
-              <div><van-icon name="upgrade" />{{PostDetails.count_agree}}</div>
+              <div><van-icon name="share"/>{{postDetails.count_forward}}</div>
+              <div><van-icon name="comment-o" />{{postDetails.count_comment}}</div>
+              <div><van-icon name="upgrade" />{{postDetails.count_agree}}</div>
             </div>
           </div>
         </div>
         <div class="post-details-tag">
           <van-image
             fit="cover"
-            :src="PostDetails.topic.img||'./imgs/ico.png'"
+            :src="postDetails.topic.img||'./imgs/ico.png'"
           />
           <div class="tag-right">
-              <p># {{PostDetails.topic.name}}</p>
+              <p># {{postDetails.topic.name}} #</p>
               <!-- <span>666 只沙雕</span> -->
           </div>
           <van-icon name="arrow" />
         </div>
         <div class="comment-line">评论</div>
-        <div class="comment-box post-box">
-          <div class="post-item" v-for="(item,index) in 15" :key="index">
-            <div class="post-user">
-              <img src="http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300">
-              <div class="post-user-text">
-                <p>沙雕</p>
-                <span>9/13 21:46</span>
+        <div class="comment-box post-box white-wrap">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            :finished-text="commentList[0]?'没有更多啦~':''"
+            @load="getMore"
+          >
+            <div class="post-item" v-for="(item,index) in commentList" :key="index">
+              <div class="post-user">
+                <img :src="item.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
+                <div class="post-user-text">
+                  <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
+                  <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
+                </div>
+                <div class="comment-right-icon">
+                  <van-icon name="upgrade" />
+                  <span>{{item.count_agree}}</span>
+                </div>
               </div>
-              <div class="comment-right-icon">
-                <van-icon name="upgrade" />
-                <span>8</span>
+              <div class="post-content">
+                <p>{{item.content}}</p>
+                <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
+              </div>
+              <div class="my-right">
+                <span class="comment-item-btn" @click.stop="replyComment(item)">评论Ta</span>
               </div>
             </div>
-            <div class="post-content">
-              <p>突然有一天西游记没经费了，于是师徒四人.....</p>
-              <!-- <ImgBox :num="index" /> -->
-            </div>
-            <div class="my-right">
-              <span class="comment-item-btn" @click.stop="isComment=true">评论Ta</span>
-            </div>
-          </div>
+          </van-list>
         </div>
       </van-pull-refresh>
-      <InputBox v-if="isComment" @toSend="toSend"/>
+      <InputBox v-if="isComment" :replyName="commentItem.user.name" @toSend="toSend"/>
     </div>
   </div>
 </template>
@@ -79,26 +86,83 @@ import InputBox from '@/components/InputBox.vue'
   }
 })
 export default class PostDetails extends Vue {
-  isLoading: boolean = false
+  isRefresh: boolean = false
   isComment: boolean = false
-  PostDetails: any = null
+  commentItem: any = {}
+  loading: boolean = false
+  finished: boolean = false
+  postDetails: any = null
+  commentList: Array<any> = []
+  getData: any = {
+    page: 1,
+    number: 20
+  }
   getPostById () {
     this.$toPost.getPostById({ id: this.$route.params.id }).then((res: any) => {
-      this.PostDetails = res.data
-      this.isLoading = false
+      if (res.data._id) {
+        this.postDetails = res.data
+        this.getfComments()
+      } else {
+        this.$notify({ type: 'warning', message: '帖子不存在' })
+        setTimeout(() => {
+          this.$router.go(-1)
+        }, 200)
+      }
+      this.isRefresh = false
+    }).catch((err: any) => {
+      console.log(err)
+      this.isRefresh = false
+    })
+  }
+  getfComments () {
+    this.commentList = []
+    this.getData.page = 1
+    this.getData.post = this.$route.params.id
+    this.$toPost.getfComments(this.getData).then((res: any) => {
+      res.data.pop()
+      this.commentList = res.data
+      if (res.data.length < this.getData.number) {
+        this.finished = true
+      } else {
+        this.finished = false
+      }
     }).catch((err: any) => {
       console.log(err)
     })
   }
-  toSend () {
+  getMore () {
+    if (!this.commentList[0]) {
+      this.loading = false
+      return
+    }
+    this.getData.page += 1
+    this.$toPost.getfComments(this.getData).then((res: any) => {
+      res.data.pop()
+      this.commentList = this.commentList.concat(res.data)
+      this.loading = false
+      if (res.data.length < this.getData.number) {
+        this.finished = true
+      }
+    }).catch((err: any) => {
+      console.log(err)
+      this.loading = false
+    })
   }
-  activated () {
-    if (this.$store.getters.isForward) {
-      this.getPostById()
+  replyComment (item: any) {
+    if (item._id) {
+      this.commentItem = item
+      this.isComment = true
     }
   }
+  toSend (sendText: string): void {
+  }
+  activated () {
+    // if (this.$store.getters.isForward) {
+    //   this.getPostById()
+    // }
+  }
   created () {
-    // this.getPostById()
+    this.getPostById()
   }
 }
 </script>
@@ -111,8 +175,8 @@ export default class PostDetails extends Vue {
   padding: 10px 15px;
   align-items: center;
   .van-image{
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     /deep/ img {
       border-radius: 5px;
     }

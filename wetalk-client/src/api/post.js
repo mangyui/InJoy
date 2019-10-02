@@ -38,6 +38,7 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
+  // 垃圾识别
   garbageImg (datas) {
     return request({
       url: 'http://47.106.130.141:9610/retrieval',
@@ -105,6 +106,22 @@ const toPost = {
   getPostById (datas) {
     return request({
       url: baseUrl + '/post/getById',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 评论帖子
+  addfComment (datas) {
+    return request({
+      url: baseUrl + '/fComment/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 根据postid或userid分页get
+  getfComments (datas) {
+    return request({
+      url: baseUrl + '/fComment/getList',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

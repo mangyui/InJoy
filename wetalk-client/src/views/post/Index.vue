@@ -1,5 +1,5 @@
 <template>
-  <div class="bgWhite">
+  <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" title="大厅" fixed>
       <van-icon name="search" slot="right"  @click="$router.push('/search')"/>
     </van-nav-bar>

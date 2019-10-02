@@ -84,6 +84,8 @@ export default class PostAdd extends Vue {
       this.fileList = []
       this.imgList = []
       this.$toast.clear()
+      this.$toast('发表成功！')
+      this.$router.go(-1)
     }).catch((err: any) => {
       console.log(err)
       this.$toast.clear()

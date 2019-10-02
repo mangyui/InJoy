@@ -3,26 +3,23 @@
     <van-nav-bar class="litheme" :border="false" title="" fixed left-arrow  @click-left="$router.go(-1)">
       <!-- <van-icon name="ellipsis" slot="right"/> -->
     </van-nav-bar>
-    <iframe :src="$route.params.url" frameborder="0"></iframe>
+    <iframe :src="$store.getters.otherWeb" frameborder="0"></iframe>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-@Component({
-  beforeRouteEnter (to: any, from: any, next: any) {
-    next((vm: any) => {
-      // 通过 `vm` 访问组件实例,将值传入oldUrl
-      vm.oldUrl = from.path
-    })
-  }
-})
-export default class Applications extends Vue {
+@Component
+export default class WebView extends Vue {
   text: string = ''
-  oldUrl: string = '/'
   created () {
-
+    if (!this.$store.getters.otherWeb || this.$store.getters.otherWeb === '') {
+      this.$notify({ type: 'warning', message: '网址错误' })
+      setTimeout(() => {
+        this.$router.go(-1)
+      }, 200)
+    }
   }
 }
 </script>

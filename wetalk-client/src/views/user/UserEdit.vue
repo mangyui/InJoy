@@ -4,6 +4,18 @@
       @click-left="$router.go(-1)"
       @click-right="saveUser"></van-nav-bar>
     <div class="my-edit max1100 my-content-box">
+      <div class="my-avatar-box">
+        <van-uploader
+          :after-read="getAvatar"
+          :max-count="1"
+        >
+        <van-image
+          fit="contain"
+          :src="avatarFile.contentImg||user.avatar||'./imgs/ico.png'"
+        />
+        </van-uploader>
+        <p>手机号：{{user.phone}}</p>
+      </div>
       <van-cell-group>
         <van-field
           v-model="user.name"
@@ -85,6 +97,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import User from '@/model/user'
 import { areaList } from '@/util/Area.ts'
+const tools = require('@/util/tools.js')
 
 @Component
 export default class UserEdit extends Vue {
@@ -96,17 +109,39 @@ export default class UserEdit extends Vue {
   currDate: any = new Date()
   maxDate: any = new Date()
   minDate: any = new Date(1900, 10, 1)
-  beforeDestroy () {
-    this.$store.commit('initUserInfo', this.user)
+  avatarFile: any = {
+    contentImg: '',
+    imgFlie: ''
+  }
+  getAvatar (file: any) {
+    tools.dealImage(file.content, 500, (newBase64: any) => {
+      this.avatarFile.contentImg = newBase64
+    })
+    this.avatarFile.imgFlie = file.file
+    var data = new FormData()
+    data.append('myimg', file.file)
+    this.$toUpload.uploadImg(data).then((res: any) => {
+      this.avatarFile.contentImg = res.data
+    }).catch((err: any) => {
+      console.log(err)
+      this.avatarFile.contentImg = ''
+      this.$toast.fail('图片上传失败')
+    })
   }
   saveUser () {
-    let data = this.user
+    if (this.user.name.trim() === '') {
+      this.$toast('昵称不能为空')
+      return
+    }
+    if (this.avatarFile.contentImg !== '') {
+      this.user.avatar = this.avatarFile.contentImg
+    }
     this.$toPost.updateUser(this.user).then((res: any) => {
       this.$store.commit('initUserInfo', this.user)
+      this.$toast('保存成功')
     }).catch((err: any) => {
       console.log(err)
     })
-    console.log(this.$store.getters.user)
   }
   formatter (type: any, value: any) {
     if (type === 'year') {
@@ -152,3 +187,22 @@ export default class UserEdit extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.my-avatar-box{
+  padding: 25px 15px;
+  background: #fff;
+  text-align: center;
+  /deep/ img{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #f3f3f3;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2)
+  }
+  p{
+    margin-top: 15px;
+    color: #777;
+  }
+}
+</style>

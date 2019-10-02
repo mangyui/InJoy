@@ -14,6 +14,9 @@ export default {
       localStorage.setItem('user', JSON.stringify(state.user))
     },
     initUserInfo (state: any, user: User) {
+      if (!user.name || user.name.trim() === '') {
+        user.name = user.phone
+      }
       state.user = user
       localStorage.setItem('user', JSON.stringify(state.user))
     },

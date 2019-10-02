@@ -6,7 +6,7 @@
       </navigation>
     </transition> -->
     <transition :name="transitionName">
-      <keep-alive exclude="WorldRoom,MyMap,UserEdit,GarbageList">
+      <keep-alive exclude="WorldRoom,MyMap,UserEdit,GarbageList,PostDetails,WebView">
         <router-view class="Router"/>
       </keep-alive>
     </transition>
@@ -67,13 +67,13 @@ export default Vue.extend({
   right: 0;
   width: 100%;
   height: 100%;
-  transition: all .12s ease-in;
+  transition: all .15s ease-in;
   opacity: 1;
 }
 
 .slideleft-enter,
  .slideright-leave-active {
-  // opacity: 0;
+  opacity: 0.3;
   z-index: 11;
   transform: translate(100%, 0);
 }
@@ -85,5 +85,6 @@ export default Vue.extend({
 
 .slideleft-enter-active{
   z-index: 20;
+  // opacity: 0.5;
 }
 </style>

@@ -8,7 +8,6 @@
         <div class="user-bg">
           <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/ico.png')+')'}"></div>
           <div class="top-mask"></div>
-          <!-- <van-icon class="re-btn" name="replay" size="26px" @click="refreshUser"></van-icon> -->
         </div>
         <div class="user-box max1100">
           <img :src="user.avatar||'./imgs/ico.png'">
@@ -24,7 +23,7 @@
             <PostList ref="postBox" :user="user" />
           </van-tab>
           <van-tab title="评论" name="comment">
-            <UserComment :user="user"/>
+            <UserComment :userId="user._id"/>
           </van-tab>
         </van-tabs>
       </div>
@@ -112,6 +111,7 @@ export default class UserHomePage extends Vue {
   mounted () {
   }
   created () {
+    // this.getUser()
   }
 }
 </script>
@@ -153,7 +153,7 @@ export default class UserHomePage extends Vue {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.2);
   z-index: 11;
 }
 .user-box{

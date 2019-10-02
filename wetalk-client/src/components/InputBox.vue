@@ -1,7 +1,7 @@
 <template>
   <div class="talk-bottom">
     <div class="talk-send">
-      <textarea class="input-mess" v-model="sendText" rows="1" name="text" @focus="isMore=0"></textarea>
+      <textarea class="input-mess" :placeholder="replyName?'回复 @'+replyName+':':''" v-model="sendText" rows="1" name="text" @focus="isMore=0"></textarea>
       <van-icon class="input-icon" name="smile-o" @click="isMore=(isMore!=2?2:0)"/>
       <van-button v-show="sendText!=''" @click="toSend" type="danger">发送</van-button>
       <van-icon v-if="isPic" class="input-icon" v-show="sendText==''" name="add-o" @click="isMore=(isMore!=1?1:0)"/>
@@ -30,6 +30,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 @Component
 export default class InputBox extends Vue {
   @Prop() isPic!: boolean
+  @Prop() replyName!: string
   sendText: string = ''
   isMore: number = 0
   Emoticon: Array<any> = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '😊',
