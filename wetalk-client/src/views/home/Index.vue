@@ -4,7 +4,7 @@
       <router-view />
     </keep-alive>
     <van-tabbar v-model="isActive" route @change="tabbarChange">
-      <van-tabbar-item replace to="/home/lobby" @click="toTop(0)">
+      <van-tabbar-item replace to="/home/lobby">
         <span>乐贴</span>
         <img
           slot="icon"
@@ -12,7 +12,7 @@
           :src="props.active ? './icons/home_a.svg' : './icons/home.svg'"
         >
       </van-tabbar-item>
-      <van-tabbar-item replace to="/home/refuseclass"  @click="toTop(1)">
+      <van-tabbar-item replace to="/home/refuseclass">
         <span>乐分</span>
         <img
           slot="icon"
@@ -24,7 +24,7 @@
         <van-icon name="plus" />
       </div>
       <van-tabbar-item replace to="/home/message">
-        <span>乐聊</span>
+        <span>消息</span>
         <img
           slot="icon"
           slot-scope="props"
@@ -32,7 +32,7 @@
         >
       </van-tabbar-item>
       <van-tabbar-item replace to="/home/usercenter">
-        <span>乐中</span>
+        <span>我的</span>
         <img
           slot="icon"
           slot-scope="props"
@@ -51,13 +51,6 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class Home extends Vue {
   isActive: number = 0
   isTop: boolean = false
-  toTop (index: number) {
-    if (this.isActive === index && this.isTop) {
-      let app: any = document.getElementById('app')
-      app.scrollTop = 0
-    }
-    this.isTop = true
-  }
   tabbarChange () {
     this.isTop = false
   }

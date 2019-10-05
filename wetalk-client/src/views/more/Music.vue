@@ -34,7 +34,6 @@ import { Getter } from 'vuex-class'
 export default class Music extends Vue {
   @Getter isPlay!: number // ！声明肯定会有值
   @Getter currentSong!: any
-  @Getter city!: string
   musics: Array<any> = []
   text: string = ''
   getMusic () {

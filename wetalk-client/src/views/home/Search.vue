@@ -14,7 +14,9 @@
         <!-- <van-tab title="话题" name="tag">
         </van-tab> -->
         <van-tab title="帖子" name="post">
-          <PostList ref="postBox" :text="text"></PostList>
+          <div class="scroll-wrap">
+            <PostList ref="postBox" :text="text"></PostList>
+          </div>
         </van-tab>
         <van-tab title="用户" name="user">
           <UserList ref="userBox" :text="text"></UserList>

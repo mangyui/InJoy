@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="max1100 roomList">
-      <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
+      <van-pull-refresh pulling-text="下拉刷新"  :success-duration="1000" success-text="已刷新" v-model="isLoading" @refresh="onRefresh">
         <div class="room-card" @click="$router.push('/worldroom')">
           <p>世界频道</p>
           <b>13人</b>

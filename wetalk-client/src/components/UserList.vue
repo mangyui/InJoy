@@ -1,6 +1,6 @@
 <template>
   <div class="my-content-box" @scroll="scroll" ref="content">
-    <van-pull-refresh class="max1100" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getUserList">
+    <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getUserList">
       <div class="post-box">
         <van-list
             v-model="loading"
@@ -10,7 +10,7 @@
           >
           <div class="list-box">
             <div class="list-item" v-for="(item, index) in userList" :key="index" @click="$router.push('/userhomepage/' + item._id)">
-              <img v-lazy="item.avatar||'./imgs/ico.png'">
+              <img v-lazy="item.avatar||'./imgs/avatar.png'">
               <div class="list-item-left">
                 <b>{{item.name}}</b>
                 <!-- <p>{{item.author}}</p> -->
@@ -32,7 +32,7 @@ import ImgBox from '@/components/ImgBox.vue'
     ImgBox
   }
 })
-export default class PostList extends Vue {
+export default class UserList extends Vue {
   @Prop() text!: string
   isRefresh: boolean = false
   loading: boolean = false

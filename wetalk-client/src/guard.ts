@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import User from './model/user'
+// import User from './model/user'
 import Person from '@/util/Person'
 import { Route } from 'vue-router/types/router'
 let persons : Person[] = require('@/util/Persons').persons //
@@ -8,7 +8,8 @@ const whiteList = [
   'Message',
   'UserEdit',
   'PostAdd',
-  'PostComment'
+  'PostComment',
+  'UserChat'
 ] // 重定向白名单
 
 router.beforeEach((to: Route, from: Route, next: any) => {

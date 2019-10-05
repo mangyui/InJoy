@@ -6,6 +6,7 @@ import routerGo from './routerGo'
 import playSong from './playSong'
 import setting from './setting'
 import topic from './topic'
+import chatList from './chatList'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     ...message.state,
     ...routerGo.state,
     ...setting.state,
-    ...topic.state
+    ...topic.state,
+    ...chatList.state
   },
   mutations: {
     ...playSong.mutations,
@@ -24,7 +26,8 @@ export default new Vuex.Store({
     ...message.mutations,
     ...routerGo.mutations,
     ...setting.mutations,
-    ...topic.mutations
+    ...topic.mutations,
+    ...chatList.mutations
   },
   actions: {
 
@@ -38,6 +41,8 @@ export default new Vuex.Store({
     currentSong: state => state.currentSong,
     isShowInOut: state => state.isShowInOut,
     otherWeb: state => state.otherWeb,
-    topic: state => state.topic
+    topic: state => state.topic,
+    chatList: state => state.chatList,
+    chatWS: state => state.chatWS
   }
 })

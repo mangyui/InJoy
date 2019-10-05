@@ -9,7 +9,7 @@
       />
       <div class="list-box">
         <div class="list-item" v-for="(item, index) in lists" :key="index" @click="selectTopic(item)">
-          <img :src="item.img || './imgs/ico.png'">
+          <img :src="item.img || './imgs/avatar.png'">
           <div class="list-item-left">
             <b>{{item.name}}</b>
             <p>{{item.desc}}</p>

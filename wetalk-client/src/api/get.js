@@ -52,6 +52,7 @@ const toGet = {
       data: datas
     })
   },
+  // 获取话题
   getTopic (datas) {
     return request({
       url: baseUrl + '/topic/get',

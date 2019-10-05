@@ -11,7 +11,7 @@
         >
         <van-image
           fit="contain"
-          :src="avatarFile.contentImg||user.avatar||'./imgs/ico.png'"
+          :src="avatarFile.contentImg||user.avatar||'./imgs/avatar.png'"
         />
         </van-uploader>
         <p>手机号：{{user.phone}}</p>
@@ -56,7 +56,7 @@
       </van-cell-group>
       <van-cell-group>
         <van-field
-          v-model="user.profile"
+          v-model="user.intro"
           label="签名"
           type="textarea"
           placeholder="介绍下自己吧"
@@ -95,13 +95,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import User from '@/model/user'
 import { areaList } from '@/util/Area.ts'
 const tools = require('@/util/tools.js')
 
 @Component
 export default class UserEdit extends Vue {
-  private user: User = this.$store.getters.user
+  private user: any = this.$store.getters.user
   areaList: JSON = areaList
   showSex: boolean = false
   showDate: boolean = false
@@ -203,6 +202,7 @@ export default class UserEdit extends Vue {
   p{
     margin-top: 15px;
     color: #777;
+    font-size: 13px;
   }
 }
 </style>

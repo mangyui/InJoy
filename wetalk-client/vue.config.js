@@ -1,5 +1,6 @@
 const autoprefixer = require('autoprefixer')
 const pxtorem = require('postcss-pxtorem')
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   publicPath: './',
@@ -19,9 +20,15 @@ module.exports = {
       }
     }
   },
-  configureWebpack: {
-    externals: {
-      'BMap': 'BMap'
+  configureWebpack: config => {
+    if (isProd) {
+      // // 附赠一个好方法  去除代码中的console
+      // config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+      // 保持类名不被压缩
+      config.optimization.minimizer[0].options.terserOptions.keep_fnames = true
+      config.externals = {
+        'BMap': 'BMap'
+      }
     }
   },
   devServer: {

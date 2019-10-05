@@ -94,6 +94,14 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
+  // 根据id获取话题
+  getTopicById (datas) {
+    return request({
+      url: baseUrl + '/topic/getById',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
   // 获取图文列表
   getPostList (datas) {
     return request({
@@ -122,6 +130,38 @@ const toPost = {
   getfComments (datas) {
     return request({
       url: baseUrl + '/fComment/getList',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 回复评论
+  addSComment (datas) {
+    return request({
+      url: baseUrl + '/sComment/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // post点赞取消赞
+  postAddOrRmAgree (datas) {
+    return request({
+      url: baseUrl + '/postAgree/addOrRm',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // comment点赞取消赞
+  commentAddOrRmAgree (datas) {
+    return request({
+      url: baseUrl + '/commentAgree/addOrRm',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // follow关注或取消关注
+  followAddOrRm (datas) {
+    return request({
+      url: baseUrl + '/follow/addOrRm',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

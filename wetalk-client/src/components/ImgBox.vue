@@ -6,7 +6,7 @@
     <div v-else :class="imgList.length==4?'img9-box img4-box':'img9-box'">
       <div v-for="(imgitem,imgindex) in imgList" :key="imgindex"  @click.stop="toShowImg(imgindex)">
         <van-image
-          fit="cover"
+          fit="scale-down"
           lazy-load
           :src="imgitem"
         />

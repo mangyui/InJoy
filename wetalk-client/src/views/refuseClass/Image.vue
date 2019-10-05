@@ -107,6 +107,7 @@ export default class GarbageImg extends Vue {
 <style lang="less" scoped>
 .garbage-box{
   padding-bottom: 60px;
+  box-sizing: border-box;
   .garbage-img{
     padding: 10px 0;
     background-color: #fff;

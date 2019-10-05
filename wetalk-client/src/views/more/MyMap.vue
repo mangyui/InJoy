@@ -20,11 +20,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import User from '@/model/user'
+// import User from '@/model/user'
 
 @Component
 export default class MyMap extends Vue {
-  private user: User = this.$store.getters.user
+  private user: any = this.$store.getters.user
 
   isSearch: boolean = false
   value: string = ''

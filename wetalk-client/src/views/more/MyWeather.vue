@@ -4,7 +4,7 @@
       <van-icon name="hotel-o" slot="right" @click="showArea=true"/>
     </van-nav-bar>
     <div class="my-content-box">
-      <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
+      <van-pull-refresh pulling-text="下拉刷新"  :success-duration="1000" success-text="已刷新" v-model="isLoading" @refresh="onRefresh">
         <van-notice-bar v-show="weather.ganmao" :text="weather.ganmao"/>
         <div class="wea-wrap">
           <div class="wea-today-box">

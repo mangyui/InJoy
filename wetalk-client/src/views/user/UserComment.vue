@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-pull-refresh pulling-text="下拉刷新" v-model="isRefresh" @refresh="getfComments">
+    <van-pull-refresh  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getfComments">
       <div class="comment-box post-box white-wrap">
         <van-list
           v-model="loading"
@@ -10,12 +10,12 @@
         >
           <div class="post-item" v-for="(item,index) in commentList" :key="index">
             <div class="post-user">
-              <img :src="item.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
+              <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
                 <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
               </div>
-              <div class="comment-right-icon">
+              <div  @click.stop="commentAgree(item)" :class="item.alreadyAgree===true?'comment-right-icon comment-right-icon-active':'comment-right-icon'">
                 <van-icon name="upgrade" />
                 <span>{{item.count_agree}}</span>
               </div>
@@ -30,6 +30,9 @@
             </div>
           </div>
         </van-list>
+        <div v-show="!commentList[0]" class="white-wrap my-tip-box">
+          求你评论个帖子吧！
+        </div>
       </div>
     </van-pull-refresh>
   </div>
@@ -45,7 +48,7 @@ import ImgBox from '@/components/ImgBox.vue'
   }
 })
 export default class UserComment extends Vue {
-  @Prop() userId!: number
+  @Prop() userId!: string
   isRefresh: boolean = false
   loading: boolean = false
   finished: boolean = false
@@ -61,6 +64,9 @@ export default class UserComment extends Vue {
     this.getData.userId = this.userId
     this.commentList = []
     this.getData.page = 1
+    if (this.$store.getters.user._id) {
+      this.getData.viewer = this.$store.getters.user._id
+    }
     this.$toPost.getfComments(this.getData).then((res: any) => {
       res.data.pop()
       this.commentList = res.data
@@ -69,6 +75,7 @@ export default class UserComment extends Vue {
       } else {
         this.finished = false
       }
+      this.isRefresh = false
     }).catch((err: any) => {
       console.log(err)
     })
@@ -91,6 +98,22 @@ export default class UserComment extends Vue {
       this.loading = false
     })
   }
+  commentAgree (comment: any) {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
+    let data = {
+      userId: this.$store.getters.user._id,
+      commentId: comment._id
+    }
+    this.$toPost.commentAddOrRmAgree(data).then((data: any) => {
+      comment.alreadyAgree = !comment.alreadyAgree
+      comment.count_agree += (comment.alreadyAgree ? 1 : -1)
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
   mounted () {
     this.getfComments()
   }
@@ -98,6 +121,9 @@ export default class UserComment extends Vue {
 </script>
 
 <style lang="less" scoped>
+.comment-box .post-item .post-content{
+  padding-left: 0;
+}
 .comment-post-box{
   padding: 15px;
   background: #f3f3f3;

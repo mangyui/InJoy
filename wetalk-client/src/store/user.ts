@@ -1,4 +1,4 @@
-import User from '../model/user'
+// import User from '../model/user'
 
 export default {
   state: {
@@ -13,7 +13,7 @@ export default {
       state.user.name = name
       localStorage.setItem('user', JSON.stringify(state.user))
     },
-    initUserInfo (state: any, user: User) {
+    initUserInfo (state: any, user: any) {
       if (!user.name || user.name.trim() === '') {
         user.name = user.phone
       }

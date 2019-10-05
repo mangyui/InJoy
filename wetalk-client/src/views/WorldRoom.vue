@@ -14,7 +14,7 @@
           <div class="list-item" v-for="(item,index) in msgList" :key="index">
             <div class="mess-item" v-if="item.type==1&&item.user.id!=user.id">
               <div class="mu-avatar">
-                <img :src="item.user.avatar">
+                <img :src="item.user.avatar||'./imgs/avatar.png'">
                 <img class="icon-sex" :src="item.user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')">
               </div>
               <div class="mess-item-right">
@@ -25,7 +25,7 @@
             </div>
             <div class="mess-item-me" v-else-if="item.type==1&&item.user.id==user.id">
               <div class="mu-avatar">
-                <img :src="user.avatar">
+                <img :src="user.avatar||'./imgs/avatar.png'">
                 <img class="icon-sex" :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')">
               </div>
               <div class="mess-item-right">
@@ -54,7 +54,6 @@
 
 <script lang="ts">
 import Message from '../model/message'
-import User from '../model/user'
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class' // mapGetters 不适用
 import MyTalk from '@/util/MyTalk'
@@ -66,7 +65,7 @@ import InputBox from '@/components/InputBox.vue'
   }
 })
 export default class WorldRoom extends Vue {
-  @Getter user!: User // ！声明肯定会有值
+  @Getter user!: any // ！声明肯定会有值
   @Getter msgList!: Message[]
   @Getter isShowInOut!: boolean
 
@@ -118,3 +117,7 @@ export default class WorldRoom extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped>
+@import '../styles/chatroom.less';
+</style>

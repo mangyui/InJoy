@@ -4,11 +4,11 @@
       @click-left="$router.go(-1)"
        />
     <div class="my-content-box">
-      <van-pull-refresh class="max1100" pulling-text="下拉刷新" v-model="isLoading" @refresh="getPostById">
+      <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isLoading" @refresh="getPostById">
         <div class="post-box">
           <div class="post-item">
             <div v-if="PostDetails.user" class="post-user">
-              <img :src="PostDetails.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + PostDetails.user._id)">
+              <img :src="PostDetails.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + PostDetails.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + PostDetails.user._id)">{{PostDetails.user?PostDetails.user.name:'该用户不存在'}}</b>
                 <p>{{PostDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
@@ -118,6 +118,7 @@ export default class PostComment extends Vue {
       this.imgList = []
       this.$toast.clear()
       this.$toast('评论成功！')
+      this.$router.go(-1)
     }).catch((err: any) => {
       console.log(err)
       this.$toast.clear()

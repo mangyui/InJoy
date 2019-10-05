@@ -1,8 +1,8 @@
 <template>
-  <div class="mess-wrap my-content-box" @scroll="scroll" ref="content">
+  <div class="mess-wrap my-content-box" ref="content">
     <van-tabs v-model="active" :border="false" sticky line-width="26" :offset-top="0">
-      <van-tab title="聊天室" name="m1">
-        <talkRoom />
+      <van-tab title="提醒" name="m1">
+        <NoticeList />
       </van-tab>
       <van-tab title="私信" name="m2">
         <privateChat />
@@ -13,27 +13,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import talkRoom from './TalkRoom.vue'
+import NoticeList from './NoticeList.vue'
 import privateChat from './PrivateChat.vue'
 
 @Component({
   components: {
-    talkRoom,
+    NoticeList,
     privateChat
   }
 })
 export default class Message extends Vue {
-  scrollTop: number = 0
   active: string = 'm2'
   created () {
-  }
-  scroll () {
-    // @ts-ignore
-    this.scrollTop = this.$refs.content.scrollTop
-  }
-  activated () {
-    // @ts-ignore
-    this.$refs.content.scrollTop = this.scrollTop
   }
 }
 </script>

@@ -1,30 +1,43 @@
 <template>
   <div class="max1100">
     <div class="list-box">
-      <van-swipe-cell v-for="(item, index) in 15" :key="index">
-        <div class="list-item" >
-          <img v-lazy="'http://p2.music.126.net/MHIswsnZuYdel2_roaLlYg==/109951164192558480.jpg?param=300x300'">
+      <van-swipe-cell v-for="(item, index) in chatList" :key="index" :title="deleteIndex">
+        <div class="list-item"  v-if="index.split('To')[0] === user._id&&item.mesgList[item.mesgList.length-1]" @click="$router.push('/UserChat/' + index.split('To')[1])">
+          <img :src="item.user.avatar||'./imgs/avatar.png'">
           <div class="mess-right-l">
-            <b>二愣子{{index}}</b>
-            <p>在干嘛呢</p>
+            <b>{{item.user.name}}</b>
+            <p>{{item.mesgList[item.mesgList.length-1].content}}</p>
           </div>
-          <span>2019/02/18</span>
+          <span>{{item.mesgList[item.mesgList.length-1].time}}</span>
         </div>
         <template slot="right">
-          <van-button square type="danger" text="删除" />
+          <van-button square type="danger" text="删除" @click="toDeleteChat(index)"/>
         </template>
       </van-swipe-cell>
+      <div class="white-wrap my-tip-box">
+        你这么高冷，怎么找对象？
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { mapGetters } from 'vuex'
 import { Getter } from 'vuex-class'
 
-@Component
+@Component({
+  computed: {
+    ...mapGetters(['chatList'])
+  }
+})
 export default class PrivateChat extends Vue {
-  chatList: Array<any> = []
+  @Getter user!: any
+  deleteIndex: any = 0
+  toDeleteChat (index: any) {
+    this.$store.commit('RM_USER', index)
+    this.deleteIndex = index
+  }
   created () {
   }
 }

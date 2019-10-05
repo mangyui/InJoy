@@ -85,10 +85,11 @@ export default class Login extends Vue {
       this.$toast('请正确填写')
       return
     }
+    this.loginForm.name = '用户' + this.loginForm.phone.substr(7)
     this.$toPost.loginVCode(this.loginForm).then((res: any) => {
       if (res.data.success) {
         this.$store.commit('initUserInfo', res.data.user)
-        this.$router.replace('/')
+        location.reload()
       } else {
         this.$toast.fail(res.data.result)
       }

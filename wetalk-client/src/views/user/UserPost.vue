@@ -1,10 +1,10 @@
 <template>
   <div>
-    <van-pull-refresh pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
+    <van-pull-refresh  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isLoading" @refresh="onRefresh">
       <div class="post-box">
         <div class="post-item" v-for="(item,index) in 15" :key="index" @click="$router.push('/postdetails/'+index)">
           <div class="post-user">
-            <img :src="user.avatar||'./imgs/ico.png'">
+            <img :src="user.avatar||'./imgs/avatar.png'">
             <div class="post-user-text">
               <p>{{user.name||user.phone}}</p>
               <span>9/13 21:46</span>
@@ -32,7 +32,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import User from '@/model/user'
 import ImgBox from '@/components/ImgBox.vue'
 
 @Component({
@@ -41,7 +40,7 @@ import ImgBox from '@/components/ImgBox.vue'
   }
 })
 export default class UserHomePage extends Vue {
-  @Prop() user!: User
+  @Prop() user!: any
   isLoading: boolean = false
   isScroll: boolean = false
   onRefresh () {

@@ -6,7 +6,7 @@
       </navigation>
     </transition> -->
     <transition :name="transitionName">
-      <keep-alive exclude="WorldRoom,MyMap,UserEdit,GarbageList,PostDetails,WebView">
+      <keep-alive exclude="WorldRoom,MyMap,GarbageList,WebView,PostComment,TopicPost">
         <router-view class="Router"/>
       </keep-alive>
     </transition>
@@ -50,6 +50,11 @@ export default Vue.extend({
       this.transitionName = 'slideleft'
       this.$store.commit('GO_ENTER')
     })
+    if (this.$store.getters.user._id && !this.$store.getters.chatWS) {
+      this.$store.commit('INIT_WS', this.$store.getters.user)
+    } else if (!this.$store.getters.user._id && this.$store.getters.chatWS) {
+      this.$store.commit('CLOSE_WS')
+    }
   }
 })
 </script>

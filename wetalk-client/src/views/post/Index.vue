@@ -3,7 +3,15 @@
     <van-nav-bar class="litheme" :border="false" title="大厅" fixed>
       <van-icon name="search" slot="right"  @click="$router.push('/search')"/>
     </van-nav-bar>
-    <PostList ref="postBox" />
+    <div v-show="!isOver" class="my-content-box white-wrap max1100">
+      <div v-for="item in 3"  :key="item">
+        <br/>
+        <van-skeleton  title avatar :row="3" />
+      </div>
+    </div>
+    <div v-show="isOver" style="min-height: 100%" class="white-wrap max1100 scroll-wrap">
+      <PostList ref="postBox" @getOver="getOver"/>
+    </div>
   </div>
 </template>
 
@@ -17,15 +25,24 @@ import PostList from '@/components/PostList.vue'
   }
 })
 export default class Lobby extends Vue {
+  isOver: boolean = false
+  getOver () {
+    this.isOver = true
+  }
+  activated () {
+    if (!this.isOver) {
+      // @ts-ignore
+      this.$refs.postBox.getPostList()
+    }
+  }
   mounted () {
-    // @ts-ignore
-    this.$refs.postBox.getPostList()
+
   }
 }
 </script>
 
 <style lang="less" scoped>
-.bgWhite /deep/ .post-box{
+.bgMax /deep/ .post-box{
   padding-bottom: 42px;
 }
 </style>

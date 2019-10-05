@@ -3,12 +3,12 @@
     <van-nav-bar class="litheme" :border="false" title="帖子详情" fixed left-arrow right-text="评论"
       @click-left="$router.go(-1)"
       @click-right="$router.push('/postcomment/'+ $route.params.id)" />
-    <div class="my-content-box">
-      <van-pull-refresh v-if="postDetails" class="max1100" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostById"  @click.native="isComment=false">
+    <div class="my-content-box" @scroll="scroll" ref="content">
+      <van-pull-refresh v-if="postDetails._id" class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostById"  @click.native="isComment=false">
         <div class="post-box">
           <div class="post-item">
             <div class="post-user">
-              <img :src="postDetails.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">
+              <img :src="postDetails.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">{{postDetails.user?postDetails.user.name:'该用户不存在'}}</b>
                 <p>{{postDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
@@ -23,14 +23,14 @@
             <div class="post-san">
               <div><van-icon name="share"/>{{postDetails.count_forward}}</div>
               <div><van-icon name="comment-o" />{{postDetails.count_comment}}</div>
-              <div><van-icon name="upgrade" />{{postDetails.count_agree}}</div>
+              <div :class="postDetails.alreadyAgree===true?'post-san-active':''"><van-icon :name="postDetails.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(postDetails)"/>{{postDetails.count_agree}}</div>
             </div>
           </div>
         </div>
-        <div class="post-details-tag">
+        <div v-if="postDetails.topic" class="post-details-tag" @click="$router.push('/topicpost/'+postDetails.topic._id)">
           <van-image
             fit="cover"
-            :src="postDetails.topic.img||'./imgs/ico.png'"
+            :src="postDetails.topic.img||'./imgs/avatar.png'"
           />
           <div class="tag-right">
               <p># {{postDetails.topic.name}} #</p>
@@ -48,12 +48,12 @@
           >
             <div class="post-item" v-for="(item,index) in commentList" :key="index">
               <div class="post-user">
-                <img :src="item.user.avatar || './imgs/ico.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
+                <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
                 <div class="post-user-text">
                   <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
                   <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
                 </div>
-                <div class="comment-right-icon">
+                <div @click.stop="commentAgree(item)" :class="item.alreadyAgree===true?'comment-right-icon comment-right-icon-active':'comment-right-icon'">
                   <van-icon name="upgrade" />
                   <span>{{item.count_agree}}</span>
                 </div>
@@ -61,16 +61,26 @@
               <div class="post-content">
                 <p>{{item.content}}</p>
                 <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
+                <div v-if="item.sCommentList&&item.sCommentList[0]" class="scomment-box">
+                  <p v-for="scmoment in item.sCommentList" :key="scmoment._id">
+                    <router-link :to="'/userhomepage/' + scmoment.user._id">{{scmoment.user.name}}</router-link>
+                    : {{scmoment.content}}
+                  </p>
+                </div>
               </div>
               <div class="my-right">
-                <span class="comment-item-btn" @click.stop="replyComment(item)">评论Ta</span>
+                <span class="comment-item-btn" @click.stop="replyComment(item)">回复Ta</span>
               </div>
             </div>
           </van-list>
+          <div v-show="!commentList[0]" class="white-wrap my-tip-box">
+            暂无评论
+          </div>
         </div>
       </van-pull-refresh>
       <InputBox v-if="isComment" :replyName="commentItem.user.name" @toSend="toSend"/>
     </div>
+    <div v-show="showMask" class="white-mask"></div>
   </div>
 </template>
 
@@ -86,22 +96,31 @@ import InputBox from '@/components/InputBox.vue'
   }
 })
 export default class PostDetails extends Vue {
+  scrollTop: number = 0
+  showMask: boolean = true
   isRefresh: boolean = false
   isComment: boolean = false
   commentItem: any = {}
   loading: boolean = false
   finished: boolean = false
-  postDetails: any = null
+  postDetails: any = {}
   commentList: Array<any> = []
   getData: any = {
     page: 1,
     number: 20
   }
   getPostById () {
-    this.$toPost.getPostById({ id: this.$route.params.id }).then((res: any) => {
+    let data: any = {
+      id: this.$route.params.id
+    }
+    if (this.$store.getters.user._id) {
+      data.viewer = this.$store.getters.user._id
+    }
+    this.$toPost.getPostById(data).then((res: any) => {
       if (res.data._id) {
         this.postDetails = res.data
         this.getfComments()
+        this.showMask = false
       } else {
         this.$notify({ type: 'warning', message: '帖子不存在' })
         setTimeout(() => {
@@ -117,7 +136,10 @@ export default class PostDetails extends Vue {
   getfComments () {
     this.commentList = []
     this.getData.page = 1
-    this.getData.post = this.$route.params.id
+    this.getData.postId = this.$route.params.id
+    if (this.$store.getters.user._id) {
+      this.getData.viewer = this.$store.getters.user._id
+    }
     this.$toPost.getfComments(this.getData).then((res: any) => {
       res.data.pop()
       this.commentList = res.data
@@ -149,20 +171,88 @@ export default class PostDetails extends Vue {
     })
   }
   replyComment (item: any) {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
     if (item._id) {
       this.commentItem = item
       this.isComment = true
     }
   }
   toSend (sendText: string): void {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
+    let data: any = {
+      content: sendText,
+      user: this.$store.getters.user._id,
+      comment: this.commentItem._id,
+      post: this.$route.params.id
+    }
+    this.$toPost.addSComment(data).then((res: any) => {
+      this.$toast('已回复')
+      this.commentItem.sCommentList.push({
+        content: sendText,
+        user: this.$store.getters.user,
+        comment: this.commentItem._id,
+        post: this.$route.params.id
+      })
+      this.postDetails.count_comment += 1
+      this.isComment = false
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  postAgree (post: any) {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
+    let data = {
+      userId: this.$store.getters.user._id,
+      postId: post._id
+    }
+    this.$toPost.postAddOrRmAgree(data).then((data: any) => {
+      post.alreadyAgree = !post.alreadyAgree
+      post.count_agree += (post.alreadyAgree ? 1 : -1)
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  commentAgree (comment: any) {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
+    let data = {
+      userId: this.$store.getters.user._id,
+      commentId: comment._id
+    }
+    this.$toPost.commentAddOrRmAgree(data).then((data: any) => {
+      comment.alreadyAgree = !comment.alreadyAgree
+      comment.count_agree += (comment.alreadyAgree ? 1 : -1)
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  scroll () {
+    // @ts-ignore
+    this.scrollTop = this.$refs.content.scrollTop
   }
   activated () {
-    // if (this.$store.getters.isForward) {
-    //   this.getPostById()
-    // }
+    // @ts-ignore
+    this.$refs.content.scrollTop = this.scrollTop
+    if (this.$store.getters.isForward || !this.postDetails._id) {
+      this.showMask = true
+      this.getPostById()
+    } else {
+      this.showMask = false
+    }
   }
   created () {
-    this.getPostById()
+    // this.getPostById()
   }
 }
 </script>

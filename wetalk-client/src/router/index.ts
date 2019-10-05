@@ -12,11 +12,13 @@ import PostDetails from '@/views/post/Details.vue'
 import PostComment from '@/views/post/Comment.vue'
 import PostAdd from '@/views/post/Add.vue'
 import Topic from '@/views/post/Topic.vue'
+import TopicPost from '@/views/post/TopicPost.vue'
 
 import GarbageImg from '@/views/refuseClass/Image.vue'
 import GarbageList from '@/views/refuseClass/List.vue'
 import RefuseSearch from '@/views/refuseClass/Search.vue'
 import WorldRoom from '@/views/WorldRoom.vue'
+import UserChat from '@/views/mess/UserChat.vue'
 
 import UserHomePage from '@/views/user/UserHomePage.vue'
 import UserEdit from '@/views/user/UserEdit.vue'
@@ -100,6 +102,11 @@ const router:Router = new Router({
       component: Topic // () => import('@/views/post/Topic.vue')
     },
     {
+      path: '/topicpost/:id',
+      name: 'TopicPost',
+      component: TopicPost // () => import('@/views/post/TopicPost.vue')
+    },
+    {
       path: '/garbageimg',
       name: 'GarbageImg',
       component: GarbageImg // () => import('@/views/refuseClass/Image.vue')
@@ -118,6 +125,11 @@ const router:Router = new Router({
       path: '/worldroom',
       name: 'WorldRoom',
       component: WorldRoom // () => import('@/views/WorldRoom.vue')
+    },
+    {
+      path: '/userchat/:id',
+      name: 'UserChat',
+      component: UserChat // () => import('@/views/mess/UserChat.vue')
     },
     {
       path: '/userhomepage/:id',

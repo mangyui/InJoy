@@ -12,22 +12,14 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.rec === -1) {
-      Notify({
-        message: '请求错误',
-        color: '#ad0000',
-        background: '#ffe1e1'
-      })
+      Notify({ type: 'danger', message: '请求错误' })
       return Promise.reject(res.msg)
     } else {
       return response.data
     }
   },
   error => {
-    Notify({
-      message: '网络错误',
-      color: '#ad0000',
-      background: '#ffe1e1'
-    })
+    Notify({ type: 'danger', message: '网络超时' })
     console.log('err' + error)
     return Promise.reject(error)
   }

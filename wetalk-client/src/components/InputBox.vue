@@ -45,7 +45,7 @@ export default class InputBox extends Vue {
     this.isMore = 0
   }
   public toSend (): any {
-    if (this.sendText !== '') {
+    if (this.sendText.trim() !== '') {
       this.$emit('toSend', this.sendText)
       this.sendText = ''
     }

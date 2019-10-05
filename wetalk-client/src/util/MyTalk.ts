@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import store from '@/store'
 import Message from '@/model/message'
-import User from '@/model/user'
 
 class MyTalk {
   public ws: any
-  public user: User
+  public user: any
   public numberP: number
   public isOver: boolean = false
-  constructor (user: User, numberP: number) {
+  constructor (user: any, numberP: number) {
     this.ws = new WebSocket('ws://47.106.130.141:9612')
     // this.ws = new WebSocket('ws://' + window.location.host)
     this.user = user
@@ -16,7 +15,7 @@ class MyTalk {
   }
   public creatSending (content: string, type: number): any {
     var time = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
-    var message = new Message(time, content, type, type === 1 ? this.user : null)
+    var message = new Message(time, content, type, this.user)
     var data = {
       message: message
     }

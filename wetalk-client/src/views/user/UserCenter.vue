@@ -6,10 +6,10 @@
     <div class="my-content-box">
       <div class="bgtheme">
         <div class="find-user max1100" @click="toUserPage">
-          <img :src="user.avatar||'./imgs/ico.png'">
+          <img :src="user.avatar||'./imgs/avatar.png'">
           <div v-if="user._id">
             <p>{{user.name||user.phone}} <img class="icon-sex"  :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')"></p>
-            <span>{{user.profile || '这个人超级懒，什么都没留下'}}</span>
+            <span>{{user.intro || '这个人超级懒，什么都没留下'}}</span>
             <van-icon class="me-icon" name="arrow" />
           </div>
           <div v-if="!user._id">
@@ -43,12 +43,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import User from '@/model/user'
 import { Getter } from 'vuex-class'
 
 @Component
 export default class UserCenter extends Vue {
-  @Getter user!: User
+  @Getter user!: any
   toUserPage () {
     if (this.user._id) {
       this.$router.push('/userhomepage/' + this.user._id)
