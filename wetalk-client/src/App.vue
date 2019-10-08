@@ -6,7 +6,7 @@
       </navigation>
     </transition> -->
     <transition :name="transitionName">
-      <keep-alive exclude="WorldRoom,MyMap,GarbageList,WebView,PostComment,TopicPost">
+      <keep-alive exclude="WorldRoom,MyMap,GarbageList,WebView,PostComment,TopicPost,UserChat,UserComment,UserFollower,UserFollowing">
         <router-view class="Router"/>
       </keep-alive>
     </transition>
@@ -35,7 +35,66 @@ export default Vue.extend({
   watch: {
     $route () { // 监听路由变化重新赋值
       this.$toast.clear()
+      this.homeExit()
     }
+  },
+  methods: {
+    homeExit () {
+      // @ts-ignore
+      if (navigator.app) {
+        if (this.$route.matched[0].name === 'Home') {
+          document.removeEventListener('backbutton', this.onBackKeyDown, false)
+          document.addEventListener('backbutton', this.onBackKeyDown, false)
+        } else {
+          document.removeEventListener('backbutton', this.onBackKeyDown, false)
+          document.removeEventListener('backbutton', this.exitApp, false)
+        }
+      }
+    },
+    onBackKeyDown () {
+      this.$toast({
+        message: '再点击一次退出应用',
+        position: 'bottom',
+        duration: 2800
+      })
+      document.removeEventListener('backbutton', this.onBackKeyDown, false) // 注销返回键
+      document.addEventListener('backbutton', this.exitApp, false) // 绑定退出事件
+      setInterval(() => {
+        if (this.$route.matched[0].name === 'Home') {
+          document.addEventListener('backbutton', this.onBackKeyDown, false)
+        } else {
+          document.removeEventListener('backbutton', this.onBackKeyDown, false)
+        }
+        document.removeEventListener('backbutton', this.exitApp, false)
+      }, 3000)
+    },
+    goBack () {
+      this.$router.go(-1)
+    },
+    exitApp () {
+      // @ts-ignore
+      navigator.app.exitApp()
+    },
+    setWS () {
+      if (this.$store.getters.user._id && !this.$store.getters.chatWS) {
+        this.$store.commit('INIT_WS', this.$store.getters.user)
+      } else if (!this.$store.getters.user._id && this.$store.getters.chatWS) {
+        this.$store.commit('CLOSE_WS')
+      }
+    },
+    appBackWS () {
+      // @ts-ignore
+      if (navigator.app) {
+        document.addEventListener('resume', () => {
+          if (this.$store.getters.chatWS && this.$store.getters.chatWS.ws.readyState !== 1 && this.$store.getters.user._id) {
+            this.$store.commit('INIT_WS', this.$store.getters.user)
+          }
+        }, false)
+      }
+    }
+  },
+  mounted () {
+    this.appBackWS()
   },
   created () {
     this.$navigation.on('forward', (to: any, from: any) => {
@@ -50,11 +109,8 @@ export default Vue.extend({
       this.transitionName = 'slideleft'
       this.$store.commit('GO_ENTER')
     })
-    if (this.$store.getters.user._id && !this.$store.getters.chatWS) {
-      this.$store.commit('INIT_WS', this.$store.getters.user)
-    } else if (!this.$store.getters.user._id && this.$store.getters.chatWS) {
-      this.$store.commit('CLOSE_WS')
-    }
+    this.setWS()
+    this.homeExit()
   }
 })
 </script>

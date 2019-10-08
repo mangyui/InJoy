@@ -13,7 +13,7 @@
               <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
-                <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
+                <p>{{$formatTime(item.time)}}</p>
               </div>
             </div>
             <div class="post-content">
@@ -26,7 +26,7 @@
               </div>
             </b>
             <div class="post-san">
-              <div><van-icon name="share"/>{{item.count_forward}}</div>
+              <div><van-icon name="share" @click.stop="openShare(item)"/>{{item.count_forward}}</div>
               <div><van-icon name="comment-o" />{{item.count_comment}}</div>
               <div :class="item.alreadyAgree===true?'post-san-active':''"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(item)"/>{{item.count_agree}}</div>
             </div>
@@ -34,6 +34,22 @@
         </van-list>
       </div>
     </van-pull-refresh>
+    <van-popup
+      v-model="showShare"
+      closeable
+      position="bottom">
+      <div class="comment-line">分享</div>
+      <div class="share-box">
+        <div @click="shareQQ">
+          <van-icon name="./icons/QQ.svg" />
+          <p>QQ</p>
+        </div>
+        <div @click="shareWeibo">
+          <van-icon name="./icons/weibo.svg" />
+          <p>微博</p>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -50,10 +66,12 @@ export default class PostList extends Vue {
   @Prop() text!: string
   @Prop() userId!: any
   @Prop() topicId!: any
+  showShare: boolean = false
   isRefresh: boolean = false
   loading: boolean = false
   finished: boolean = false
   scrollTop: number = 0
+  sharePost: any = {}
   getData: any = {
     page: 1,
     number: 20
@@ -123,10 +141,23 @@ export default class PostList extends Vue {
       console.log(err)
     })
   }
+  openShare (post: any) {
+    if (post._id) {
+      this.sharePost = post
+      this.showShare = true
+    }
+  }
+  shareWeibo () {
+    let url = 'http://service.weibo.com/share/share.php?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
+    window.open(url)
+  }
+  shareQQ () {
+    let url = 'http://connect.qq.com/widget/shareqq/index.html?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
+    window.open(url)
+  }
   scroll () {
     // @ts-ignore
     this.scrollTop = this.$refs.content.scrollTop
-    console.log(this.scrollTop)
   }
   activated () {
     // @ts-ignore
@@ -136,3 +167,26 @@ export default class PostList extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.share-box{
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  >div{
+    margin-right: 30px;
+    text-align: center;
+  }
+  .van-icon{
+    font-size: 26px;
+    padding: 10px;
+    background: #c0bbff;
+    border-radius: 50%;
+  }
+  p{
+    margin-top: 8px;
+    font-size: 11px;
+    color: #666;
+  }
+}
+</style>

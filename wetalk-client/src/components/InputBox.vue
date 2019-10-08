@@ -7,14 +7,39 @@
       <van-icon v-if="isPic" class="input-icon" v-show="sendText==''" name="add-o" @click="isMore=(isMore!=1?1:0)"/>
     </div>
     <div class="send-more" :style="isMore==0?'height: 0':''">
-      <div v-show="isMore==2" class="emoticon-box">
-        <span v-for="(item, index) in Emoticon" :key="index" @click="sendText+=item">
+      <div v-show="isMore==2" class="emoticon-wrap">
+        <van-swipe :autoplay="0" indicator-color="#8b81f9" :width="screenWidth-20" :loop="false">
+          <van-swipe-item>
+            <div class="emoticon-box">
+              <span v-for="(item, index) in Emoticon" :key="index" @click="sendText+=item">
+                {{item}}
+              </span>
+            </div>
+          </van-swipe-item>
+          <van-swipe-item>
+            <div class="emoticon-box">
+              <span v-for="(item, index) in Emoticon2" :key="index" @click="sendText+=item">
+                {{item}}
+              </span>
+            </div>
+          </van-swipe-item>
+          <van-swipe-item>
+            <div class="emoticon-box">
+              <span v-for="(item, index) in Emoticon3" :key="index" @click="sendText+=item">
+                {{item}}
+              </span>
+            </div>
+          </van-swipe-item>
+        </van-swipe>
+        <!-- <span v-for="(item, index) in Emoticon" :key="index" @click="sendText+=item">
           {{item}}
-        </span>
+        </span> -->
       </div>
       <div v-show="isMore==1" class="add-more">
         <div>
-          <van-uploader>
+          <van-uploader
+          :after-read="readImg"
+          :max-count="1">
             <van-icon class="input-icon" name="photo" color="#1989fa"></van-icon><p>图片</p>
           </van-uploader>
         </div>
@@ -31,11 +56,16 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 export default class InputBox extends Vue {
   @Prop() isPic!: boolean
   @Prop() replyName!: string
+
+  screenWidth: any = document.body.clientWidth
   sendText: string = ''
   isMore: number = 0
-  Emoticon: Array<any> = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '😊',
-    '😇', '🙂', '🙃', '😉', '😓', '😪', '😴', '🙄', '🤔', '😬', '🤐'
+  Emoticon: Array<any> = ['😀', '😄', '😆', '😅', '😂', '😊',
+    '😇', '🙂', '🙃', '😉', '😓', '😪', '😴', '🙄', '🤔',
+    '🐶', '🐷', '👻', '🔥', '⚡️', '💤'
   ]
+  Emoticon2: Array<any> = ['🐶', '🐱', '🐭', '🐹', '🐰', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐙', '🐵']
+  Emoticon3: Array<any> = ['🍏', '🍎', '🍊', '🍐', '🍋', '🍌', '🍉', '🍈', '🍑', '🍍', '🍅', '🌽', '🍠', '🍯', '🍞', '🧀', '🍗']
   @Watch('isMore')
   changeAge (newValue: number, oldValue: number) {
     // console.log(`newValue: ${newValue}, oldValue: ${oldValue}`)
@@ -49,6 +79,16 @@ export default class InputBox extends Vue {
       this.$emit('toSend', this.sendText)
       this.sendText = ''
     }
+  }
+  readImg (file: any) {
+    let data = new FormData()
+    data.append('myimg', file.file)
+    this.$toUpload.uploadImg(data).then((res: any) => {
+      this.$emit('toImg', res.data)
+    }).catch((err: any) => {
+      console.log(err)
+      this.$toast.fail('图片发送功能异常')
+    })
   }
 }
 </script>
@@ -78,8 +118,12 @@ export default class InputBox extends Vue {
 .input-icon{
   font-size: 30px;
 }
+.emoticon-wrap{
+  width: 100%;
+  padding: 5px 0;
+}
 .emoticon-box{
-  padding: 0 5px;
+  padding: 15px 5px 25px;
   display: flex;
   flex-wrap: wrap;
   span{

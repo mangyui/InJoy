@@ -17,11 +17,14 @@ import TopicPost from '@/views/post/TopicPost.vue'
 import GarbageImg from '@/views/refuseClass/Image.vue'
 import GarbageList from '@/views/refuseClass/List.vue'
 import RefuseSearch from '@/views/refuseClass/Search.vue'
-import WorldRoom from '@/views/WorldRoom.vue'
+// import WorldRoom from '@/views/WorldRoom.vue'
 import UserChat from '@/views/mess/UserChat.vue'
 
 import UserHomePage from '@/views/user/UserHomePage.vue'
 import UserEdit from '@/views/user/UserEdit.vue'
+import UserFollower from '@/views/user/UserFollower.vue'
+import UserFollowing from '@/views/user/UserFollowing.vue'
+
 import Setting from '@/views/Setting.vue'
 import Weather from '@/views/more/MyWeather.vue'
 
@@ -121,11 +124,11 @@ const router:Router = new Router({
       name: 'RefuseSearch',
       component: RefuseSearch // () => import('@/views/refuseClass/Search.vue')
     },
-    {
-      path: '/worldroom',
-      name: 'WorldRoom',
-      component: WorldRoom // () => import('@/views/WorldRoom.vue')
-    },
+    // {
+    //   path: '/worldroom',
+    //   name: 'WorldRoom',
+    //   component: WorldRoom // () => import('@/views/WorldRoom.vue')
+    // },
     {
       path: '/userchat/:id',
       name: 'UserChat',
@@ -140,6 +143,16 @@ const router:Router = new Router({
       path: '/useredit',
       name: 'UserEdit',
       component: UserEdit // () => import('@/views/user/UserEdit.vue')
+    },
+    {
+      path: '/followers/:id',
+      name: 'UserFollower',
+      component: UserFollower // () => import('@/views/user/UserFollower.vue')
+    },
+    {
+      path: '/following/:id',
+      name: 'UserFollowing',
+      component: UserFollowing // () => import('@/views/user/UserFollowing.vue')
     },
     {
       path: '/setting',

@@ -1,11 +1,11 @@
 <template>
-  <div class="bgMax max1100">
+  <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" fixed title="base64转码" left-arrow
       :right-text="isJie?'解码':'编码'"
       @click-left="$router.go(-1)"
       @click-right="showSetting=true">
     </van-nav-bar>
-    <div class="content-padd my-content-box">
+    <div class="content-padd my-content-fix max1100">
       <div>
         <textarea class="text-input" name="text" id="yuan" cols="30" rows="10" v-model="text"></textarea>
       </div>

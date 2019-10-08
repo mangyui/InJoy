@@ -1,5 +1,5 @@
 <template>
-  <div class="bgWhite max1100">
+  <div class="search-wrap">
     <form class="fix-top search-box" action="/">
       <van-search
         v-model="text"
@@ -9,8 +9,8 @@
         @cancel="$router.go(-1)"
       />
     </form>
-    <div class="my-content-box">
-      <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="46">
+    <div class="max1100 search-tab-box">
+      <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="52">
         <!-- <van-tab title="话题" name="tag">
         </van-tab> -->
         <van-tab title="帖子" name="post">
@@ -19,7 +19,9 @@
           </div>
         </van-tab>
         <van-tab title="用户" name="user">
-          <UserList ref="userBox" :text="text"></UserList>
+          <div class="white-wrap">
+            <UserList ref="userBox" :text="text"></UserList>
+          </div>
         </van-tab>
       </van-tabs>
     </div>
@@ -55,3 +57,22 @@ export default class Search extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.search-wrap{
+  height: 100%;
+  background: #f9f9f9;
+  .search-scroll-wrap{
+    /deep/ .my-content-box{
+      height: auto;;
+    }
+  }
+}
+.search-tab-box{
+  position: fixed;
+  top: 53px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+</style>

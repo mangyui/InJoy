@@ -1,7 +1,7 @@
 <template>
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" :title="gClass.name" fixed left-arrow  @click-left="$router.go(-1)"></van-nav-bar>
-    <div class="my-content-box" @scroll="scroll" ref="content">
+    <div class="my-content-fix" @scroll="scroll" ref="content">
       <div class="max1100">
         <div v-show="!isOver" class="skeleton-box">
           <van-skeleton v-for="(item, index) in 10" :key="index" title :row="1" />

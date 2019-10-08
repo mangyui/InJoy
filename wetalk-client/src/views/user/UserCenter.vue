@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" fixed :border="false"  @click-right="$router.push('/setting')">
       <van-icon name="setting-o" slot="right"/>
     </van-nav-bar>
-    <div class="my-content-box">
+    <div class="my-content-fix">
       <div class="bgtheme">
         <div class="find-user max1100" @click="toUserPage">
           <img :src="user.avatar||'./imgs/avatar.png'">
@@ -113,5 +113,8 @@ export default class UserCenter extends Vue {
     font-size: 12px;
     color: #ddd;
   }
+}
+.my-info{
+  padding-bottom: 55px;
 }
 </style>

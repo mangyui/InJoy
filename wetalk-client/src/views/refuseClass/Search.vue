@@ -10,7 +10,7 @@
         <div slot="action" @click="$router.go(-1)">返回</div>
       </van-search>
     </form>
-    <div class="my-content-box">
+    <div class="my-content-fix">
       <div class="max1100">
         <div v-show="isSearch">
           <p class="s-text">搜索最热</p>
@@ -82,14 +82,19 @@ export default class GarbageSearch extends Vue {
         if (res.data.length < this.getData.number) {
           this.finished = true
         }
+        this.loading = false
         this.$toast.clear()
       }).catch((err: any) => {
         console.log(err)
         this.$toast.clear()
+        this.loading = false
       })
     }
   }
   getMore () {
+    if (!this.refuseList[0]) {
+      return
+    }
     this.getData.page += 1
     this.$toPost.getRubbish(this.getData).then((res: any) => {
       res.data.pop()

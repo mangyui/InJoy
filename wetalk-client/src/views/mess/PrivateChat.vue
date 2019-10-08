@@ -6,9 +6,9 @@
           <img :src="item.user.avatar||'./imgs/avatar.png'">
           <div class="mess-right-l">
             <b>{{item.user.name}}</b>
-            <p>{{item.mesgList[item.mesgList.length-1].content}}</p>
+            <p>{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':item.mesgList[item.mesgList.length-1].content}}</p>
           </div>
-          <span>{{item.mesgList[item.mesgList.length-1].time}}</span>
+          <span>{{$formatTime(item.mesgList[item.mesgList.length-1].time)}}</span>
         </div>
         <template slot="right">
           <van-button square type="danger" text="删除" @click="toDeleteChat(index)"/>
@@ -61,17 +61,18 @@ export default class PrivateChat extends Vue {
       flex-grow: 1;
       padding: 8px 0px 13px 15px;
       border-bottom: 1px solid #f9f9f9;
+      width: 0;
       p{
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: 11px;
+        font-size: 12px;
         color: #888;
       }
       b{
         display: block;
         font-size: 15px;
-        color: #111;
+        color: #444;
         margin-bottom: 8px;
         overflow: hidden;
         text-overflow: ellipsis;

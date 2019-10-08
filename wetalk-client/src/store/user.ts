@@ -2,9 +2,23 @@
 
 export default {
   state: {
-    user: JSON.parse(localStorage.getItem('user') || '{}') || {}
+    rememberPhone: localStorage.getItem('rememberPhone') || null,
+    user: JSON.parse(localStorage.getItem('user') || '{}') || {},
+    token: localStorage.getItem('token') || null
   },
   mutations: {
+    SAVE_PHONE (state: any, rememberPhone: string) {
+      state.rememberPhone = rememberPhone
+      localStorage.setItem('rememberPhone', rememberPhone)
+    },
+    SET_TOKEN (state: any, token: string) {
+      state.token = token
+      localStorage.setItem('token', token)
+    },
+    REMOVE_TOKEN (state: any) {
+      state.token = null
+      localStorage.removeItem('token')
+    },
     updateUserAvatar (state: any, avatar: string) {
       state.user.avatar = avatar
       localStorage.setItem('user', JSON.stringify(state.user))
@@ -22,7 +36,9 @@ export default {
     },
     logoutUser (state: any) {
       state.user = {}
-      localStorage.setItem('user', JSON.stringify(state.user))
+      state.token = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
       location.reload()
     }
   },

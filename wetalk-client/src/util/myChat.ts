@@ -8,21 +8,31 @@ class MyChat {
   public user: any
   // public isOver: boolean = false
   constructor (user: any) {
-    this.ws = new WebSocket('ws://localhost:9612?userId=' + user._id)
-    // this.ws = new WebSocket('ws://' + window.location.host)
+    // this.ws = new WebSocket('ws://localhost:9612?userId=' + user._id)
+    this.ws = new WebSocket('ws://47.106.130.141:9612?userId=' + user._id)
     this.user = user
   }
   public creatSending (toUser: any, content: string, type: number): any {
     var time = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
     var message = new Message(time, content, type, this.user)
     var data = {
-      from_user: this.user._id,
-      to_user: [toUser._id, this.user._id],
-      fuser: this.user,
-      tuser: toUser,
-      message: message
+      from_user: this.user,
+      to_user: [toUser._id],
+      message: message,
+      my_type: 1
     }
     this.ws.send(JSON.stringify(data))
+
+    // 本地操作自己的消息
+    let mydata: any = {
+      meId: this.user._id,
+      msg: message,
+      user: toUser
+    }
+    store.commit('ADD_CHAT', mydata)
+    Vue.nextTick(() => {
+      this.scrollBottom()
+    })
   }
   public createWebsocket () : any {
     let numberP: number
@@ -33,18 +43,17 @@ class MyChat {
     }
     this.ws.onmessage = (e: any) => {
       var resData = JSON.parse(e.data)
-      if (resData.to_user.indexOf(this.user._id) < 0) {
-        return
-      }
+      // if (resData.to_user === this.user._id || resData.to_user.indexOf(this.user._id) < 0) {
+      //   return
+      // }
       let data: any = {
         meId: this.user._id,
-        userId: resData.from_user === this.user._id ? resData.to_user[0] : resData.from_user,
-        msg: resData.message
+        msg: resData.message,
+        user: resData.from_user
       }
-      if (resData.isRemove) {
+      if (resData.my_type === 2) {
         store.commit('RM_CHAT', data)
       } else {
-        data.user = resData.fuser._id === this.user._id ? resData.tuser : resData.fuser
         store.commit('ADD_CHAT', data)
       }
       Vue.nextTick(() => {
@@ -52,14 +61,25 @@ class MyChat {
       })
     }
   }
-  public backoutMess (toUserId: any, message: Message) {
+  public backoutMess (toUser: any, message: Message) {
     var data = {
-      from_user: this.user._id,
-      to_user: [toUserId, this.user._id],
+      from_user: this.user,
+      to_user: [toUser._id],
       message: message,
-      isRemove: true
+      my_type: 2
     }
     this.ws.send(JSON.stringify(data))
+
+    // 本地操作自己的消息
+    let mydata: any = {
+      meId: this.user._id,
+      user: toUser,
+      msg: message
+    }
+    store.commit('RM_CHAT', mydata)
+    Vue.nextTick(() => {
+      this.scrollBottom()
+    })
   }
   public scrollBottom (): any {
     try {

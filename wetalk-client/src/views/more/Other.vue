@@ -1,7 +1,7 @@
 <template>
-  <div class="bgWhite max1100">
+  <div class="bgWhite">
     <van-nav-bar class="litheme" :border="false" fixed title="酷站" left-arrow @click-left="$router.go(-1)" ></van-nav-bar>
-    <div class="my-content-box">
+    <div class="my-content-fix max1100">
       <div class="list-box">
         <a class="list-item" :href="item.url" target="_blank" v-for="(item, index) in lists" :key="index">
           <div>
@@ -40,21 +40,21 @@ export default class Other extends Vue {
     pic: 'https://static.zcool.cn/git_z/z/common/images/svg/logo.svg',
     url: 'https://m.zcool.com.cn/home'
   }, {
-    title: '掘金内推',
-    pic: 'https://b-gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg',
-    url: 'https://juejin.im/topic/5abb61e1092dcb4620ca3322?sort=newest'
+    title: '比格张',
+    pic: 'https://bigezhang.com/_nuxt/img/b5785c6.png',
+    url: 'https://bigezhang.com/'
   }, {
-    title: 'V2EX',
-    pic: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2808347187,4059917386&fm=26&gp=0.jpg',
-    url: 'https://www.v2ex.com/?tab=jobs'
+    title: '掘金',
+    pic: 'https://b-gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg',
+    url: 'https://juejin.im/'
   }, {
     title: '搜狗翻译',
     pic: 'https://dlweb.sogoucdn.com/translate/pc/static/img/logo@1x.dd6a432c.png',
     url: 'https://fanyi.sogou.com/'
   }, {
-    title: '漫画斗破',
+    title: '神漫画',
     pic: 'https://resource.mhxk.com/shenmanhua_pc/static/images/comm/logo-read-header.png',
-    url: 'https://m.taomanhua.com/doupocangqiong/'
+    url: 'https://m.taomanhua.com/'
   }]
   text: string = ''
   toIndex (index: number) {

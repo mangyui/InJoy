@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" title="帖子详情" fixed left-arrow right-text="评论"
       @click-left="$router.go(-1)"
       @click-right="$router.push('/postcomment/'+ $route.params.id)" />
-    <div class="my-content-box" @scroll="scroll" ref="content">
+    <div class="my-content-fix" @scroll="scroll" ref="content">
       <van-pull-refresh v-if="postDetails._id" class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostById"  @click.native="isComment=false">
         <div class="post-box">
           <div class="post-item">
@@ -11,9 +11,9 @@
               <img :src="postDetails.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">{{postDetails.user?postDetails.user.name:'该用户不存在'}}</b>
-                <p>{{postDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
+                <p>{{$formatTime(postDetails.time)}}</p>
               </div>
-              <van-button round size="mini" type="info">关注</van-button>
+              <van-button round size="mini" type="info" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">关注</van-button>
             </div>
             <div class="post-content">
               <p class="my-max-height">{{postDetails.content}}</p>
@@ -50,8 +50,8 @@
               <div class="post-user">
                 <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
                 <div class="post-user-text">
-                  <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
-                  <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
+                  <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b> <van-tag v-show="item.user._id===postDetails.user._id" color="#7232dd" plain>楼主</van-tag>
+                  <p>{{$formatTime(item.time)}}</p>
                 </div>
                 <div @click.stop="commentAgree(item)" :class="item.alreadyAgree===true?'comment-right-icon comment-right-icon-active':'comment-right-icon'">
                   <van-icon name="upgrade" />

@@ -1,17 +1,14 @@
 <template>
   <div class="max1100">
-    <div class="my-content-box">
+    <div class="">
       <van-search
         v-model="text"
         placeholder="搜索通知"
       />
-      <div class="list-box">
-        <div class="list-item" v-for="(item, index) in 3" :key="index" @click="toPlay(item)">
-          <img :src="'./imgs/ico.png'">
-          <div class="list-item-left">
-            <b>官方通知</b>
-            <p>欢迎使用乐中APP,乐在其中</p>
-          </div>
+      <div class="notice-box">
+        <div class="notice-item" v-for="(item, index) in 3" :key="index">
+          <div class="notice-title"><b>官方通知</b><span>10/06 16:29</span></div>
+          <p class="notice-content">欢迎使用乐中APP, Enjoy In Joy, 乐在其中</p>
         </div>
       </div>
     </div>
@@ -31,8 +28,30 @@ export default class NoticeList extends Vue {
 </script>
 
 <style lang="less" scoped>
-@import '../../styles/listitem.less';
-.list-box .list-item  img{
-  border-radius: 50%;
+.notice-box{
+  padding: 5px 15px 15px;
+  .notice-item{
+    margin-bottom: 15px;
+    border-radius: 5px;
+    overflow: hidden;
+    .notice-title {
+      padding: 10px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(139, 129, 249, 0.8);
+      span{
+        color: #eee;
+        font-size: 12px;
+      }
+    }
+    .notice-content {
+      color: #666;
+      padding: 15px;
+      min-height: 60px;
+      background: rgba(139, 129, 249, 0.2);
+    }
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="bgWhite">
     <van-nav-bar class="litheme" :border="false" title="垃圾分类" fixed />
-    <div class="my-content-box">
+    <div class="my-content-fix">
       <div class="refuse-top-wrap">
         <div class="flex-cc refuse-top">
           <div @click="$router.push('/garbageimg')">

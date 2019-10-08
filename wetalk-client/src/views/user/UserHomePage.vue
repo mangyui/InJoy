@@ -1,10 +1,10 @@
 <template>
   <div class="usercenter">
     <van-nav-bar class="litheme" fixed :title="(user.name||user.phone||'')+'主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
-      <van-icon v-if="$route.params.id==me._id" name="edit" slot="right" @click="$router.push('/UserEdit')"/>
-      <span v-if="$route.params.id!==me._id" slot="right" @click="toUserChat">私信</span>
+      <van-icon v-if="user._id&&user._id==me._id" name="edit" slot="right" @click="$router.push('/UserEdit')"/>
+      <span v-if="user._id&&user._id!==me._id" slot="right" @click="toUserChat">私信</span>
     </van-nav-bar>
-    <div class="my-content-box" @scroll="scroll" ref="content">
+    <div class="my-content-fix" @scroll="scroll" ref="content">
       <div class="usercenter-top">
         <div class="user-bg">
           <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/avatar.png')+')'}"></div>
@@ -19,8 +19,8 @@
           <div class="user-right-box">
             <div v-if="user._id!==me._id" class="right-box-btn" @click.stop="userFollow"><van-icon :name="user.alreadyFollow?'like':'like-o'" /><p>{{user.alreadyFollow?'已':''}}关注</p></div>
             <div class="flex-rlc">
-              <div class="right-box-fan">{{user.following||0}}<p>关注</p></div>
-              <div class="right-box-fan">{{user.followers||0}}<p>粉丝</p></div>
+              <div class="right-box-fan" @click="$router.push('/following/'+user._id)">{{user.following||0}}<p>关注</p></div>
+              <div class="right-box-fan" @click="$router.push('/followers/'+user._id)">{{user.followers||0}}<p>粉丝</p></div>
             </div>
           </div>
         </div>
@@ -28,17 +28,12 @@
       <div class="max1100">
         <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
           <van-tab title="帖子" name="post">
-            <div class="scroll-wrap">
-              <PostList ref="postBox" :userId="$route.params.id"  @getOver="getOver"/>
-            </div>
+            <PostList ref="postBox" :userId="user._id"/>
           </van-tab>
           <van-tab title="评论" name="comment">
-            <UserComment :userId="user._id"/>
+            <UserComment v-if="!showMask" ref="commentBox" :userId="user._id" />
           </van-tab>
         </van-tabs>
-        <div v-show="active=='post'&&isNone" class="white-wrap my-tip-box">
-          求你发个帖子吧！
-        </div>
       </div>
     </div>
     <div v-show="showMask" class="white-mask"></div>
@@ -48,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Person from '@/util/Person'
-import PostList from '@/components/PostList.vue'
+import PostList from './UserPost.vue'
 import UserComment from './UserComment.vue'
 
 let persons : Person[] = require('@/util/Persons').persons
@@ -61,17 +56,11 @@ let persons : Person[] = require('@/util/Persons').persons
 })
 export default class UserHomePage extends Vue {
   showMask: boolean = true
-  isNone: boolean = false
   private user: any = {}
   private me: any = this.$store.getters.user
   scrollTop: number = 0
   isLoading: boolean = false
   active: string = 'post'
-  oldActive: string = 'post'
-  tabScrollList: any = {
-    post: 165,
-    comment: 165
-  }
   onRefresh () {
     this.getUser()
   }
@@ -85,7 +74,7 @@ export default class UserHomePage extends Vue {
     this.$toPost.getUserById(data).then((res: any) => {
       if (res.data && res.data._id) {
         this.user = res.data
-        if (res.data._id && this.me._id === res.data._id && this.me !== res.data) { // 此处还得再优化
+        if (this.me._id === res.data._id && JSON.stringify(this.me) !== JSON.stringify(res.data)) { // 此处还得再优化
           this.$store.commit('initUserInfo', res.data)
         }
         this.childPostList()
@@ -102,23 +91,10 @@ export default class UserHomePage extends Vue {
     })
   }
   tabChange (name: string) {
-    let app: any = document.getElementById('app')
-    if (app.scrollTop >= 165) {
-      this.tabScrollList[this.oldActive] = app.scrollTop
-      app.scrollTop = this.tabScrollList[name]
-    }
-    this.oldActive = name
   }
   childPostList () {
     // @ts-ignore
     this.$refs.postBox.getPostList()
-  }
-  getOver (postList: any) {
-    if (postList[0]) {
-      this.isNone = false
-    } else {
-      this.isNone = true
-    }
   }
   userFollow () {
     if (!this.$store.getters.user._id) {
@@ -157,6 +133,7 @@ export default class UserHomePage extends Vue {
     // @ts-ignore
     this.$refs.content.scrollTop = this.scrollTop
     if (this.$store.getters.isForward || !this.user._id) {
+      this.active = 'post'
       this.showMask = true
       this.getUser()
     } else {
@@ -249,8 +226,8 @@ export default class UserHomePage extends Vue {
     font-size: 12px;
     position: absolute;
     right: 15px;
-    top: -90px;
-    min-width: 80px;
+    top: -95px;
+    min-width: 95px;
     .right-box-btn{
       padding: 10px 15px;
       background: rgba(139, 129, 249,1);
@@ -275,8 +252,9 @@ export default class UserHomePage extends Vue {
       text-shadow: 0 0 5px rgba(0,0,0,0.5);
       height: 40px;
       box-sizing: border-box;
+      font-size: 13px;
       p{
-        margin-top: 5px;
+        margin-top: 10px;
       }
     }
   }

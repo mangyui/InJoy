@@ -4,7 +4,7 @@
       @click-left="$router.go(-1)"
       @click-right="toPublish"
        />
-    <div class="my-content-box">
+    <div class="my-content-fix">
       <div class="max1100">
         <van-field
           v-model="text"
@@ -52,7 +52,8 @@ export default class PostAdd extends Vue {
       return
     }
     this.$dialog.confirm({
-      title: '确认发表该帖子？'
+      title: '确认发表该帖子？',
+      closeOnPopstate: true
     }).then(() => {
       if (this.fileList.length > 0) {
         this.uploadImgs()

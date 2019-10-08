@@ -1,7 +1,7 @@
 <template>
-  <div class="bgWhite max1100">
+  <div class="bgWhite">
     <van-nav-bar class="litheme" :border="false" fixed title="玩一玩" left-arrow @click-left="$router.go(-1)" ></van-nav-bar>
-    <div class="my-content-box">
+    <div class="my-content-fix max1100">
       <van-search
         v-model="text"
         placeholder="搜索小游戏"

@@ -13,7 +13,7 @@
               <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
-                <p>{{item.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
+                <p>{{$formatTime(item.time)}}</p>
               </div>
               <div  @click.stop="commentAgree(item)" :class="item.alreadyAgree===true?'comment-right-icon comment-right-icon-active':'comment-right-icon'">
                 <van-icon name="upgrade" />
@@ -114,6 +114,11 @@ export default class UserComment extends Vue {
       console.log(err)
     })
   }
+  // noneGet () {
+  //   if (!this.commentList[0]) {
+  //     this.getfComments()
+  //   }
+  // }
   mounted () {
     this.getfComments()
   }

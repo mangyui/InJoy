@@ -1,8 +1,8 @@
 <template>
-  <div class="bgMax max1100">
+  <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" title="垃圾识别" fixed left-arrow  @click-left="$router.go(-1)">
     </van-nav-bar>
-    <div v-show="contentImg" class="garbage-box my-content-box">
+    <div v-show="contentImg" class="garbage-box my-content-fix max1100">
       <van-image
         class="garbage-img"
         fit="contain"
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="garbage-img-btn">
+    <div class="garbage-img-btn max1100">
       <van-button class="btn-theme" type="info" @click="cameraTakePicture">拍照</van-button>
       <van-uploader
         :after-read="readImg"
@@ -82,7 +82,7 @@ export default class GarbageImg extends Vue {
         sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
       })
     } else {
-      this.$toast('该设备不支持打开相机！')
+      this.$toast('该设备不支持该方式打开相机！')
     }
   }
   onSuccess (imageURI: any) {

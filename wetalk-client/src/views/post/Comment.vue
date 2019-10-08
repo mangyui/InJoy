@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" title="评论帖子" fixed left-arrow
       @click-left="$router.go(-1)"
        />
-    <div class="my-content-box">
+    <div class="my-content-fix">
       <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isLoading" @refresh="getPostById">
         <div class="post-box">
           <div class="post-item">
@@ -11,7 +11,7 @@
               <img :src="PostDetails.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + PostDetails.user._id)">
               <div class="post-user-text">
                 <b @click.stop="$router.push('/userhomepage/' + PostDetails.user._id)">{{PostDetails.user?PostDetails.user.name:'该用户不存在'}}</b>
-                <p>{{PostDetails.time.toString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</p>
+                <p>{{$formatTime(PostDetails.time)}}</p>
               </div>
               <van-button round size="mini" type="info">关注</van-button>
             </div>
@@ -87,7 +87,8 @@ export default class PostComment extends Vue {
       return
     }
     this.$dialog.confirm({
-      title: '确认评论该帖子？'
+      title: '确认评论该帖子？',
+      closeOnPopstate: true
     }).then(() => {
       if (this.fileList.length > 0) {
         this.uploadImgs()

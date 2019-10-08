@@ -1,15 +1,21 @@
 import request from './request'
 import Vue from 'vue'
 import qs from 'qs'
-// import md5 from 'js-md5'
-// import store from '../store'
+import md5 from 'js-md5'
+import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://47.106.130.141:9612' // api的base_url
-// export const payUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141' : 'http://122.237.106.250:8080'
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
 
 // eslint-disable-next-line
 function addSign (data) {
-  data.valid = 'mangyu'
+  let time = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+  let valid = md5(md5(JSON.stringify(time)).substr(1, 6) + 'mangyu')
+  data.stime = time
+  data.svalid = valid.substr(4, 24)
+  if (store.getters.user._id) {
+    data.suser = store.getters.user._id
+    data.stoken = store.getters.token
+  }
   return data
 }
 
@@ -165,7 +171,30 @@ const toPost = {
       method: 'post',
       data: qs.stringify(addSign(datas))
     })
+  },
+  // 获取粉丝
+  getFollowers (datas) {
+    return request({
+      url: baseUrl + '/follow/getFollowers',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取关注的人
+  getFollowing (datas) {
+    return request({
+      url: baseUrl + '/follow/getFollowing',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
   }
+  // addOrUpdate (datas) {
+  //   return request({
+  //     url: baseUrl + '/myApp/addOrUpdate',
+  //     method: 'post',
+  //     data: qs.stringify(addSign(datas))
+  //   })
+  // }
 }
 
 Vue.prototype.$toPost = toPost

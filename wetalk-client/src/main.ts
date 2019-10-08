@@ -7,6 +7,8 @@ import '@/util/pcRem.js'
 import './plugins/vantUI.js'
 import '@/styles/index.less'
 import '@/styles/mobile.less'
+import 'normalize.css'
+
 import './guard.ts'
 
 import './api/get.js'
@@ -36,6 +38,9 @@ declare module 'vue/types/vue' {
 }
 
 Vue.use(Navigation, { router, store, keyName: 'my' })
+
+const tools = require('@/util/tools.js')
+Vue.prototype.$formatTime = tools.formatTime
 
 // document.addEventListener('deviceready', () => {
 new Vue({

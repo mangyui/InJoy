@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" fixed title="编辑资料" left-arrow  right-text="保存"
       @click-left="$router.go(-1)"
       @click-right="saveUser"></van-nav-bar>
-    <div class="my-edit max1100 my-content-box">
+    <div class="my-content-fix max1100">
       <div class="my-avatar-box">
         <van-uploader
           :after-read="getAvatar"

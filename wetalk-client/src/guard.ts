@@ -13,7 +13,7 @@ const whiteList = [
 ] // 重定向白名单
 
 router.beforeEach((to: Route, from: Route, next: any) => {
-  if (!store.getters.user._id) {
+  if (!store.getters.user._id || !store.getters.token) {
     if (to.name && whiteList.indexOf(to.name) >= 0) {
       next('/login')
     } else {
@@ -34,7 +34,7 @@ router.beforeEach((to: Route, from: Route, next: any) => {
   //   var user = new User(date.substring(2) + index, persons[index].name, persons[index].avatar, 1)
   //   store.commit('initUserInfo', user)
 
-  next()
+  // next()
   // if (whiteList.indexOf(to.path) !== -1) {
   //   next()
   // } else {

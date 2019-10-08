@@ -47,7 +47,7 @@ export default class Login extends Vue {
   msgText: string = '发送验证码'
   msgTime: number = 60
   loginForm: any = {
-    phone: '',
+    phone: this.$store.getters.rememberPhone,
     vcode: ''
   }
   getVcode () {
@@ -85,17 +85,26 @@ export default class Login extends Vue {
       this.$toast('请正确填写')
       return
     }
+    this.$toast.loading({
+      mask: false,
+      duration: 0,
+      message: '登录中...'
+    })
     this.loginForm.name = '用户' + this.loginForm.phone.substr(7)
     this.$toPost.loginVCode(this.loginForm).then((res: any) => {
       if (res.data.success) {
         this.$store.commit('initUserInfo', res.data.user)
+        this.$store.commit('SET_TOKEN', res.data.token)
         location.reload()
+        this.$toast.clear()
       } else {
         this.$toast.fail(res.data.result)
       }
     }).catch((err: any) => {
       console.log(err)
+      this.$toast.fail('登录操作失败')
     })
+    this.$store.commit('SAVE_PHONE', this.loginForm.phone)
   }
 }
 
