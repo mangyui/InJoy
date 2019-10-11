@@ -50,7 +50,10 @@
               <div class="post-user">
                 <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
                 <div class="post-user-text">
-                  <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b> <van-tag v-show="item.user._id===postDetails.user._id" color="#7232dd" plain>楼主</van-tag>
+                  <div class="flex-c">
+                    <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
+                    <van-tag v-show="item.user._id===postDetails.user._id" color="#7232dd" plain>楼主</van-tag>
+                  </div>
                   <p>{{$formatTime(item.time)}}</p>
                 </div>
                 <div @click.stop="commentAgree(item)" :class="item.alreadyAgree===true?'comment-right-icon comment-right-icon-active':'comment-right-icon'">
@@ -59,7 +62,7 @@
                 </div>
               </div>
               <div class="post-content">
-                <p>{{item.content}}</p>
+                <p class="my-max-height">{{item.content}}</p>
                 <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
                 <div v-if="item.sCommentList&&item.sCommentList[0]" class="scomment-box">
                   <p v-for="scmoment in item.sCommentList" :key="scmoment._id">

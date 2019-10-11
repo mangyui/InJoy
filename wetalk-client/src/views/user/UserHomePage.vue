@@ -17,7 +17,7 @@
             <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp; {{user.city}}</p>
           </div>
           <div class="user-right-box">
-            <div v-if="user._id!==me._id" class="right-box-btn" @click.stop="userFollow"><van-icon :name="user.alreadyFollow?'like':'like-o'" /><p>{{user.alreadyFollow?'已':''}}关注</p></div>
+            <!-- <div v-if="user._id!==me._id" class="right-box-btn" @click.stop="userFollow"><van-icon :name="user.alreadyFollow?'like':'like-o'" /><p>{{user.alreadyFollow?'已':''}}关注</p></div> -->
             <div class="flex-rlc">
               <div class="right-box-fan" @click="$router.push('/following/'+user._id)">{{user.following||0}}<p>关注</p></div>
               <div class="right-box-fan" @click="$router.push('/followers/'+user._id)">{{user.followers||0}}<p>粉丝</p></div>
@@ -28,13 +28,17 @@
       <div class="max1100">
         <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
           <van-tab title="帖子" name="post">
-            <PostList ref="postBox" :userId="user._id"/>
+            <PostList v-if="!showMask" ref="postBox" :userId="user._id"/>
           </van-tab>
           <van-tab title="评论" name="comment">
             <UserComment v-if="!showMask" ref="commentBox" :userId="user._id" />
           </van-tab>
         </van-tabs>
       </div>
+    </div>
+    <div v-if="user._id&&user._id!==me._id" class="user-bottom-btn max1100">
+      <van-button type="info" :plain="user.alreadyFollow?false:true" @click.stop="userFollow">{{user.alreadyFollow?'已关注':'关注TA'}}</van-button>
+      <van-button class="btn-theme" type="info" @click="toUserChat">私信TA</van-button>
     </div>
     <div v-show="showMask" class="white-mask"></div>
   </div>
@@ -77,7 +81,6 @@ export default class UserHomePage extends Vue {
         if (this.me._id === res.data._id && JSON.stringify(this.me) !== JSON.stringify(res.data)) { // 此处还得再优化
           this.$store.commit('initUserInfo', res.data)
         }
-        this.childPostList()
       } else {
         this.$notify({ type: 'warning', message: '用户不存在' })
         setTimeout(() => {
@@ -116,6 +119,10 @@ export default class UserHomePage extends Vue {
     })
   }
   toUserChat () {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
     if (this.user._id) {
       this.$router.push('/UserChat/' + this.user._id)
     }
@@ -159,9 +166,12 @@ export default class UserHomePage extends Vue {
     padding-bottom: 15px;
   }
 }
+.my-content-fix{
+  padding-bottom: 50px;
+}
 .user-bg{
   width: 100%;
-  height: 200px;
+  height: 150px;
   position: relative;
   overflow: hidden;
   .edit-btn{
@@ -200,7 +210,7 @@ export default class UserHomePage extends Vue {
     width: 100px;
     height: 100px;
     border-radius: 4px;
-    margin-right: 15px;
+    margin-right: 10px;
     border: 1px solid #fff;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
   }
@@ -213,8 +223,11 @@ export default class UserHomePage extends Vue {
       color: #fff;
       font-size: 18px;
       text-shadow: 0 0 5px rgba(0,0,0,0.5);
+      padding-left: 5px;
+      overflow-y: visible;
     }
     p{
+      padding-left: 5px;
       margin: 10px 0;
       font-size: 13px;
       color: #666;
@@ -258,6 +271,21 @@ export default class UserHomePage extends Vue {
       }
     }
   }
-
+}
+.user-bottom-btn{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  >.van-button{
+    width: 50%;
+    opacity: 0.8;
+  }
+  .btn-theme{
+    margin-left: 10px;
+  }
 }
 </style>

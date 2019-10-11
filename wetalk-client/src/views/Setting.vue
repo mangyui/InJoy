@@ -1,5 +1,5 @@
 <template>
-  <div class="bgMax">
+  <div class="bgF7">
     <van-nav-bar class="litheme" :border="false" fixed title="设置" left-arrow
       @click-left="$router.go(-1)"></van-nav-bar>
     <div class="my-edit max1100 my-content-fix">

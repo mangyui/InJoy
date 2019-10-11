@@ -1,12 +1,17 @@
 <template>
   <div>
     <div v-if="imgList.length==1" class="img1-box">
-      <img :src="imgList[0]" @click.stop="toShowImg(0)">
+      <van-image
+        fit="scale-down"
+        lazy-load
+        :src="imgList[0]"
+        @click.stop="toShowImg(0)"
+        />
     </div>
     <div v-else :class="imgList.length==4?'img9-box img4-box':'img9-box'">
       <div v-for="(imgitem,imgindex) in imgList" :key="imgindex"  @click.stop="toShowImg(imgindex)">
         <van-image
-          fit="scale-down"
+          fit="cover"
           lazy-load
           :src="imgitem"
         />
@@ -45,10 +50,17 @@ export default class ImgBox extends Vue {
 
 <style lang="less" scoped>
 .img1-box{
-  img{
+  .van-image{
+    min-width: 110px;
+    min-height: 110px;
+  }
+  /deep/ img{
     max-width: 100%;
     max-height: 240px;
+    width: auto;
+    height: auto;
     border-radius: 5px;
+    object-position: left;
   }
 }
 .img9-box{

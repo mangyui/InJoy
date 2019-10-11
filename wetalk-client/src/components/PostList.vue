@@ -26,7 +26,7 @@
               </div>
             </b>
             <div class="post-san">
-              <div><van-icon name="share" @click.stop="openShare(item)"/>{{item.count_forward}}</div>
+              <div><van-icon name="share" @click.stop="openShare(item)"/>分享</div>
               <div><van-icon name="comment-o" />{{item.count_comment}}</div>
               <div :class="item.alreadyAgree===true?'post-san-active':''"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(item)"/>{{item.count_agree}}</div>
             </div>

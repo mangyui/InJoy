@@ -1,5 +1,5 @@
 <template>
-  <div class="bgMax">
+  <div class="bgF7">
     <van-nav-bar class="litheme" :border="false" fixed title="编辑资料" left-arrow  right-text="保存"
       @click-left="$router.go(-1)"
       @click-right="saveUser"></van-nav-bar>

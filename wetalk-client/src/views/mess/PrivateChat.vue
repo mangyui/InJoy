@@ -1,22 +1,24 @@
 <template>
   <div class="max1100">
     <div class="list-box">
-      <van-swipe-cell v-for="(item, index) in chatList" :key="index" :title="deleteIndex">
-        <div class="list-item"  v-if="index.split('To')[0] === user._id&&item.mesgList[item.mesgList.length-1]" @click="$router.push('/UserChat/' + index.split('To')[1])">
-          <img :src="item.user.avatar||'./imgs/avatar.png'">
-          <div class="mess-right-l">
-            <b>{{item.user.name}}</b>
-            <p>{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':item.mesgList[item.mesgList.length-1].content}}</p>
+      <van-pull-refresh class="refrsh-box" :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="refreshList">
+        <van-swipe-cell v-for="(item, index) in chatList" :key="index" :title="deleteIndex">
+          <div class="list-item"  v-if="index.split('To')[0] === user._id&&item.mesgList[item.mesgList.length-1]" @click="$router.push('/UserChat/' + index.split('To')[1])">
+            <img :src="item.user.avatar||'./imgs/avatar.png'">
+            <div class="mess-right-l">
+              <b>{{item.user.name}}</b>
+              <p>{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':item.mesgList[item.mesgList.length-1].content}}</p>
+            </div>
+            <span>{{$formatTime(item.mesgList[item.mesgList.length-1].time)}}</span>
           </div>
-          <span>{{$formatTime(item.mesgList[item.mesgList.length-1].time)}}</span>
+          <template slot="right">
+            <van-button square type="danger" text="删除" @click="toDeleteChat(index)"/>
+          </template>
+        </van-swipe-cell>
+        <div class="white-wrap my-tip-box">
+          你这么高冷，怎么找对象？
         </div>
-        <template slot="right">
-          <van-button square type="danger" text="删除" @click="toDeleteChat(index)"/>
-        </template>
-      </van-swipe-cell>
-      <div class="white-wrap my-tip-box">
-        你这么高冷，怎么找对象？
-      </div>
+      </van-pull-refresh>
     </div>
   </div>
 </template>
@@ -34,9 +36,13 @@ import { Getter } from 'vuex-class'
 export default class PrivateChat extends Vue {
   @Getter user!: any
   deleteIndex: any = 0
+  isRefresh: boolean = false
   toDeleteChat (index: any) {
     this.$store.commit('RM_USER', index)
     this.deleteIndex = index
+  }
+  refreshList () {
+    this.isRefresh = false
   }
   created () {
   }
@@ -59,22 +65,23 @@ export default class PrivateChat extends Vue {
     }
     .mess-right-l{
       flex-grow: 1;
-      padding: 8px 0px 13px 15px;
+      padding: 5px 0px 15px 15px;
       border-bottom: 1px solid #f9f9f9;
       width: 0;
       p{
-        overflow: hidden;
+        overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: 12px;
+        font-size: 13px;
         color: #888;
       }
       b{
         display: block;
-        font-size: 15px;
+        font-size: 16px;
+        font-weight: normal;
         color: #444;
-        margin-bottom: 8px;
-        overflow: hidden;
+        margin-bottom: 6px;
+        overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
@@ -84,5 +91,8 @@ export default class PrivateChat extends Vue {
       color: #888;
     }
   }
+}
+.refrsh-box{
+  padding-bottom: 100px;
 }
 </style>

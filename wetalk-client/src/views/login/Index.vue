@@ -61,7 +61,9 @@ export default class Login extends Vue {
     this.isGetting = true
     this.$toPost.getVCode({ phone: this.loginForm.phone }).then((res: any) => {
       this.msgText = this.msgTime + 's'
-      this.loginForm.vcode = res.data.code
+      if (res.data.code) {
+        this.loginForm.vcode = res.data.code
+      }
       const time = setInterval(() => {
         this.msgTime--
         this.msgText = this.msgTime + 's'

@@ -38,7 +38,7 @@
           />
         </div>
         <br/>
-        <van-button class="max-btn" type="info" @click="toPublish">发表评论</van-button>
+        <van-button class="max-btn btn-theme" type="info" @click="toPublish">发表评论</van-button>
         <br />
       </div>
       </van-pull-refresh>

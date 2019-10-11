@@ -42,13 +42,13 @@ Vue.use(Navigation, { router, store, keyName: 'my' })
 const tools = require('@/util/tools.js')
 Vue.prototype.$formatTime = tools.formatTime
 
-// document.addEventListener('deviceready', () => {
-new Vue({
-  // el: '#app',
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
-// @ts-ignore
-//   window.navigator.splashscreen.hide()
-// }, false)
+document.addEventListener('deviceready', () => {
+  new Vue({
+    // el: '#app',
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+  // @ts-ignore
+  window.navigator.splashscreen.hide()
+}, false)

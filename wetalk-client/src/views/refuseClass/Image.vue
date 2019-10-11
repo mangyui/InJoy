@@ -1,5 +1,5 @@
 <template>
-  <div class="bgMax">
+  <div class="bgF7">
     <van-nav-bar class="litheme" :border="false" title="垃圾识别" fixed left-arrow  @click-left="$router.go(-1)">
     </van-nav-bar>
     <div v-show="contentImg" class="garbage-box my-content-fix max1100">

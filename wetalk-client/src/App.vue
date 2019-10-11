@@ -42,12 +42,10 @@ export default Vue.extend({
     homeExit () {
       // @ts-ignore
       if (navigator.app) {
+        document.removeEventListener('backbutton', this.onBackKeyDown, false)
+        document.removeEventListener('backbutton', this.exitApp, false)
         if (this.$route.matched[0].name === 'Home') {
-          document.removeEventListener('backbutton', this.onBackKeyDown, false)
           document.addEventListener('backbutton', this.onBackKeyDown, false)
-        } else {
-          document.removeEventListener('backbutton', this.onBackKeyDown, false)
-          document.removeEventListener('backbutton', this.exitApp, false)
         }
       }
     },
@@ -87,6 +85,7 @@ export default Vue.extend({
       if (navigator.app) {
         document.addEventListener('resume', () => {
           if (this.$store.getters.chatWS && this.$store.getters.chatWS.ws.readyState !== 1 && this.$store.getters.user._id) {
+            this.$store.commit('CLOSE_WS')
             this.$store.commit('INIT_WS', this.$store.getters.user)
           }
         }, false)
