@@ -9,7 +9,7 @@
             <b>{{item.to_user.name}}</b>
             <p>{{item.to_user.intro}}</p>
           </div>
-          <div  v-if="$store.getters.user&&$store.getters.user._id!=item.from_user._id" class="list-item-right">
+          <div  v-if="$store.getters.user&&$store.getters.user._id!=item.to_user._id" class="list-item-right">
             <van-button size="small" @click.stop="$router.push('/UserChat/' + item.to_user._id)">私信TA</van-button>
           </div>
         </div>

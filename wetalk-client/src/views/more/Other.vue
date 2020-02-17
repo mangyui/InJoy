@@ -67,12 +67,8 @@ export default class Other extends Vue {
 </script>
 
 <style lang="less" scoped>
-.bgWhite{
-  padding-left: 15px;
-  padding-right: 15px;
-}
 .list-box{
-  padding: 15px 0;
+  padding: 15px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

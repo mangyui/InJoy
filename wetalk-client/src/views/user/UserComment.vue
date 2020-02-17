@@ -130,6 +130,7 @@ export default class UserComment extends Vue {
   padding-left: 0;
 }
 .comment-post-box{
+  margin-top: 5px;
   padding: 15px;
   background: #f3f3f3;
   border-radius: 5px;

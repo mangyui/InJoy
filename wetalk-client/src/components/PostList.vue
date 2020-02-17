@@ -22,14 +22,15 @@
             </div>
             <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
               <div>
-                <span>#</span><p>{{item.topic.name}}</p><span>#</span>
+                <p>{{item.topic.name}}</p>
               </div>
             </b>
             <div class="post-san">
               <div><van-icon name="share" @click.stop="openShare(item)"/>分享</div>
-              <div><van-icon name="comment-o" />{{item.count_comment}}</div>
+              <div><van-icon name="comment-o" @click.stop="$router.push('/postcomment/'+ item._id)" />{{item.count_comment}}</div>
               <div :class="item.alreadyAgree===true?'post-san-active':''"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(item)"/>{{item.count_agree}}</div>
             </div>
+            <van-icon class="post-more-btn" name="ellipsis" />
           </div>
         </van-list>
       </div>

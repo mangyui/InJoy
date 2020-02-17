@@ -20,22 +20,22 @@
         </div>
       </div>
       <div class="my-info max1100">
-        <!-- <van-cell-group title="">
-          <van-cell title="动态" is-link icon="./icons/星星.svg" />
-        </van-cell-group> -->
         <van-cell-group title="">
+          <van-cell title="收藏" is-link icon="./icons/star.svg" to='/other' />
+        </van-cell-group>
+        <van-cell-group title="">
+          <van-cell title="垃圾分类" is-link icon="./icons/bottle.svg" to='/refuseclass' />
           <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' />
           <van-cell title="地图" is-link icon="./icons/map.svg" to='/MyMap' />
         </van-cell-group>
         <van-cell-group title="">
           <van-cell title="用一用" is-link icon="./icons/expression.svg" to='/applications' />
-          <van-cell title="玩一玩" is-link icon="./icons/game.svg" to='/games' />
           <van-cell title="听一听" is-link icon="./icons/music.svg" to='/music' />
         </van-cell-group>
-        <van-cell-group title="">
+        <!-- <van-cell-group title="">
           <van-cell title="酷站" is-link icon="./icons/star.svg" to='/other' />
-          <!-- <van-cell title="事务" is-link icon="./icons/list.svg" /> -->
-        </van-cell-group>
+          <van-cell title="事务" is-link icon="./icons/list.svg" />
+        </van-cell-group> -->
       </div>
     </div>
   </div>
@@ -64,6 +64,9 @@ export default class UserCenter extends Vue {
   padding-top: 44px;
   padding-bottom: 55px;
   overflow-y: auto;
+  .van-cell-group{
+    margin: 10px 0;
+  }
 }
 .bgtheme{
   background: #8b81f9;

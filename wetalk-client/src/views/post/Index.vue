@@ -1,6 +1,6 @@
 <template>
   <div class="bgMax">
-    <van-nav-bar class="litheme" :border="false" title="大厅" fixed>
+    <van-nav-bar class="litheme" :border="false" title="推荐" fixed>
       <van-icon name="search" slot="right"  @click="$router.push('/search')"/>
     </van-nav-bar>
     <div v-show="!isOver" class="my-content-box white-wrap max1100">

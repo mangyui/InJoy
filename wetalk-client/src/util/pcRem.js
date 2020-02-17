@@ -1,3 +1,4 @@
+// rem布局
 (function (doc, win) {
   let docEl = doc.documentElement
   let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'

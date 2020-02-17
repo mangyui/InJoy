@@ -1,6 +1,8 @@
 <template>
   <div class="bgWhite">
-    <van-nav-bar class="litheme" :border="false" title="垃圾分类" fixed />
+    <van-nav-bar class="litheme" :border="false" title="垃圾分类" fixed left-arrow
+    @click-left="$router.go(-1)"
+    />
     <div class="my-content-fix">
       <div class="refuse-top-wrap">
         <div class="flex-cc refuse-top">
@@ -97,7 +99,6 @@ export default class RefuseClass extends Vue {
 }
 .refuse-class-box{
   padding: 10px 15px;
-  padding-bottom: 55px;
   .refuse-class-item{
     border-radius: 1px;
     padding: 18px;

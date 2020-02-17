@@ -56,7 +56,7 @@ export default class ImgBox extends Vue {
   }
   /deep/ img{
     max-width: 100%;
-    max-height: 240px;
+    max-height: 200px;
     width: auto;
     height: auto;
     border-radius: 5px;

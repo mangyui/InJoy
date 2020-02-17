@@ -3,9 +3,16 @@ import Router from 'vue-router'
 import Home from '@/views/home/Index.vue'
 
 import Lobby from '@/views/post/Index.vue'
-import RefuseClass from '@/views/refuseClass/Index.vue'
+import Join from '@/views/join/Index.vue'
 import Message from '@/views/mess/Index.vue'
 import UserCenter from '@/views/user/UserCenter.vue'
+
+import MapJoin from '@/views/join/MapJoin.vue'
+import JoinEdit from '@/views/join/JoinEdit.vue'
+import JoinDetails from '@/views/join/Details.vue'
+import MapChoose from '@/views/join/MapChoose.vue'
+
+import RefuseClass from '@/views/refuseClass/Index.vue'
 
 import Search from '@/views/home/Search.vue'
 import PostDetails from '@/views/post/Details.vue'
@@ -60,10 +67,10 @@ const router:Router = new Router({
           component: () => import('@/views/post/Index.vue')
         },
         {
-          path: 'refuseclass',
-          name: 'RefuseClass',
+          path: 'join',
+          name: 'Join',
           meta: { isKeep: true },
-          component: RefuseClass // () => import('@/views/refuseClass/Index.vue')
+          component: Join // () => import('@/views/Join/Index.vue')
         },
         {
           path: 'message',
@@ -78,6 +85,26 @@ const router:Router = new Router({
           component: UserCenter // () => import('@/views/user/UserCenter.vue')
         }
       ]
+    },
+    {
+      path: '/mapJoin',
+      name: 'MapJoin',
+      component: MapJoin // () => import('@/views/join/MapJoin.vue')
+    },
+    {
+      path: '/joinEdit',
+      name: 'JoinEdit',
+      component: JoinEdit // () => import('@/views/join/JoinEdit.vue')
+    },
+    {
+      path: '/joinDetails/:id',
+      name: 'JoinDetails',
+      component: JoinDetails // () => import('@/views/join/Details.vue')
+    },
+    {
+      path: '/mapChoose',
+      name: 'MapChoose',
+      component: MapChoose // () => import('@/views/join/MapChoose.vue')
     },
     {
       path: '/search',
@@ -158,6 +185,11 @@ const router:Router = new Router({
       path: '/setting',
       name: 'Setting',
       component: Setting // () => import('@/views/Setting.vue')
+    },
+    {
+      path: '/refuseclass',
+      name: 'RefuseClass',
+      component: RefuseClass // () => import('@/views/refuseClass/Index.vue')
     },
     {
       path: '/weather',

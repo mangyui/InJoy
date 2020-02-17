@@ -15,7 +15,7 @@
             <p>{{item.desc}}</p>
           </div>
           <div class="list-item-right">
-            <van-button size="small" @click="$router.push(item.url)">打开</van-button>
+            <van-button size="small" @click="toStart(item)">打开</van-button>
               <!-- <van-icon name="pause-circle" color="#00a7ff"/> -->
           </div>
         </div>
@@ -35,16 +35,18 @@ export default class Games extends Vue {
     title: 'Flappy Bird',
     pic: 'http://i5.72g.com/upload/201408/201408041006053007.JPG',
     desc: '像素鸟，穿越管道',
-    url: {
-      name: 'Web',
-      params: {
-        url: 'http://demo.mccyu.com/flappybird/'
-      }
-    }
+    otherWeb: 'http://demo.mccyu.com/flappybird/'
   }]
   text: string = ''
   getSearch () {
-
+  }
+  toStart (item: any) {
+    if (item.url) {
+      this.$router.push(item.url)
+    } else if (item.otherWeb) {
+      this.$store.commit('SET_OTHER_URL', item.otherWeb)
+      this.$router.push('/web')
+    }
   }
   created () {
   }

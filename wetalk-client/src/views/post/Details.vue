@@ -22,7 +22,7 @@
             <br />
             <div class="post-san">
               <div><van-icon name="share"/>{{postDetails.count_forward}}</div>
-              <div><van-icon name="comment-o" />{{postDetails.count_comment}}</div>
+              <div><van-icon name="comment-o" @click="$router.push('/postcomment/'+ $route.params.id)"/>{{postDetails.count_comment}}</div>
               <div :class="postDetails.alreadyAgree===true?'post-san-active':''"><van-icon :name="postDetails.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(postDetails)"/>{{postDetails.count_agree}}</div>
             </div>
           </div>
@@ -249,6 +249,8 @@ export default class PostDetails extends Vue {
     this.$refs.content.scrollTop = this.scrollTop
     if (this.$store.getters.isForward || !this.postDetails._id) {
       this.showMask = true
+      // @ts-ignore
+      this.$refs.content.scrollTop = 0
       this.getPostById()
     } else {
       this.showMask = false

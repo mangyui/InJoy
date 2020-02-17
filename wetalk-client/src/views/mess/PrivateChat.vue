@@ -16,7 +16,7 @@
           </template>
         </van-swipe-cell>
         <div class="white-wrap my-tip-box">
-          你这么高冷，怎么找对象？
+          快去私信TA
         </div>
       </van-pull-refresh>
     </div>
@@ -72,15 +72,15 @@ export default class PrivateChat extends Vue {
         overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: 13px;
         color: #888;
+        padding-top: 5px;
+        line-height: 19px;
       }
       b{
         display: block;
         font-size: 16px;
         font-weight: normal;
-        color: #444;
-        margin-bottom: 6px;
+        color: #333;
         overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -89,10 +89,15 @@ export default class PrivateChat extends Vue {
     span{
       font-size: 11px;
       color: #888;
+      position: absolute;
+      right: 15px;
     }
   }
 }
 .refrsh-box{
+  /deep/ .van-pull-refresh__track{
+    min-height: 400px;
+  }
   padding-bottom: 100px;
 }
 </style>

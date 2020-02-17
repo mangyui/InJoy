@@ -48,7 +48,7 @@ export default class PostAdd extends Vue {
       return
     }
     if (this.text.trim() === '') {
-      this.$toast('你输入点内容会死吗？')
+      this.$toast('内容不能为空！')
       return
     }
     this.$dialog.confirm({

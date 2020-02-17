@@ -13,7 +13,7 @@
                 <b @click.stop="$router.push('/userhomepage/' + PostDetails.user._id)">{{PostDetails.user?PostDetails.user.name:'该用户不存在'}}</b>
                 <p>{{$formatTime(PostDetails.time)}}</p>
               </div>
-              <van-button round size="mini" type="info">关注</van-button>
+              <!-- <van-button round size="mini" type="info">关注</van-button> -->
             </div>
             <div class="post-content">
               <p>{{PostDetails.content}}</p>

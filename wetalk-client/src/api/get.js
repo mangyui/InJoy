@@ -20,6 +20,14 @@ const toGet = {
       params: datas
     })
   },
+  // 推荐音乐
+  getMusicRecommend (datas) {
+    return request({
+      url: baseUrl + '/other/musicRecommend',
+      method: 'get',
+      params: datas
+    })
+  },
   // 获取垃圾  视乎不能用了
   getGarbage (datas) {
     return request({

@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" title="" fixed left-arrow  @click-left="$router.go(-1)">
       <!-- <van-icon name="ellipsis" slot="right"/> -->
     </van-nav-bar>
-    <iframe :src="$store.getters.otherWeb" frameborder="0"></iframe>
+    <iframe class="my-content-fix" :src="$store.getters.otherWeb" frameborder="0"></iframe>
   </div>
 </template>
 

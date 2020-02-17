@@ -1,4 +1,5 @@
 
+// 记录音乐播放状态
 export default {
   state: {
     isPlay: 0,

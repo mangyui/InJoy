@@ -6,7 +6,7 @@
         placeholder="搜索通知"
       />
       <div class="notice-box">
-        <div class="notice-item" v-for="(item, index) in 3" :key="index">
+        <div class="notice-item" v-for="(item, index) in 1" :key="index">
           <div class="notice-title"><b>官方通知</b><span>10/06 16:29</span></div>
           <p class="notice-content">欢迎使用乐中APP, Enjoy In Joy, 乐在其中</p>
         </div>
@@ -50,7 +50,7 @@ export default class NoticeList extends Vue {
       color: #666;
       padding: 15px;
       min-height: 60px;
-      background: rgba(139, 129, 249, 0.2);
+      background: rgba(139, 129, 249, 0.1);
     }
   }
 }

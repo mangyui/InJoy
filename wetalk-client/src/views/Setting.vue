@@ -44,7 +44,7 @@ export default class Music extends Vue {
         title: '确定要退出该账号吗？'
       }).then(() => {
         this.$store.commit('logoutUser')
-        this.$router.push('/login')
+        this.$router.replace('/login')
       }).catch(() => {
       })
     } else {

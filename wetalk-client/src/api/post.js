@@ -187,6 +187,30 @@ const toPost = {
       method: 'post',
       data: qs.stringify(addSign(datas))
     })
+  },
+  // 发布活动
+  addJoin (datas) {
+    return request({
+      url: baseUrl + '/join/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas), { arrayFormat: 'repeat' }) // 数组格式化a=b&a=c
+    })
+  },
+  // 根据id获取活动信息
+  getJoinById (datas) {
+    return request({
+      url: baseUrl + '/join/getById',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 根据位置获取活动信息
+  getJoinByLocation (datas) {
+    return request({
+      url: baseUrl + '/join/getByLocation',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
   }
   // addOrUpdate (datas) {
   //   return request({

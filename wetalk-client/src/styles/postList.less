@@ -4,6 +4,7 @@
     border-bottom: 8px solid #eff0f7;
     background: #fefefe;
     color: #444;
+    position: relative;
     .post-user{
       display: flex;
       align-items: center;
@@ -15,7 +16,7 @@
       }
       .post-user-text{
         flex-grow: 1;
-        padding-left: 15px;
+        padding-left: 10px;
         color: #666;
         >div{
           padding: 1px 0; 
@@ -47,11 +48,14 @@
         width: 100%;
         margin: 15px 0 10px;
         padding: 1px 0;
-        max-height: 100px;
+        max-height: 98px;
         overflow: hidden;
         font-size: 16px;
         line-height: 24px;
         color: #444;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
       }
       p.p-max{
         max-height: unset;
@@ -175,4 +179,12 @@
     font-size: 20px;
     margin-right: 10px;
   }
+}
+
+.post-more-btn{
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  font-size: 22px;
+  color: #555;
 }

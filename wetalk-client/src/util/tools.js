@@ -1,4 +1,5 @@
 
+// 图片转bese64
 function imageToBase64 (img) {
   var canvas = document.createElement('canvas')
   canvas.width = img.width
@@ -10,6 +11,7 @@ function imageToBase64 (img) {
   return dataURL
 }
 
+// 压缩图片
 function dealImage (base64, w, callback) {
   var newImage = new Image()
   var quality = 0.6 // 压缩系数0-1之间
@@ -51,6 +53,7 @@ function dealImage (base64, w, callback) {
   }
 }
 
+// 时间过去格式化
 function formatTime (time) {
   // time = +time * 1000
   const d = new Date(time)
@@ -82,8 +85,20 @@ function add0 (num) {
   }
 }
 
+// 时间过去格式化
+function commomTime (time) {
+  let d = new Date(time)
+  if (d instanceof Date) {
+    return add0(d.getFullYear()) + '/' + add0(d.getMonth() + 1) + '/' + add0(d.getDate()) +
+    ' ' + add0(d.getHours()) + ':' + add0(d.getMinutes()) + ':' + add0(d.getSeconds())
+  } else {
+    return ''
+  }
+}
+
 module.exports = {
   imageToBase64,
   dealImage,
-  formatTime
+  formatTime,
+  commomTime
 }

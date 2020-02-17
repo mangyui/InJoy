@@ -25,15 +25,17 @@
         <van-field
           :value="user.sex==1?'男':'女'"
           label="性别"
-          placeholder="请填写性别"
+          placeholder="请选择性别"
           disabled
+          is-link
           @click="showSex = true"
         />
         <van-field
           :value="user.age"
           label="年龄"
-          placeholder="请填写年龄"
+          placeholder="请选择年龄"
           disabled
+          is-link
           @click="showDate = true"
         />
       </van-cell-group>
