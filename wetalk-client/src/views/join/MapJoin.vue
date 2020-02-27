@@ -130,7 +130,7 @@ export default class MapJoin extends Vue {
     }
   }
   mapMyLocation (me: any) {
-    let icon = new this.BMap.Icon('./icons/mapThis.png', new this.BMap.Size(30, 40))
+    let icon = new this.BMap.Icon('./imgs/mapThis.png', new this.BMap.Size(30, 40))
     this.mk = new this.BMap.Marker(me, { icon: icon })
     this.initMap()
     this.map.addOverlay(this.mk)

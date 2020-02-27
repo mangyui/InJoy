@@ -1,41 +1,60 @@
 <template>
   <div class="find-wrap borderBox height100">
-    <van-nav-bar class="litheme" fixed :border="false"  @click-right="$router.push('/setting')">
-      <van-icon name="setting-o" slot="right"/>
+    <van-nav-bar class="litheme" fixed :border="false"  @click-right="$router.push('/UserEdit')">
+      <van-icon name="edit" slot="right"/>
     </van-nav-bar>
     <div class="my-content-fix">
       <div class="bgtheme">
-        <div class="find-user max1100" @click="toUserPage">
+        <div class="find-user max1100" @click="toUserPage('/userhomepage/')">
           <img :src="user.avatar||'./imgs/avatar.png'">
           <div v-if="user._id">
-            <p>{{user.name||user.phone}} <img class="icon-sex"  :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')"></p>
+            <p>{{user.name||user.phone}} <img class="icon-sex"  :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'"></p>
             <span>{{user.intro || '这个人超级懒，什么都没留下'}}</span>
             <van-icon class="me-icon" name="arrow" />
           </div>
           <div v-if="!user._id">
             <p>请先登录</p>
-            <span>未登录不影响使用下面的功能</span>
+            <span>登录认识更多的人</span>
             <van-icon class="me-icon" name="arrow" />
+          </div>
+        </div>
+        <div class="my-user-digit">
+          <div>
+            <span>0</span>
+            <p>活动</p>
+          </div>
+          <div @click="toUserPage('/userhomepage/')">
+            <span>0</span>
+            <p>动态</p>
+          </div>
+          <div @click="toUserPage('/following/')">
+            <span>0</span>
+            <p>关注</p>
+          </div>
+          <div @click="toUserPage('/followers/')">
+            <span>0</span>
+            <p>粉丝</p>
           </div>
         </div>
       </div>
       <div class="my-info max1100">
-        <van-cell-group title="">
+        <!-- <van-cell-group title="">
           <van-cell title="收藏" is-link icon="./icons/star.svg" to='/other' />
-        </van-cell-group>
+        </van-cell-group> -->
         <van-cell-group title="">
           <van-cell title="垃圾分类" is-link icon="./icons/bottle.svg" to='/refuseclass' />
-          <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' />
           <van-cell title="地图" is-link icon="./icons/map.svg" to='/MyMap' />
+          <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' />
         </van-cell-group>
         <van-cell-group title="">
-          <van-cell title="用一用" is-link icon="./icons/expression.svg" to='/applications' />
           <van-cell title="听一听" is-link icon="./icons/music.svg" to='/music' />
+          <van-cell title="用一用" is-link icon="./icons/expression.svg" to='/applications' />
         </van-cell-group>
-        <!-- <van-cell-group title="">
-          <van-cell title="酷站" is-link icon="./icons/star.svg" to='/other' />
-          <van-cell title="事务" is-link icon="./icons/list.svg" />
-        </van-cell-group> -->
+        <van-cell-group title="">
+          <!-- <van-cell title="酷站" is-link icon="./icons/star.svg" to='/other' />
+          <van-cell title="事务" is-link icon="./icons/list.svg" /> -->
+          <van-cell title="设置" is-link icon="./icons/edit.svg" to='/setting' />
+        </van-cell-group>
       </div>
     </div>
   </div>
@@ -48,9 +67,9 @@ import { Getter } from 'vuex-class'
 @Component
 export default class UserCenter extends Vue {
   @Getter user!: any
-  toUserPage () {
+  toUserPage (path: string) {
     if (this.user._id) {
-      this.$router.push('/userhomepage/' + this.user._id)
+      this.$router.push(path + this.user._id)
     } else {
       this.$router.push('/login')
     }
@@ -72,19 +91,35 @@ export default class UserCenter extends Vue {
   background: #8b81f9;
   background: linear-gradient(to top,#7678f2,#8b81f9)!important;
 }
+.my-user-digit{
+  display: flex;
+  padding: 15px 20px;
+  justify-content: space-around;
+  color: #eee;
+  & > div {
+    text-align: center;
+    span{
+      font-size: 17px;
+    }
+    p{
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+}
 .find-user{
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 0px 15px 10px;
   position: relative;
   // background: #fff;
   // border-bottom: 1px solid #f4f4f4;
   // background-image: linear-gradient(to bottom, #fff, #f9f9f9);
   >img {
     background: #fefefe;
-    width: 75x;
-    height: 75px;
-    border-radius: 4px;
+    width: 65x;
+    height: 65px;
+    border-radius: 50%;
     margin-right: 20px;
     border: 1px solid #fff;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);

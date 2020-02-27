@@ -15,7 +15,7 @@
             <div class="mess-item" v-if="item.type==1&&item.user.id!=user.id">
               <div class="mu-avatar">
                 <img :src="item.user.avatar||'./imgs/avatar.png'">
-                <img class="icon-sex" :src="item.user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')">
+                <img class="icon-sex" :src="item.user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
                 <span>{{item.user.name}}</span>
@@ -26,7 +26,7 @@
             <div class="mess-item-me" v-else-if="item.type==1&&item.user.id==user.id">
               <div class="mu-avatar">
                 <img :src="user.avatar||'./imgs/avatar.png'">
-                <img class="icon-sex" :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')">
+                <img class="icon-sex" :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
                 <span>{{user.name}}</span>

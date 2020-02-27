@@ -10,7 +10,7 @@
             <div class="mess-item" v-if="item.type>0&&item.user._id!=user._id">
               <div class="mu-avatar">
                 <img :src="chatList[chatKey].user.avatar||'./imgs/avatar.png'">
-                <img class="icon-sex" :src="chatList[chatKey].user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')">
+                <img class="icon-sex" :src="chatList[chatKey].user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
                 <van-image v-if="item.type==2" lazy-load :src="item.content"  @click="lookImg(item.content)"/>
@@ -20,7 +20,7 @@
             <div class="mess-item-me" v-else-if="item.type>0&&item.user._id==user._id">
               <div class="mu-avatar">
                 <img :src="user.avatar||'./imgs/avatar.png'">
-                <img class="icon-sex" :src="user.sex==1?require('@/assets/img/male.svg'):require('@/assets/img/female.svg')">
+                <img class="icon-sex" :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
                 <van-image v-if="item.type==2" @touchstart.native="gtouchstart(index)" @touchend.native="gtouchend" lazy-load :src="item.content" @click="lookImg(item.content)"/>
@@ -72,7 +72,6 @@ export default class UserChat extends Vue {
   showMore: boolean = false
   timeOutEvent: any
   actions: Array<any> = [
-    { name: '复制' },
     { name: '撤回' }
   ]
 
@@ -115,7 +114,7 @@ export default class UserChat extends Vue {
     clearTimeout(this.timeOutEvent)
   }
   onSelect (item: any, index: number) {
-    if (index === 1) {
+    if (index === 0) {
       this.backMess(this.mIndex)
     }
     this.showMore = false

@@ -1,8 +1,7 @@
 <template>
   <div class="usercenter">
     <van-nav-bar class="litheme" fixed :title="(user.name||user.phone||'')+'主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
-      <van-icon v-if="user._id&&user._id==me._id" name="edit" slot="right" @click="$router.push('/UserEdit')"/>
-      <span v-if="user._id&&user._id!==me._id" slot="right" @click="toUserChat">私信</span>
+      <van-icon v-if="user._id&&user._id!==me._id" name="ellipsis" slot="right" @click=""/>
     </van-nav-bar>
     <div class="my-content-fix" @scroll="scroll" ref="content">
       <div class="usercenter-top">
@@ -209,7 +208,7 @@ export default class UserHomePage extends Vue {
     background: #fefefe;
     width: 100px;
     height: 100px;
-    border-radius: 4px;
+    border-radius: 50%;
     margin-right: 10px;
     border: 1px solid #fff;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
@@ -238,7 +237,7 @@ export default class UserHomePage extends Vue {
     text-align: right;
     font-size: 12px;
     position: absolute;
-    right: 15px;
+    right: 20px;
     top: -95px;
     min-width: 95px;
     .right-box-btn{

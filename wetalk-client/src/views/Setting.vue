@@ -7,10 +7,13 @@
         <van-cell title="账户安全" is-link />
       </van-cell-group>
 
+      <van-cell-group>
+        <van-cell title="清除位置缓存" is-link />
+      </van-cell-group>
+
       <!-- <van-cell-group>
         <van-switch-cell v-model="isOpen" title="显示聊天室进出" @change="suChange"/>
       </van-cell-group> -->
-
       <van-cell-group>
         <van-cell title="关于乐中" is-link />
         <van-cell :value="currentVersion" is-link @click="toShow">

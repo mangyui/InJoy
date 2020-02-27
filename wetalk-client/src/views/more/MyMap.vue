@@ -90,7 +90,7 @@ export default class MyMap extends Vue {
     // })
   }
   mapMyLocation (me: any) {
-    let icon = new this.BMap.Icon('./icons/mapThis.png', new this.BMap.Size(30, 40))
+    let icon = new this.BMap.Icon('./imgs/mapThis.png', new this.BMap.Size(30, 40))
     if (this.mk) {
       this.mk.setPosition(me)
     } else {

@@ -19,8 +19,8 @@
         </div>
         <van-button class="max-btn"  color="#16cff0" @click="toLogin">登录</van-button>
         <div class="login-footer">
-          <van-divider>其他登录方式</van-divider>
-          <div class="login-more">
+          <van-divider>未注册账号将直接注册并登录</van-divider>
+          <!-- <div class="login-more">
             <div>
               <van-icon name="./icons/QQ.svg" />
               <p>QQ</p>
@@ -29,7 +29,7 @@
               <van-icon name="./icons/weibo.svg" />
               <p>微博</p>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
   </div>

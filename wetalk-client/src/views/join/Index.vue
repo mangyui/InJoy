@@ -99,6 +99,23 @@ export default class Join extends Vue {
       this.$toast('定位失败')
     }, { provider: 'baidu' })
   }
+  baiduLocation () {
+    // 进行定位
+    this.$win.baidumap_location.getCurrentPosition((result: any) => {
+      let myLocation = {
+        point: new this.$win.BMap.Point(result.longitude, result.latitude),
+        place: result.city
+      }
+      this.$store.commit('SET_MY_ADDRESS', myLocation)
+      this.getJoinList()
+      this.$toast({
+        message: '本机定位完成',
+        position: 'bottom'
+      })
+    }, (error: any) => {
+      this.$toast(error)
+    })
+  }
   scroll () {
     // @ts-ignore
     this.scrollTop = this.$refs.content.scrollTop
