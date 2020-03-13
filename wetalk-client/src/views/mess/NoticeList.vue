@@ -1,15 +1,25 @@
 <template>
   <div class="max1100">
-    <div class="">
-      <van-search
-        v-model="text"
-        placeholder="搜索通知"
-      />
-      <div class="notice-box">
-        <div class="notice-item" v-for="(item, index) in 1" :key="index">
-          <div class="notice-title"><b>官方通知</b><span>10/06 16:29</span></div>
-          <p class="notice-content">欢迎使用乐中APP, Enjoy In Joy, 乐在其中</p>
-        </div>
+    <div class="list-box max1100">
+      <template v-for="(item, index) in joinList">
+        <van-panel v-show="joinType==-1||joinType==item.type"
+        :key="index" :title="item.title"
+        :desc="['线上活动', '线下活动'][item.type]"
+        :status="item.count+'/'+item.total"
+        @click="$router.push('/joinDetails/' + item._id)">
+          <div>{{item.details}}</div>
+          <div v-if="item.user" class="people-box mg-t-15">
+            <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
+            <div class="people-text mg-l-5">
+              <span @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name||'匿名'}}</span>
+            </div>
+            <p class="join-right-time"><span>{{$commomTime(item.time).substring(5, 16)}}</span><van-icon name="clock" /></p>
+          </div>
+        </van-panel>
+      </template>
+      <div v-show="!joinList[0]" class="white-wrap my-tip-box">
+        <br/>
+        赶紧去参与活动吧！
       </div>
     </div>
   </div>
@@ -20,8 +30,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class NoticeList extends Vue {
-  musics: Array<any> = []
-  text: string = ''
+  joinList: Array<any> = []
   created () {
   }
 }

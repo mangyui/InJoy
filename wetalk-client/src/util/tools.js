@@ -66,15 +66,12 @@ function formatTime (time) {
   } else if (diff < 3600) { // less 1 hour
     return Math.ceil(diff / 60) + '分钟前'
   } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
+    return add0(d.getHours()) + ':' + add0(d.getMinutes())
   } else if (diff < 3600 * 24 * 2) {
     return '1天前'
+  } else {
+    return add0(d.getMonth() + 1) + '-' + add0(d.getDate()) + ' ' + add0(d.getHours()) + ':' + add0(d.getMinutes())
   }
-  // if (option) {
-  //   return parseTime(time, option)
-  // } else {
-  return add0(d.getMonth() + 1) + '/' + add0(d.getDate()) + ' ' + add0(d.getHours()) + ':' + add0(d.getMinutes())
-  // }
 }
 
 function add0 (num) {
@@ -89,7 +86,7 @@ function add0 (num) {
 function commomTime (time) {
   let d = new Date(time)
   if (d instanceof Date) {
-    return add0(d.getFullYear()) + '/' + add0(d.getMonth() + 1) + '/' + add0(d.getDate()) +
+    return add0(d.getFullYear()) + '-' + add0(d.getMonth() + 1) + '-' + add0(d.getDate()) +
     ' ' + add0(d.getHours()) + ':' + add0(d.getMinutes()) + ':' + add0(d.getSeconds())
   } else {
     return ''

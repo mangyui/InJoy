@@ -137,11 +137,12 @@ export default Vue.extend({
   z-index: 11;
   transform: translate(100%, 0);
 }
-// .slideleft-leave-active,
-// .slideright-enter {
-//   z-index: 9;
-//   // opacity: 0;
-// }
+.slideleft-leave-active,
+.slideright-enter {
+  z-index: 9;
+  // opacity: 0;
+  transform: translate(-100%, 0);
+}
 
 .slideleft-enter-active{
   z-index: 20;

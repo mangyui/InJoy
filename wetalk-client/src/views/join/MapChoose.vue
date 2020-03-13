@@ -127,45 +127,7 @@ export default class MapChoose extends Vue {
 </script>
 
 <style lang="less" scoped>
-#MapBox{
-  width: 100%;
-  height: calc(100% - 46px);
-  margin-top: 46px;
-  & /deep/ .anchorBL a{
-    display: none;
-  }
-  & /deep/ .mapJoin-item {
-    position: absolute;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px #5a5eff;
-    opacity: 0.80;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    color: #fff;
-    font-size: 15px;
-    z-index: 800;
-    &::after {
-      display: block;
-      content: '';
-      border: 5px solid;
-      border-width: 10px 8px;
-      position: absolute;
-      top: 100%;
-      right: 50%;
-      transform: translateX(50%);
-      border-color: #797df3 transparent  transparent transparent;
-    }
-  }
-  & /deep/ .mapJoin-item-active {
-    opacity: 1;
-    background: #595bd8!important;
-    z-index: 801;
-    &::after {
-      border-color: #5c60e0 transparent  transparent transparent;
-    }
-  }
-}
+
 .join-bottom-btn{
   position: fixed;
   bottom: 0;

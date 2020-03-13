@@ -1,7 +1,8 @@
 <template>
   <div class="usercenter">
-    <van-nav-bar class="litheme" fixed :title="(user.name||user.phone||'')+'主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
-      <van-icon v-if="user._id&&user._id!==me._id" name="ellipsis" slot="right" @click=""/>
+    <van-nav-bar class="litheme" fixed :title="(user._id==me._id?'我':user.name)+'的主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
+      <van-icon v-if="user._id&&user._id!==me._id" name="ellipsis" slot="right" @click="showEdit=true"/>
+      <van-icon v-if="user._id&&user._id==me._id" name="edit" slot="right"  @click="$router.push('/UserEdit')"/>
     </van-nav-bar>
     <div class="my-content-fix" @scroll="scroll" ref="content">
       <div class="usercenter-top">
@@ -39,6 +40,12 @@
       <van-button type="info" :plain="user.alreadyFollow?false:true" @click.stop="userFollow">{{user.alreadyFollow?'已关注':'关注TA'}}</van-button>
       <van-button class="btn-theme" type="info" @click="toUserChat">私信TA</van-button>
     </div>
+    <van-action-sheet
+      v-model="showEdit"
+      :actions="actions"
+      cancel-text="取消"
+      :round="true"
+    />
     <div v-show="showMask" class="white-mask"></div>
   </div>
 </template>
@@ -59,6 +66,10 @@ let persons : Person[] = require('@/util/Persons').persons
 })
 export default class UserHomePage extends Vue {
   showMask: boolean = true
+  showEdit: boolean = false
+  actions: Array<any> = [
+    { name: '举报' }
+  ]
   private user: any = {}
   private me: any = this.$store.getters.user
   scrollTop: number = 0

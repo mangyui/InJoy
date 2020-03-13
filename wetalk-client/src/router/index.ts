@@ -7,6 +7,8 @@ import Join from '@/views/join/Index.vue'
 import Message from '@/views/mess/Index.vue'
 import UserCenter from '@/views/user/UserCenter.vue'
 
+import UserJoin from '@/views/user/UserJoin.vue'
+
 import MapJoin from '@/views/join/MapJoin.vue'
 import JoinEdit from '@/views/join/JoinEdit.vue'
 import JoinDetails from '@/views/join/Details.vue'
@@ -31,6 +33,7 @@ import UserHomePage from '@/views/user/UserHomePage.vue'
 import UserEdit from '@/views/user/UserEdit.vue'
 import UserFollower from '@/views/user/UserFollower.vue'
 import UserFollowing from '@/views/user/UserFollowing.vue'
+import UserQrCode from '@/views/user/UserQrCode.vue'
 
 import Setting from '@/views/Setting.vue'
 import Weather from '@/views/more/MyWeather.vue'
@@ -51,14 +54,14 @@ const router:Router = new Router({
   routes: [
     {
       path: '',
-      redirect: '/home/lobby'
+      redirect: '/home/join'
     },
     {
       path: '/home',
       name: 'Home',
       component: Home,
       meta: { isKeep: true },
-      redirect: '/home/lobby',
+      redirect: '/home/join',
       children: [
         {
           path: 'lobby',
@@ -162,6 +165,11 @@ const router:Router = new Router({
       component: UserChat // () => import('@/views/mess/UserChat.vue')
     },
     {
+      path: '/userjoin',
+      name: 'UserJoin',
+      component: UserJoin // () => import('@/views/user/UserJoin.vue')
+    },
+    {
       path: '/userhomepage/:id',
       name: 'UserHomePage',
       component: UserHomePage // () => import('@/views/user/UserHomePage.vue')
@@ -170,6 +178,11 @@ const router:Router = new Router({
       path: '/useredit',
       name: 'UserEdit',
       component: UserEdit // () => import('@/views/user/UserEdit.vue')
+    },
+    {
+      path: '/userqrcode',
+      name: 'UserQrCode',
+      component: UserQrCode // () => import('@/views/user/UserQrCode.vue')
     },
     {
       path: '/followers/:id',

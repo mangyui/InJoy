@@ -40,10 +40,11 @@
           <van-uploader
           :after-read="readImg"
           :max-count="1">
-            <van-icon class="input-icon" name="photo" color="#1989fa"></van-icon><p>图片</p>
+            <van-icon class="input-icon" name="photo" color="#8b81f9"></van-icon><p>图片</p>
           </van-uploader>
         </div>
-        <div><van-icon class="input-icon" name="volume" color="#f44"></van-icon><p>语音</p></div>
+        <div><van-icon class="input-icon" name="volume" color="#9E9E9E"></van-icon><p>语音</p></div>
+        <div><van-icon class="input-icon" name="map-marked" color="#2196F3"></van-icon><p>位置</p></div>
       </div>
     </div>
   </div>
@@ -107,8 +108,13 @@ export default class InputBox extends Vue {
   flex-grow: 1;
   display: flex;
   justify-content: space-evenly;
-  padding: 25px 0;
+  padding: 24px 0;
   color: #666;
+  text-align: center;
+  .input-icon{
+    font-size: 35px;
+    margin-bottom: 10px;
+  }
 }
 .input-mess{
   font-size: 16px;
@@ -116,7 +122,8 @@ export default class InputBox extends Vue {
   padding: 5px 5px 0;
 }
 .input-icon{
-  font-size: 30px;
+  font-size: 32px;
+  color: #666;
 }
 .emoticon-wrap{
   width: 100%;

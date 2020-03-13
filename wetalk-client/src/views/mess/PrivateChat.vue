@@ -2,7 +2,7 @@
   <div class="max1100">
     <div class="list-box">
       <van-pull-refresh class="refrsh-box" :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="refreshList">
-        <van-swipe-cell v-for="(item, index) in chatList" :key="index" :title="deleteIndex">
+        <van-swipe-cell v-for="(item, index) in chatList" :key="index">
           <div class="list-item"  v-if="index.split('To')[0] === user._id&&item.mesgList[item.mesgList.length-1]" @click="$router.push('/UserChat/' + index.split('To')[1])">
             <img :src="item.user.avatar||'./imgs/avatar.png'">
             <div class="mess-right-l">
@@ -35,11 +35,9 @@ import { Getter } from 'vuex-class'
 })
 export default class PrivateChat extends Vue {
   @Getter user!: any
-  deleteIndex: any = 0
   isRefresh: boolean = false
   toDeleteChat (index: any) {
     this.$store.commit('RM_USER', index)
-    this.deleteIndex = index
   }
   refreshList () {
     this.isRefresh = false

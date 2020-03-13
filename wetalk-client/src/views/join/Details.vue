@@ -31,10 +31,10 @@
             {{currjoin.details}}
           </p>
         </div>
-        <div class="join-place join-wrap">
+        <div v-if="currjoin.place" class="join-place join-wrap">
           <h3>地址详情</h3>
           <p>
-            {{currjoin.place}}
+            <img src="/imgs/mapMin.png">{{currjoin.place}}
           </p>
         </div>
         <div v-if="currjoin.imgList[0]" class="join-img join-wrap">
@@ -161,10 +161,19 @@ export default class JoinDetails extends Vue {
     height: 45px;
   }
 }
-.join-text, .join-place{
-  & p {
-    color: #444;
-    padding: 10px 0;
+.join-text p{
+  color: #444;
+  padding: 10px 0;
+}
+.join-place p{
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  border-radius: 2px;
+  img {
+    width: 40px;
+    margin-right: 10px;
   }
 }
 </style>

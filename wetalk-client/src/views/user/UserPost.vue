@@ -30,6 +30,7 @@
               <div><van-icon name="comment-o" />{{item.count_comment}}</div>
               <div :class="item.alreadyAgree===true?'post-san-active':''"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(item)"/>{{item.count_agree}}</div>
             </div>
+            <van-icon class="post-more-btn" name="ellipsis" @click.stop="choosePost(index)"/>
           </div>
         </van-list>
       </div>
@@ -50,6 +51,13 @@
         </div>
       </div>
     </van-popup>
+    <van-action-sheet
+      v-model="showMore"
+      :actions="actions"
+      cancel-text="取消"
+      @select="onSelect"
+      @cancel="showMore=false"
+    />
   </div>
 </template>
 
@@ -77,6 +85,11 @@ export default class UserPost extends Vue {
     number: 20
   }
   postList: Array<any> = []
+  chooseIndex: number = -1
+  showMore: boolean = false
+  actions: Array<any> = [
+    { name: '删除该动态' }
+  ]
   getPostList () {
     this.postList = []
     this.getData.page = 1
@@ -140,6 +153,23 @@ export default class UserPost extends Vue {
       console.log(err)
     })
   }
+  choosePost (index: number) {
+    this.chooseIndex = index
+    this.showMore = true
+  }
+  onSelect (item: any, index: number) {
+    if (item.name === '删除该动态') {
+      if (this.$store.getters.user._id === this.postList[this.chooseIndex].user._id) {
+        this.$toPost.deletePost({ id: this.postList[this.chooseIndex]._id }).then((data: any) => {
+          this.postList.splice(this.chooseIndex, 1)
+          this.$toast('已删除')
+        }).catch((err: any) => {
+          console.log(err)
+        })
+      }
+    }
+    this.showMore = false
+  }
   openShare (post: any) {
     if (post._id) {
       this.sharePost = post
@@ -147,11 +177,11 @@ export default class UserPost extends Vue {
     }
   }
   shareWeibo () {
-    let url = 'http://service.weibo.com/share/share.php?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
+    let url = 'http://service.weibo.com/share/share.php?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中@一只鱼'
     window.open(url)
   }
   shareQQ () {
-    let url = 'http://connect.qq.com/widget/shareqq/index.html?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
+    let url = 'http://connect.qq.com/widget/shareqq/index.html?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中@一只鱼'
     window.open(url)
   }
   scroll () {

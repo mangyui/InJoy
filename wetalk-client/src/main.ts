@@ -20,11 +20,11 @@ import { Toast, Notify } from 'vant'
 // @ts-ignore
 import Navigation from 'vue-navigation'
 
+Vue.use(Navigation, { router, store, keyName: 'my' })
+
 Vue.prototype.$win = window
 
 Vue.config.productionTip = false
-
-Vue.use(Navigation, { router, store, keyName: 'my' })
 
 const tools = require('@/util/tools.js')
 Vue.prototype.$formatTime = tools.formatTime

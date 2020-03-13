@@ -7,7 +7,6 @@
         <span class="mg-l-5">{{myAddress.place || user.city}}</span>
       </span>
       <van-icon name="map-marked" slot="right" @click="$router.push('/mapJoin')"/>
-      <van-icon name="plus" slot="right" @click="$router.push('/joinEdit')"/>
     </van-nav-bar>
     <van-sticky :offset-top="46">
       <van-dropdown-menu active-color="#1989fa">
@@ -30,13 +29,12 @@
           :status="item.count+'/'+item.total"
           @click="$router.push('/joinDetails/' + item._id)">
             <div>{{item.details}}</div>
-            <p class="join-right-time"><span>{{$commomTime(item.time)}}</span><van-icon name="clock" /></p>
             <div class="people-box mg-t-15">
               <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="people-text mg-l-5">
                 <span @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name||'匿名'}}</span>
               </div>
-              <van-icon name="arrow" color="#ccc" />
+              <p class="join-right-time"><span>{{$commomTime(item.time).substring(5, 16)}}</span><van-icon name="clock" /></p>
             </div>
           </van-panel>
         </template>
@@ -125,11 +123,11 @@ export default class Join extends Vue {
     this.$refs.content.scrollTop = this.scrollTop
   }
   mounted () {
-    if (!this.myAddress.place || this.myAddress.place === '') {
-      this.getMyLocation()
-    } else {
-      this.getJoinList()
-    }
+    // if (!this.myAddress.place || this.myAddress.place === '') {
+    //   this.getMyLocation()
+    // } else {
+    //   this.getJoinList()
+    // }
   }
 }
 </script>
@@ -157,13 +155,15 @@ export default class Join extends Vue {
 }
 .join-right-time{
   display: flex;
-  color: #999;
+  color: #aaa;
   align-items: center;
   justify-content: flex-end;
-  margin-top: 10px;
-  & span{
+  span{
     margin-right: 5px;
     font-size: 12px;
+  }
+  .van-icon {
+    font-size: 16px;
   }
 }
 </style>

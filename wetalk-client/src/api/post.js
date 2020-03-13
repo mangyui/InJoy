@@ -4,7 +4,7 @@ import qs from 'qs'
 import md5 from 'js-md5'
 import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://47.106.130.141:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
 
 // eslint-disable-next-line
 function addSign (data) {
@@ -76,6 +76,14 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
+  // 获取用户数字
+  getUserNumber (datas) {
+    return request({
+      url: baseUrl + '/user/getUserNumber',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
   // 更新用户信息
   updateUser (datas) {
     return request({
@@ -96,6 +104,14 @@ const toPost = {
   addPost (datas) {
     return request({
       url: baseUrl + '/post/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 删除帖子
+  deletePost (datas) {
+    return request({
+      url: baseUrl + '/post/rm',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })
@@ -193,7 +209,15 @@ const toPost = {
     return request({
       url: baseUrl + '/join/add',
       method: 'post',
-      data: qs.stringify(addSign(datas), { arrayFormat: 'repeat' }) // 数组格式化a=b&a=c
+      data: qs.stringify(addSign(datas), { arrayFormat: 'repeat' }) // 数组格式化a=b&a=c (图片数组)
+    })
+  },
+  // 根据获取活动列表
+  getJoinList (datas) {
+    return request({
+      url: baseUrl + '/join/getJoinList',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
     })
   },
   // 根据id获取活动信息

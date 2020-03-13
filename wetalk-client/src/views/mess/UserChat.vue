@@ -1,14 +1,14 @@
 <template>
   <div class="talk-room bgMax">
     <van-nav-bar class="litheme" :border="false" fixed :title="toUser.name||'乐聊'" left-arrow  @click-left="$router.go(-1)">
-      <van-icon name="weapp-nav" slot="right" />
+      <van-icon name="ellipsis" slot="right" @click="clickMore"/>
     </van-nav-bar>
     <div class="chat-mesg-box max1100" @click="$refs.inputB.noMore()" ref="content">
       <div class="mess-box" :style="{paddingBottom: isMore!=0?'210px':'60px'}">
         <div class="mess-list"  v-if="chatList[chatKey]">
           <div class="list-item" v-for="(item,index) in chatList[chatKey].mesgList" :key="index">
             <div class="mess-item" v-if="item.type>0&&item.user._id!=user._id">
-              <div class="mu-avatar">
+              <div class="mu-avatar" @click.stop="$router.push('/userhomepage/' + chatList[chatKey].user._id)">
                 <img :src="chatList[chatKey].user.avatar||'./imgs/avatar.png'">
                 <img class="icon-sex" :src="chatList[chatKey].user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
@@ -18,7 +18,7 @@
               </div>
             </div>
             <div class="mess-item-me" v-else-if="item.type>0&&item.user._id==user._id">
-              <div class="mu-avatar">
+              <div class="mu-avatar"  @click.stop="$router.push('/userhomepage/' + user._id)">
                 <img :src="user.avatar||'./imgs/avatar.png'">
                 <img class="icon-sex" :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
@@ -72,7 +72,7 @@ export default class UserChat extends Vue {
   showMore: boolean = false
   timeOutEvent: any
   actions: Array<any> = [
-    { name: '撤回' }
+    { name: '清空聊天记录' }
   ]
 
   changeMore (newValue: number): void {
@@ -103,19 +103,31 @@ export default class UserChat extends Vue {
       this.$store.getters.chatWS.creatSending(this.toUser, imgUrl, 2)
     }
   }
+  clickMore () {
+    this.actions = [
+      { name: '清空聊天记录' }
+    ]
+    this.showMore = true
+  }
   gtouchstart (mIndex: number) {
     // 开始触摸
     this.timeOutEvent = setTimeout(() => {
+      this.actions = [
+        { name: '撤回' }
+      ]
       this.showMore = true
       this.mIndex = mIndex
     }, 444)
   }
   gtouchend () {
+    // 停止触摸
     clearTimeout(this.timeOutEvent)
   }
   onSelect (item: any, index: number) {
-    if (index === 0) {
+    if (item.name === '撤回') {
       this.backMess(this.mIndex)
+    } else if (item.name === '清空聊天记录') {
+      this.$store.commit('RM_USER', this.user._id + 'To' + this.$route.params.id)
     }
     this.showMore = false
   }

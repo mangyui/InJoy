@@ -1,7 +1,8 @@
 <template>
   <div class="find-wrap borderBox height100">
-    <van-nav-bar class="litheme" fixed :border="false"  @click-right="$router.push('/UserEdit')">
-      <van-icon name="edit" slot="right"/>
+    <van-nav-bar class="litheme" fixed :border="false" >
+      <van-icon name="qr" slot="right" @click="$router.push('/UserQrCode')"/>
+      <van-icon name="edit" slot="right"  @click="$router.push('/UserEdit')"/>
     </van-nav-bar>
     <div class="my-content-fix">
       <div class="bgtheme">
@@ -19,20 +20,20 @@
           </div>
         </div>
         <div class="my-user-digit">
-          <div>
-            <span>0</span>
+          <div @click="$router.push('/userjoin/')">
+            <span>{{dataNumber.joinCount||0}}</span>
             <p>活动</p>
           </div>
           <div @click="toUserPage('/userhomepage/')">
-            <span>0</span>
+            <span>{{dataNumber.postCount||0}}</span>
             <p>动态</p>
           </div>
           <div @click="toUserPage('/following/')">
-            <span>0</span>
+            <span>{{dataNumber.followCount||0}}</span>
             <p>关注</p>
           </div>
           <div @click="toUserPage('/followers/')">
-            <span>0</span>
+            <span>{{dataNumber.followersCount||0}}</span>
             <p>粉丝</p>
           </div>
         </div>
@@ -44,16 +45,17 @@
         <van-cell-group title="">
           <van-cell title="垃圾分类" is-link icon="./icons/bottle.svg" to='/refuseclass' />
           <van-cell title="地图" is-link icon="./icons/map.svg" to='/MyMap' />
-          <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' />
+          <!-- <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' /> -->
         </van-cell-group>
         <van-cell-group title="">
+          <van-cell title="扫一扫" is-link icon="./icons/scan.svg" to='/other' />
           <van-cell title="听一听" is-link icon="./icons/music.svg" to='/music' />
           <van-cell title="用一用" is-link icon="./icons/expression.svg" to='/applications' />
         </van-cell-group>
         <van-cell-group title="">
           <!-- <van-cell title="酷站" is-link icon="./icons/star.svg" to='/other' />
           <van-cell title="事务" is-link icon="./icons/list.svg" /> -->
-          <van-cell title="设置" is-link icon="./icons/edit.svg" to='/setting' />
+          <van-cell title="设置" is-link icon="./icons/setting.svg" to='/setting' />
         </van-cell-group>
       </div>
     </div>
@@ -67,12 +69,23 @@ import { Getter } from 'vuex-class'
 @Component
 export default class UserCenter extends Vue {
   @Getter user!: any
+  dataNumber: any = {}
   toUserPage (path: string) {
     if (this.user._id) {
       this.$router.push(path + this.user._id)
     } else {
       this.$router.push('/login')
     }
+  }
+  getUserNumber () {
+    this.$toPost.getUserNumber({ id: this.user._id }).then((res: any) => {
+      this.dataNumber = res.data
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  mounted () {
+    this.getUserNumber()
   }
 }
 </script>
@@ -95,22 +108,24 @@ export default class UserCenter extends Vue {
   display: flex;
   padding: 15px 20px;
   justify-content: space-around;
-  color: #eee;
   & > div {
     text-align: center;
     span{
-      font-size: 17px;
+      font-size: 18px;
+      color: #fff;
+      font-weight: bold;
     }
     p{
       font-size: 12px;
       margin-top: 5px;
+      color: #ededed;
     }
   }
 }
 .find-user{
   display: flex;
   align-items: center;
-  padding: 0px 15px 10px;
+  padding: 0px 15px 10px 20px;
   position: relative;
   // background: #fff;
   // border-bottom: 1px solid #f4f4f4;

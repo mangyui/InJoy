@@ -141,14 +141,7 @@ export default class MyMap extends Vue {
 </script>
 
 <style lang="less" scoped>
-#MapBox{
-  width: 100%;
-  height: calc(100% - 46px);
-  margin-top: 46px;
-  & /deep/ .anchorBL a{
-    display: none;
-  }
-}
+
 .map-search{
   position: fixed;
   top: 0;
