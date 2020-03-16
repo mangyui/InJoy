@@ -46,17 +46,16 @@
       cancel-text="取消"
       :round="true"
     />
-    <div v-show="showMask" class="white-mask"></div>
+    <div v-show="showMask" class="white-mask">
+      <van-loading type="spinner" color="#1989fa" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Person from '@/util/Person'
 import PostList from './UserPost.vue'
 import UserComment from './UserComment.vue'
-
-let persons : Person[] = require('@/util/Persons').persons
 
 @Component({
   components: {
@@ -137,11 +136,6 @@ export default class UserHomePage extends Vue {
       this.$router.push('/UserChat/' + this.user._id)
     }
   }
-  // refreshUser () {
-  //   var index = Math.floor(Math.random() * persons.length)
-  //   this.$store.commit('updateUserAvatar', persons[index].avatar)
-  //   this.$store.commit('updateUserName', persons[index].name)
-  // }
   scroll () {
     // @ts-ignore
     this.scrollTop = this.$refs.content.scrollTop

@@ -85,7 +85,9 @@ export default class UserCenter extends Vue {
     })
   }
   mounted () {
-    this.getUserNumber()
+    if (this.user._id) {
+      this.getUserNumber()
+    }
   }
 }
 </script>

@@ -41,7 +41,7 @@ export default class UserJoin extends Vue {
   joinType: number = -1
   joinList: Array<any> = []
   getData: any = {
-    userId: this.$store.getters.user._id
+    id: this.$store.getters.user._id
   }
   getMyJoin () {
     this.$toast.loading({

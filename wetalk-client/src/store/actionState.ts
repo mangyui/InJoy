@@ -3,7 +3,8 @@ export default {
   state: {
     topic: null,
     joinAddress: {},
-    myAddress: {}
+    myAddress: {},
+    toLocation: {}
   },
   mutations: {
     SELECT_TOPIC (state: any, newTopic: any) {
@@ -17,6 +18,9 @@ export default {
     },
     SET_MY_ADDRESS (state: any, mya: any) {
       state.myAddress = mya
+    },
+    SET_TO_LOCATION (state: any, location: any) {
+      state.toLocation = location
     }
   }
 }

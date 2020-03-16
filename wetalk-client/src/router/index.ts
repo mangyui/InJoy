@@ -14,7 +14,7 @@ import JoinEdit from '@/views/join/JoinEdit.vue'
 import JoinDetails from '@/views/join/Details.vue'
 import MapChoose from '@/views/join/MapChoose.vue'
 
-import RefuseClass from '@/views/refuseClass/Index.vue'
+import Location from '@/views/common/Location.vue'
 
 import Search from '@/views/home/Search.vue'
 import PostDetails from '@/views/post/Details.vue'
@@ -23,6 +23,7 @@ import PostAdd from '@/views/post/Add.vue'
 import Topic from '@/views/post/Topic.vue'
 import TopicPost from '@/views/post/TopicPost.vue'
 
+import RefuseClass from '@/views/refuseClass/Index.vue'
 import GarbageImg from '@/views/refuseClass/Image.vue'
 import GarbageList from '@/views/refuseClass/List.vue'
 import RefuseSearch from '@/views/refuseClass/Search.vue'
@@ -88,6 +89,11 @@ const router:Router = new Router({
           component: UserCenter // () => import('@/views/user/UserCenter.vue')
         }
       ]
+    },
+    {
+      path: '/location',
+      name: 'Location',
+      component: Location // () => import('@/views/common/Location.vue')
     },
     {
       path: '/mapJoin',

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <van-nav-bar class="map-nav litheme" fixed :border="false" title="选中活动地址" left-arrow @click-left="$router.go(-1)">
-      <van-icon name="aim" slot="right" @click="toMe"/>
+    <van-nav-bar class="map-nav litheme" fixed :border="false" title="目标地址" left-arrow @click-left="$router.go(-1)">
     </van-nav-bar>
     <div id="MapBox">
     </div>
     <div class="join-bottom-btn max1100">
-      <van-button class="btn-theme max-btn" type="info" @click.stop="chooseBack">确定</van-button>
+      <p>{{placeName}}</p>
+      <span>距离：{{distance}}m</span>
     </div>
   </div>
 </template>
@@ -17,17 +17,16 @@ import { Getter } from 'vuex-class'
 var mapSquare = require('@/util/mapSquare.js')
 
 @Component
-export default class MapChoose extends Vue {
+export default class Location extends Vue {
   @Getter myAddress!: any
+  @Getter toLocation!: any
 
   BMap: any
   map: any
   mk: any // 我的定位标注
   mySquare: any // 活动标注
-  joinAddress: any = {
-    point: '',
-    place: ''
-  }
+  placeName: string = ''
+  distance: number = 0
   initMap () {
     this.map = new this.BMap.Map('MapBox') // 创建Map实例
     let mpoint = this.myAddress.point || new this.BMap.Point(116.404, 39.915)
@@ -52,26 +51,17 @@ export default class MapChoose extends Vue {
     this.$toast.clear()
   }
   bindSquareEvent () {
-    this.map.addEventListener('click', (e: any) => {
-      this.map.removeOverlay(this.mySquare)
-      // 添加自定义覆盖物
-      this.mySquare = new mapSquare.SquareOverlay(e.point, 110, 40, '#7678f2', '我的活动')
-      this.map.addOverlay(this.mySquare)
+    // 添加自定义覆盖物
+    this.mySquare = new mapSquare.SquareOverlay(this.toLocation.point, 110, 40, '#7678f2', '目标')
+    this.map.addOverlay(this.mySquare)
 
-      // 为当前添加激活效果
-      this.mySquare._div.classList.add('mapJoin-item-active')
-      new this.BMap.Geocoder().getLocation(e.point, (rs: any) => {
-        // addressComponents对象可以获取到详细的地址信息
-        // var addComp = rs.addressComponents
-        // var site = addComp.province + ', ' + addComp.city + ', ' + addComp.district + ', ' + addComp.street + ', ' + addComp.streetNumber
-        // console.log(rs.address) // 详细地址
-        this.joinAddress = {
-          point: e.point,
-          place: rs.address
-        }
-      })
-      // alert(e.point.lng + ", " + e.point.lat);
+    // 为当前添加激活效果
+    this.mySquare._div.classList.add('mapJoin-item-active')
+    new this.BMap.Geocoder().getLocation(this.toLocation.point, (rs: any) => {
+      this.placeName = rs.address
     })
+    this.map.panTo(this.toLocation.point)
+    this.distance = this.map.getDistance(this.myAddress.point, this.toLocation.point).toFixed(2)
   }
   getLocation () {
     if (this.myAddress.point) {
@@ -96,45 +86,37 @@ export default class MapChoose extends Vue {
     this.mk = new this.BMap.Marker(me, { icon: icon })
     this.initMap()
     this.map.addOverlay(this.mk)
-    this.map.panTo(me)
-  }
-  toMe () {
-    if (this.myAddress.point) {
-      this.map.panTo(this.myAddress.point)
-    } else {
-      this.getLocation()
-    }
-  }
-  chooseBack () {
-    if (this.joinAddress.place.trim() !== '') {
-      this.$store.commit('SET_JOIN_ADDRESS', this.joinAddress)
-      this.$router.go(-1)
-    } else {
-      this.$toast('请点击选择活动地址')
-    }
   }
   mounted () {
-    this.$toast.loading({
-      duration: 0,
-      message: '加载中...'
-    })
-    this.BMap = this.$win.BMap
-    this.getLocation()
+    if (!this.toLocation.point) {
+      this.$toast('无效地址')
+      setTimeout(() => {
+        this.$router.go(-1)
+      }, 200)
+    } else {
+      this.$toast.loading({
+        duration: 0,
+        message: '加载中...'
+      })
+      this.BMap = this.$win.BMap
+      this.getLocation()
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
 .join-bottom-btn{
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 10px 0;
-  background: rgba(255, 255, 255, 0.8);
-  >.van-button{
-    opacity: 0.8;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  span{
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 5px;
   }
 }
 </style>

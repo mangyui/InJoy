@@ -44,6 +44,7 @@ export default new Vuex.Store({
     topic: state => state.topic,
     joinAddress: state => state.joinAddress,
     myAddress: state => state.myAddress,
+    toLocation: state => state.toLocation,
     chatList: state => state.chatList,
     chatWS: state => state.chatWS
   }

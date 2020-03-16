@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" fixed title="活动详情" left-arrow
       @click-left="$router.go(-1)">
        <van-icon name="ellipsis" slot="right" @click="showEdit=true"/>
-      </van-nav-bar>
+    </van-nav-bar>
     <div class="my-content-fix max1100">
       <div class="join-details-warp">
         <div class="join-title join-wrap">
@@ -33,7 +33,7 @@
         </div>
         <div v-if="currjoin.place" class="join-place join-wrap">
           <h3>地址详情</h3>
-          <p>
+          <p @click="gotoLocation">
             <img src="/imgs/mapMin.png">{{currjoin.place}}
           </p>
         </div>
@@ -54,6 +54,9 @@
       cancel-text="取消"
       :round="true"
     />
+    <div v-show="showMask" class="white-mask">
+      <van-loading type="spinner" color="#1989fa" />
+    </div>
   </div>
 </template>
 
@@ -68,6 +71,7 @@ import ImgBox from '@/components/ImgBox.vue'
 })
 export default class JoinDetails extends Vue {
   showEdit: boolean = false
+  showMask: boolean = true
   actions: Array<any> = [
     { name: '修改' },
     { name: '删除', color: '#ee0a24' },
@@ -81,7 +85,8 @@ export default class JoinDetails extends Vue {
     count: 0,
     time: '',
     place: '',
-    point: '',
+    pointX: '',
+    pointY: '',
     imgList: [],
     user: {}
   }
@@ -92,6 +97,7 @@ export default class JoinDetails extends Vue {
     this.$toPost.getJoinById(data).then((res: any) => {
       if (res.data._id) {
         this.currjoin = res.data
+        this.showMask = false
       } else {
         this.$notify({ type: 'warning', message: '活动不存在' })
         setTimeout(() => {
@@ -101,6 +107,11 @@ export default class JoinDetails extends Vue {
     }).catch((err: any) => {
       console.log(err)
     })
+  }
+  gotoLocation () {
+    let point = new this.$win.BMap.Point(this.currjoin.pointX, this.currjoin.pointY)
+    this.$store.commit('SET_TO_LOCATION', { point })
+    this.$router.push('/location')
   }
   created () {
     this.getJoinById()

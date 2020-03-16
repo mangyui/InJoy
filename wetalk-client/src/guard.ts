@@ -8,7 +8,8 @@ const whiteList = [
   'PostAdd',
   'PostComment',
   'UserChat',
-  'JoinEdit'
+  'JoinEdit',
+  'UserJoin'
 ] // 重定向白名单
 
 router.beforeEach((to: Route, from: Route, next: any) => {
