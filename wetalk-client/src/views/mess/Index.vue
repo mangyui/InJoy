@@ -1,6 +1,6 @@
 <template>
-  <div class="mess-wrap my-content-fix" ref="content">
-    <van-tabs v-model="active" :border="false" sticky line-width="26" :offset-top="0">
+  <div class="mess-wrap bgWhite" ref="content">
+    <van-tabs v-model="active" :border="false" sticky animated line-width="26" :offset-top="0">
       <van-tab title="活动" name="m1">
         <NoticeList />
       </van-tab>
@@ -30,14 +30,5 @@ export default class Message extends Vue {
 </script>
 
 <style lang="less" scoped>
-.mess-wrap{
-  height: 100%;
-  top: 0;
-  .van-tabs{
-    /deep/ .van-tabs__nav--line{
-      width: 55%;
-      margin: 0 auto;
-    }
-  }
-}
+
 </style>

@@ -38,7 +38,8 @@
     <van-popup
       v-model="showShare"
       closeable
-      position="bottom">
+      position="bottom"
+      get-container="#app">
       <div class="comment-line">分享</div>
       <div class="share-box">
         <div @click="shareQQ">

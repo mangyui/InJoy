@@ -13,7 +13,10 @@
                 <img class="icon-sex" :src="chatList[chatKey].user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
-                <van-image v-if="item.type==2" lazy-load :src="item.content"  @click="lookImg(item.content)"/>
+                <div class="mess-location-wrap" v-if="item.type==3" @click.stop="gotoLocation(item.content)">
+                  <p>{{item.content.split(',')[0]}}</p>
+                </div>
+                <van-image v-else-if="item.type==2" lazy-load :src="item.content"  @click="lookImg(item.content)"/>
                 <p v-else class="mess-item-content">{{item.content}}</p>
               </div>
             </div>
@@ -23,7 +26,10 @@
                 <img class="icon-sex" :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
-                <van-image v-if="item.type==2" @touchstart.native="gtouchstart(index)" @touchend.native="gtouchend" lazy-load :src="item.content" @click="lookImg(item.content)"/>
+                <div class="mess-location-wrap" v-if="item.type==3" @touchstart.native="gtouchstart(index)" @touchend.native="gtouchend" @click.stop="gotoLocation(item.content)">
+                  <p>{{item.content.split(',')[0]}}</p>
+                </div>
+                <van-image v-else-if="item.type==2" @touchstart.native="gtouchstart(index)" @touchend.native="gtouchend" :src="item.content" @click="lookImg(item.content)"/>
                 <p v-else class="mess-item-content" @touchstart="gtouchstart(index)" @touchend="gtouchend">{{item.content}}</p>
               </div>
             </div>
@@ -42,6 +48,9 @@
       @select="onSelect"
       @cancel="showMore=false"
     />
+    <div v-show="showMask" class="white-mask">
+      <van-loading type="spinner" color="#1989fa" />
+    </div>
   </div>
 </template>
 
@@ -63,6 +72,7 @@ import { mapGetters } from 'vuex'
 export default class UserChat extends Vue {
   @Getter user!: any // ！声明肯定会有值
 
+  showMask: boolean = true
   toUser: any = {}
   isMore: number = 0
 
@@ -103,6 +113,13 @@ export default class UserChat extends Vue {
       this.$store.getters.chatWS.creatSending(this.toUser, imgUrl, 2)
     }
   }
+  toLocation (): void {
+    let location = this.$store.getters.joinAddress
+    if (location.place && location.place.trim() !== '') {
+      this.$store.getters.chatWS.creatSending(this.toUser, location.place + ',' + location.point.lng + ',' + location.point.lat, 3)
+      this.$store.commit('RM_JOIN_ADDRESS')
+    }
+  }
   clickMore () {
     this.actions = [
       { name: '清空聊天记录' }
@@ -139,7 +156,16 @@ export default class UserChat extends Vue {
         Vue.nextTick(() => {
           // @ts-ignore
           this.$refs.content.scrollTop = this.$refs.content.scrollHeight
+          this.toLocation()
+          this.showMask = false
         })
+        setTimeout(() => {
+          // @ts-ignore
+          if (this.$refs.content) {
+            // @ts-ignore
+            this.$refs.content.scrollTop = this.$refs.content.scrollHeight
+          }
+        }, 1000)
       } else {
         this.$notify({ type: 'warning', message: '用户不存在' })
         setTimeout(() => {
@@ -158,12 +184,11 @@ export default class UserChat extends Vue {
       loop: false
     })
   }
-  activated () {
-    // let msgEl = document.querySelector('.mess-list .list-item:last-child')
-    // console.log(msgEl)
-    // if (msgEl) {
-    //   msgEl.scrollIntoView()
-    // }
+  gotoLocation (location: string) {
+    let pointArr = location.split(',')
+    let point = new this.$win.BMap.Point(pointArr[1], pointArr[2])
+    this.$store.commit('SET_TO_LOCATION', { point })
+    this.$router.push('/location')
   }
   created () {
     this.getUser()
@@ -180,5 +205,46 @@ export default class UserChat extends Vue {
   left: 0;
   right: 0;
   overflow-y: auto;
+}
+.mess-location-wrap{
+  background-image: url('/imgs/mapMin.png');
+  background-size: 70%;
+  background-position-x: center;
+  background-position-y: 0px;
+  box-shadow: 0 0px 2px 1px #efefef;
+  border-radius: 3px;
+  width: 220px;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  &::before{
+    content: '位置';
+    display: block;
+    font-weight: bold;
+    background: #fff;
+    color: #8b81f9;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px 1px #efefef;
+  }
+  p{
+    text-decoration: underline;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgb(255,255,255);
+    color: #666;
+    font-size: 12px;
+    height: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis; // 末尾添加省略号
+    white-space: nowrap;
+    box-shadow: 0 -0px 2px 1px #efefef;
+  }
 }
 </style>

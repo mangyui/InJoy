@@ -132,6 +132,14 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
+  // 获取关注好友的图文
+  getPostByFollow (datas) {
+    return request({
+      url: baseUrl + '/post/getPostByFollow',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
   // 获取图文详情
   getPostById (datas) {
     return request({

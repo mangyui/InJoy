@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="max1100">
-        <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
+        <van-tabs v-model="active" swipeable animated sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
           <van-tab title="帖子" name="post">
             <PostList v-if="!showMask" ref="postBox" :userId="user._id"/>
           </van-tab>

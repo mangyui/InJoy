@@ -94,8 +94,7 @@ export default class PrivateChat extends Vue {
 }
 .refrsh-box{
   /deep/ .van-pull-refresh__track{
-    min-height: 400px;
+    min-height: 500px;
   }
-  padding-bottom: 100px;
 }
 </style>

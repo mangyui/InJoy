@@ -45,15 +45,27 @@
 .van-tabbar-item__icon img{
   height: 24px;
 }
-.mess-wrap{
-  .van-tabs--line .van-tabs__wrap{
-    height: 46px;
-    background: @themeColr;
-    .van-tabs__nav--line{
+.mess-wrap, .post-wrap{
+  height: 100%;
+  padding-top: 0!important;
+  background: #fff;
+  padding-bottom: 46px;
+  .van-tabs--line {
+    height: 100%;
+    .van-tabs__content {
+      height: 100%;
+    }
+    .van-tabs__wrap{
+      height: 46px;
       background: @themeColr;
-      .van-tab{
-        color: #fafafa;
-        font-size: 15px;
+      .van-tabs__nav--line{
+        background: @themeColr;
+        width: 55%;
+        margin: 0 auto;
+        .van-tab{
+          color: #fafafa;
+          font-size: 15px;
+        }
       }
     }
   }
@@ -132,3 +144,11 @@ textarea.van-field__control{
 //     display: none!important;
 //   }
 // }
+
+.van-field__label {
+  -webkit-box-flex: 0;
+  -webkit-flex: none;
+  flex: none;
+  box-sizing: border-box;
+  width: 90px;
+}

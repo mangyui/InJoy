@@ -44,7 +44,7 @@
           </van-uploader>
         </div>
         <div><van-icon class="input-icon" name="volume" color="#9E9E9E"></van-icon><p>语音</p></div>
-        <div><van-icon class="input-icon" name="map-marked" color="#2196F3"></van-icon><p>位置</p></div>
+        <div @click="$router.push('/mapChoose')"><van-icon class="input-icon" name="map-marked" color="#2196F3"></van-icon><p>位置</p></div>
       </div>
     </div>
   </div>
@@ -111,6 +111,9 @@ export default class InputBox extends Vue {
   padding: 24px 0;
   color: #666;
   text-align: center;
+  div{
+    padding: 0 10px;
+  }
   .input-icon{
     font-size: 35px;
     margin-bottom: 10px;

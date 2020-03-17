@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar class="map-nav litheme" fixed :border="false" title="选中活动地址" left-arrow @click-left="$router.go(-1)">
+    <van-nav-bar class="map-nav litheme" fixed :border="false" title="选择地址" left-arrow @click-left="spaceBack">
       <van-icon name="aim" slot="right" @click="toMe"/>
     </van-nav-bar>
     <div id="MapBox">
@@ -37,7 +37,9 @@ export default class MapChoose extends Vue {
     this.map.addControl(new this.BMap.NavigationControl({ anchor: this.$win.BMAP_ANCHOR_TOP_LEFT }))
     this.map.addControl(new this.BMap.ScaleControl({ anchor: this.$win.BMAP_ANCHOR_TOP_LEFT }))
 
-    this.bindSquareEvent()
+    this.map.addEventListener('click', (e: any) => {
+      this.bindSquareEvent(e.point)
+    })
     this.map.disableDragging()
     // 触摸移动--开启拖动
     this.map.addEventListener('touchmove', () => {
@@ -51,26 +53,23 @@ export default class MapChoose extends Vue {
 
     this.$toast.clear()
   }
-  bindSquareEvent () {
-    this.map.addEventListener('click', (e: any) => {
-      this.map.removeOverlay(this.mySquare)
-      // 添加自定义覆盖物
-      this.mySquare = new mapSquare.SquareOverlay(e.point, 110, 40, '#7678f2', '我的活动')
-      this.map.addOverlay(this.mySquare)
+  bindSquareEvent (point: any) {
+    this.map.removeOverlay(this.mySquare)
+    // 添加自定义覆盖物
+    this.mySquare = new mapSquare.SquareOverlay(point, 110, 40, '#7678f2', '目标地址')
+    this.map.addOverlay(this.mySquare)
 
-      // 为当前添加激活效果
-      this.mySquare._div.classList.add('mapJoin-item-active')
-      new this.BMap.Geocoder().getLocation(e.point, (rs: any) => {
-        // addressComponents对象可以获取到详细的地址信息
-        // var addComp = rs.addressComponents
-        // var site = addComp.province + ', ' + addComp.city + ', ' + addComp.district + ', ' + addComp.street + ', ' + addComp.streetNumber
-        // console.log(rs.address) // 详细地址
-        this.joinAddress = {
-          point: e.point,
-          place: rs.address
-        }
-      })
-      // alert(e.point.lng + ", " + e.point.lat);
+    // 为当前添加激活效果
+    this.mySquare._div.classList.add('mapJoin-item-active')
+    new this.BMap.Geocoder().getLocation(point, (rs: any) => {
+      // addressComponents对象可以获取到详细的地址信息
+      // var addComp = rs.addressComponents
+      // var site = addComp.province + ', ' + addComp.city + ', ' + addComp.district + ', ' + addComp.street + ', ' + addComp.streetNumber
+      // console.log(rs.address) // 详细地址
+      this.joinAddress = {
+        point: point,
+        place: rs.address
+      }
     })
   }
   getLocation () {
@@ -101,6 +100,7 @@ export default class MapChoose extends Vue {
   toMe () {
     if (this.myAddress.point) {
       this.map.panTo(this.myAddress.point)
+      this.bindSquareEvent(this.myAddress.point)
     } else {
       this.getLocation()
     }
@@ -110,8 +110,12 @@ export default class MapChoose extends Vue {
       this.$store.commit('SET_JOIN_ADDRESS', this.joinAddress)
       this.$router.go(-1)
     } else {
-      this.$toast('请点击选择活动地址')
+      this.$toast('请点击选择地址')
     }
+  }
+  spaceBack () {
+    this.$store.commit('RM_JOIN_ADDRESS')
+    this.$router.go(-1)
   }
   mounted () {
     this.$toast.loading({

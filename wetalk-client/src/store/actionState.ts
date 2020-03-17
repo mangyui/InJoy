@@ -16,6 +16,9 @@ export default {
     SET_JOIN_ADDRESS (state: any, ja: any) {
       state.joinAddress = ja
     },
+    RM_JOIN_ADDRESS (state: any) {
+      state.joinAddress = {}
+    },
     SET_MY_ADDRESS (state: any, mya: any) {
       state.myAddress = mya
     },

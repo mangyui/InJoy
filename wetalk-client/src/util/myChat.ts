@@ -19,7 +19,7 @@ class MyChat {
       from_user: this.user,
       to_user: [toUser._id],
       message: message,
-      my_type: 1
+      my_type: 1 // 1添加消息 2撤回消息
     }
     this.ws.send(JSON.stringify(data))
 

@@ -63,12 +63,10 @@ function formatTime (time) {
 
   if (diff < 30) {
     return '刚刚'
-  } else if (diff < 3600) { // less 1 hour
+  } else if (diff < 600) { // less 1 hour
     return Math.ceil(diff / 60) + '分钟前'
   } else if (diff < 3600 * 24) {
     return add0(d.getHours()) + ':' + add0(d.getMinutes())
-  } else if (diff < 3600 * 24 * 2) {
-    return '1天前'
   } else {
     return add0(d.getMonth() + 1) + '-' + add0(d.getDate()) + ' ' + add0(d.getHours()) + ':' + add0(d.getMinutes())
   }
