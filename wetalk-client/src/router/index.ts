@@ -14,6 +14,8 @@ import JoinEdit from '@/views/join/JoinEdit.vue'
 import JoinDetails from '@/views/join/Details.vue'
 import MapChoose from '@/views/join/MapChoose.vue'
 
+import ApplyJoin from '@/views/join/Apply.vue'
+
 import Location from '@/views/common/Location.vue'
 
 import Search from '@/views/home/Search.vue'
@@ -114,6 +116,11 @@ const router:Router = new Router({
       path: '/mapChoose',
       name: 'MapChoose',
       component: MapChoose // () => import('@/views/join/MapChoose.vue')
+    },
+    {
+      path: '/applyJoin/:id',
+      name: 'ApplyJoin',
+      component: ApplyJoin // () => import('@/views/join/Apply.vue')
     },
     {
       path: '/search',

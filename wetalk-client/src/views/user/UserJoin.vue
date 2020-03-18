@@ -10,8 +10,13 @@
           :status="item.count+'/'+item.total"
           @click="$router.push('/joinDetails/' + item._id)">
             <div>{{item.details}}</div>
+            <div class="join-imgs-warp">
+              <img :src="item.imgList[0]">
+              <img v-show="item.imgList[1]" :src="item.imgList[1]">
+              <img v-show="item.imgList[2]" :src="item.imgList[2]">
+            </div>
             <div v-if="item.user" class="people-box mg-t-15">
-              <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
+              <img :src="item.user.avatar || '/imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="people-text mg-l-5">
                 <span @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name||'匿名'}}</span>
               </div>
@@ -67,19 +72,6 @@ export default class UserJoin extends Vue {
 </script>
 
 <style lang="less" scoped>
-.join-right-time{
-  display: flex;
-  color: #aaa;
-  align-items: center;
-  justify-content: flex-end;
-  span{
-    margin-right: 5px;
-    font-size: 12px;
-  }
-  .van-icon {
-    font-size: 16px;
-  }
-}
 .van-cell__title, .van-dropdown-item /deep/ .van-cell__title {
   font-weight: normal;
 }

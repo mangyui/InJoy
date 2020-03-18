@@ -2,7 +2,7 @@
   <div class="bgF7">
     <van-nav-bar class="litheme" :border="false" fixed title="发布活动" left-arrow
       @click-left="$router.go(-1)">
-      </van-nav-bar>
+    </van-nav-bar>
     <div class="my-content-fix max1100">
       <van-cell-group>
         <van-field

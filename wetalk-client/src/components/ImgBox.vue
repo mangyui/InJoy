@@ -42,7 +42,8 @@ export default class ImgBox extends Vue {
       startPosition: index,
       closeOnPopstate: true,
       loop: false,
-      lazyLoad: true
+      lazyLoad: true,
+      closeable: true
     })
   }
 }

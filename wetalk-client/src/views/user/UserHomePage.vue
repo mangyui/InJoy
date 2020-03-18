@@ -46,9 +46,7 @@
       cancel-text="取消"
       :round="true"
     />
-    <div v-show="showMask" class="white-mask">
-      <van-loading type="spinner" color="#1989fa" />
-    </div>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 

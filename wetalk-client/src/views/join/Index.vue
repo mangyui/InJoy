@@ -29,6 +29,11 @@
           :status="item.count+'/'+item.total"
           @click="$router.push('/joinDetails/' + item._id)">
             <div>{{item.details}}</div>
+            <div class="join-imgs-warp">
+              <img :src="item.imgList[0]">
+              <img v-show="item.imgList[1]" :src="item.imgList[1]">
+              <img v-show="item.imgList[2]" :src="item.imgList[2]">
+            </div>
             <div class="people-box mg-t-15">
               <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="people-text mg-l-5">
@@ -123,11 +128,11 @@ export default class Join extends Vue {
     this.$refs.content.scrollTop = this.scrollTop
   }
   mounted () {
-    // if (!this.myAddress.place || this.myAddress.place === '') {
-    //   this.getMyLocation()
-    // } else {
-    //   this.getJoinList()
-    // }
+    if (!this.myAddress.place || this.myAddress.place === '') {
+      this.getMyLocation()
+    } else {
+      this.getJoinList()
+    }
   }
 }
 </script>
@@ -135,6 +140,9 @@ export default class Join extends Vue {
 <style lang="less" scoped>
 .max1100{
   position: relative;
+}
+.van-cell-group{
+  margin: 10px 0;
 }
 .join-wrap{
   padding-bottom: 50px;
@@ -153,17 +161,5 @@ export default class Join extends Vue {
   position: fixed!important;
   top: 90px;
 }
-.join-right-time{
-  display: flex;
-  color: #aaa;
-  align-items: center;
-  justify-content: flex-end;
-  span{
-    margin-right: 5px;
-    font-size: 12px;
-  }
-  .van-icon {
-    font-size: 16px;
-  }
-}
+
 </style>

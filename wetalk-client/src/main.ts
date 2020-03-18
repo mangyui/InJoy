@@ -15,12 +15,16 @@ import './api/get.js'
 import './api/post.js'
 import './api/upload.js'
 
+import Loading from '@/components/Loading.vue'
+
 import { Toast, Notify } from 'vant'
 
 // @ts-ignore
 import Navigation from 'vue-navigation'
 
 Vue.use(Navigation, { router, store, keyName: 'my' })
+
+Vue.component('Loading', Loading)
 
 Vue.prototype.$win = window
 

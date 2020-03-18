@@ -83,9 +83,7 @@
       </van-pull-refresh>
       <InputBox v-if="isComment" :replyName="commentItem.user.name" @toSend="toSend"/>
     </div>
-    <div v-show="showMask" class="white-mask">
-      <van-loading type="spinner" color="#1989fa" />
-    </div>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 

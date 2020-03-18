@@ -48,9 +48,7 @@
       @select="onSelect"
       @cancel="showMore=false"
     />
-    <div v-show="showMask" class="white-mask">
-      <van-loading type="spinner" color="#1989fa" />
-    </div>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 
@@ -210,7 +208,7 @@ export default class UserChat extends Vue {
   background-image: url('/imgs/mapMin.png');
   background-size: 70%;
   background-position-x: center;
-  background-position-y: 0px;
+  background-position-y: 5px;
   box-shadow: 0 0px 2px 1px #efefef;
   border-radius: 3px;
   width: 220px;

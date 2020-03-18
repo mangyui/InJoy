@@ -5,6 +5,14 @@
        <van-icon name="ellipsis" slot="right" @click="showEdit=true"/>
     </van-nav-bar>
     <div class="my-content-fix max1100">
+      <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange">
+        <van-swipe-item v-for="(image, index) in currjoin.imgList" :key="index" @click="toShowImg(index)">
+          <img :src="image" />
+        </van-swipe-item>
+        <div class="custom-indicator" slot="indicator">
+          {{ current + 1 }}/{{currjoin.imgList.length}}
+        </div>
+      </van-swipe>
       <div class="join-details-warp">
         <div class="join-title join-wrap">
           <div class="flex-rlc">
@@ -37,16 +45,16 @@
             <img src="/imgs/mapMin.png">{{currjoin.place}}
           </p>
         </div>
-        <div v-if="currjoin.imgList[0]" class="join-img join-wrap">
-          <h3>活动图片</h3>
-          <ImgBox :imgList="currjoin.imgList"/>
-        </div>
       </div>
-      <div class="comment-line">评论</div>
+      <div class="comment-line">全部留言</div>
+      <div v-show="!joinComment[0]" class="white-wrap my-tip-box">
+        还没有人抢沙发
+      </div>
     </div>
     <div class="join-bottom-btn max1100">
-      <van-button type="info" @click.stop="">发表评论</van-button>
-      <van-button class="btn-theme" type="info" @click.stop="">立即沟通</van-button>
+      <van-button type="info" @click.stop="">留言</van-button>
+      <van-button type="primary" :disabled="currjoin.alreadyApply?true:false" @click.stop="$router.push('/applyJoin/'+currjoin._id)">{{currjoin.alreadyApply?'已申请':'立即参与'}}</van-button>
+      <van-button class="btn-theme" type="info" @click.stop="$router.push('/userchat/'+currjoin.user._id)">聊一聊</van-button>
     </div>
     <van-action-sheet
       v-model="showEdit"
@@ -54,22 +62,18 @@
       cancel-text="取消"
       :round="true"
     />
-    <div v-show="showMask" class="white-mask">
-      <van-loading type="spinner" color="#1989fa" />
-    </div>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import ImgBox from '@/components/ImgBox.vue'
+import { Getter } from 'vuex-class'
 
 @Component({
-  components: {
-    ImgBox
-  }
 })
 export default class JoinDetails extends Vue {
+  @Getter user!: any
   showEdit: boolean = false
   showMask: boolean = true
   actions: Array<any> = [
@@ -77,6 +81,7 @@ export default class JoinDetails extends Vue {
     { name: '删除', color: '#ee0a24' },
     { name: '举报', disabled: true }
   ]
+  current: number = 0
   currjoin: any = {
     title: '',
     type: 1,
@@ -90,9 +95,11 @@ export default class JoinDetails extends Vue {
     imgList: [],
     user: {}
   }
+  joinComment: Array<any> = []
   getJoinById () {
     let data: any = {
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      viewer: this.user._id
     }
     this.$toPost.getJoinById(data).then((res: any) => {
       if (res.data._id) {
@@ -108,6 +115,17 @@ export default class JoinDetails extends Vue {
       console.log(err)
     })
   }
+  onChange (index: any) {
+    this.current = index
+  }
+  toShowImg (index: number) {
+    this.$ImagePreview({
+      images: this.currjoin.imgList,
+      startPosition: index,
+      closeOnPopstate: true,
+      loop: false
+    })
+  }
   gotoLocation () {
     let point = new this.$win.BMap.Point(this.currjoin.pointX, this.currjoin.pointY)
     this.$store.commit('SET_TO_LOCATION', { point })
@@ -120,20 +138,20 @@ export default class JoinDetails extends Vue {
 </script>
 
 <style lang="less" scoped>
+.my-content-fix{
+  padding-bottom: 70px;
+}
 .join-bottom-btn{
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 10px;
+  padding: 10px 5px;
   background: rgba(255, 255, 255, 0.8);
   display: flex;
   >.van-button{
-    width: 50%;
-    opacity: 0.8;
-  }
-  .btn-theme{
-    margin-left: 10px;
+    width: 100%;
+    margin: 0 5px;
   }
 }
 .join-details-warp{
@@ -185,6 +203,26 @@ export default class JoinDetails extends Vue {
   img {
     width: 40px;
     margin-right: 10px;
+  }
+}
+.van-swipe {
+  background: url('/imgs/noimg.jpg');
+  background-size: cover;
+  .custom-indicator {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 4px 10px;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+.van-swipe-item{
+  text-align: center;
+  img{
+    width: 100%;
   }
 }
 </style>

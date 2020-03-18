@@ -243,6 +243,14 @@ const toPost = {
       method: 'post',
       data: qs.stringify(addSign(datas))
     })
+  },
+  // 申请加入活动
+  applyJoin (datas) {
+    return request({
+      url: baseUrl + '/apply/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
   }
   // addOrUpdate (datas) {
   //   return request({
