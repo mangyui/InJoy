@@ -220,6 +220,14 @@ const toPost = {
       data: qs.stringify(addSign(datas), { arrayFormat: 'repeat' }) // 数组格式化a=b&a=c (图片数组)
     })
   },
+  // 发布活动
+  editJoin (datas) {
+    return request({
+      url: baseUrl + '/join/update',
+      method: 'post',
+      data: qs.stringify(addSign(datas), { arrayFormat: 'repeat' }) // 数组格式化a=b&a=c (图片数组)
+    })
+  },
   // 根据获取活动列表
   getJoinList (datas) {
     return request({
@@ -248,6 +256,38 @@ const toPost = {
   applyJoin (datas) {
     return request({
       url: baseUrl + '/apply/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取用户的所有申请
+  getApplyByUser (datas) {
+    return request({
+      url: baseUrl + '/apply/getByUser',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取活动的所有申请
+  getApplyByJoin (datas) {
+    return request({
+      url: baseUrl + '/apply/getByJoin',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 修改申请状态
+  setApplyPass (datas) {
+    return request({
+      url: baseUrl + '/apply/applyPass',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 修改申请状态
+  deleteApply (datas) {
+    return request({
+      url: baseUrl + '/apply/rm',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

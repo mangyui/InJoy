@@ -10,7 +10,7 @@
 }
 
 .van-cell-group{
-  margin: 15px 0;
+  margin: 10px 0;
   .van-cell{
     padding: 13px 16px;
   }
@@ -48,7 +48,6 @@
 .mess-wrap, .post-wrap{
   height: 100%;
   padding-top: 0!important;
-  background: #fff;
   padding-bottom: 46px;
   .van-tabs--line {
     height: 100%;
@@ -111,6 +110,12 @@
     &:active{
       background:  @themeColr;
     }
+  }
+}
+
+.refrsh-box{
+  /deep/ .van-pull-refresh__track{
+    min-height: 500px;
   }
 }
 

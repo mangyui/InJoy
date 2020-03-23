@@ -1,5 +1,5 @@
 <template>
-  <div class="search-wrap">
+  <div class="bgMax">
     <form class="fix-top search-box" action="/">
       <van-search
         v-model="text"
@@ -10,16 +10,14 @@
       />
     </form>
     <div class="max1100 search-tab-box">
-      <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="52">
-        <!-- <van-tab title="话题" name="tag">
-        </van-tab> -->
+      <van-tabs v-model="active" swipeable sticky :border="false" line-width="26" :offset-top="54">
         <van-tab title="帖子" name="post">
-          <div class="scroll-wrap">
+          <div class="scroll-wrap white-wrap">
             <PostList ref="postBox" :text="text"></PostList>
           </div>
         </van-tab>
         <van-tab title="用户" name="user">
-          <div class="white-wrap">
+          <div class="scroll-wrap">
             <UserList ref="userBox" :text="text"></UserList>
           </div>
         </van-tab>
@@ -44,13 +42,11 @@ export default class Search extends Vue {
   active: string = 'post'
   onSearch () {
     if (this.text.trim() !== '') {
-      if (this.active === 'post') {
-        // @ts-ignore
-        this.$refs.postBox.getPostList()
-      } else if (this.active === 'user') {
-        // @ts-ignore
-        this.$refs.userBox.getUserList()
-      }
+      // @ts-ignore
+      this.$refs.postBox.getPostList()
+
+      // @ts-ignore
+      this.$refs.userBox.getUserList()
     }
   }
   created () {

@@ -108,26 +108,32 @@ export default class UserCenter extends Vue {
 }
 .my-user-digit{
   display: flex;
-  padding: 15px 20px;
   justify-content: space-around;
+  background: #fff;
+  margin: 0 15px;
+  border-radius: 5px;
+  padding: 20px 10px;
+  position: relative;
+  bottom: -20px;
+  box-shadow: 0 2px 6px 1px rgba(0,0,0,0.03);
   & > div {
     text-align: center;
     span{
-      font-size: 18px;
-      color: #fff;
+      font-size: 19px;
+      color: #7979f3;
       font-weight: bold;
     }
     p{
       font-size: 12px;
-      margin-top: 5px;
-      color: #ededed;
+      margin-top: 8px;
+      color: #888;
     }
   }
 }
 .find-user{
   display: flex;
   align-items: center;
-  padding: 0px 15px 10px 20px;
+  padding: 0px 15px 0px 20px;
   position: relative;
   // background: #fff;
   // border-bottom: 1px solid #f4f4f4;
@@ -137,7 +143,7 @@ export default class UserCenter extends Vue {
     width: 65x;
     height: 65px;
     border-radius: 50%;
-    margin-right: 20px;
+    margin-right: 15px;
     border: 1px solid #fff;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     transition: 0.28s;
@@ -157,11 +163,11 @@ export default class UserCenter extends Vue {
     font-weight: bold;
     margin-bottom: 5px;
     img{
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: #fefefe;
-      vertical-align: middle;
+      vertical-align: top;
     }
   }
   span{
@@ -171,5 +177,6 @@ export default class UserCenter extends Vue {
 }
 .my-info{
   padding-bottom: 55px;
+  margin-top: 35px;
 }
 </style>

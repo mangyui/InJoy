@@ -63,7 +63,7 @@ function formatTime (time) {
 
   if (diff < 30) {
     return '刚刚'
-  } else if (diff < 600) { // less 1 hour
+  } else if (diff < 600) {
     return Math.ceil(diff / 60) + '分钟前'
   } else if (diff < 3600 * 24) {
     return add0(d.getHours()) + ':' + add0(d.getMinutes())
@@ -91,9 +91,27 @@ function commomTime (time) {
   }
 }
 
+// 时间过去格式化
+function diffNow (time) {
+  const d = new Date(time)
+  const now = Date.now()
+
+  let diff = (d - now) / 1000
+
+  if (diff < 0) {
+    return '已过时'
+  } else { // less 1 hour
+    let days = Math.floor(diff / (24 * 3600))
+    let hours = Math.floor((diff % (24 * 3600)) / 3600)
+    let minutes = Math.floor(((diff % (24 * 3600)) % 3600) / 60)
+    return days + '天' + hours + '时' + minutes + '分'
+  }
+}
+
 module.exports = {
   imageToBase64,
   dealImage,
   formatTime,
-  commomTime
+  commomTime,
+  diffNow
 }

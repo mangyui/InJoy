@@ -17,12 +17,13 @@
       display: flex;
       align-items: top;
       padding-right: 40px;
-      margin-top: 18px;
+      margin-top: 15px;
       padding-top: 5px;
       padding-bottom: 5px;
       .mu-avatar{
-        height: 45px;
-        width: 45px;
+        height: 40px;
+        width: 40px;
+        flex-shrink: 0;
         position: relative;
         img{
           width: 100%;
@@ -52,7 +53,7 @@
             width: auto;
             height: auto;
             box-shadow: 0 1px 1px 1px #efefef;
-            background: #fff;
+            background: rgba(0,0,0,0.1);
             border-radius: 3px;
           }
         }
@@ -66,15 +67,15 @@
         p.mess-item-content{
           margin: 0;
           font-size: 14px;
-          padding: 10px 14px;
+          padding: 8px 12px;
           background: #fff;
           border-radius: 3px;
           box-shadow: 0 1px 1px rgba(0,0,0,0.1);
           position: relative;
           font-size: 15px;
-          border-radius: 15px;
+          border-radius: 12px;
           line-height: 25px;
-          min-height: 45px;
+          min-height: 40px;
           box-sizing: border-box;
           &::after{
             display: block;
@@ -110,12 +111,12 @@
           text-align: right
         }
         p.mess-item-content{
-          background: #2196f3;
+          background: #8b81f9;
           color: #fff;
           &:after{
             right: unset;
             left: calc(100% - 0.5px);
-            border-color: transparent transparent transparent #2196f3;
+            border-color: transparent transparent transparent #8b81f9;
           }
         }
         p.mess-item-time{
@@ -123,5 +124,55 @@
         }
       }
     }
+  }
+}
+
+.chat-mesg-box{
+  position: fixed;
+  top: 46px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+}
+.mess-location-wrap{
+  background-image: url('/imgs/mapMin.png');
+  background-size: 70%;
+  background-position-x: center;
+  background-position-y: 5px;
+  box-shadow: 0 0px 2px 1px #efefef;
+  border-radius: 3px;
+  width: 220px;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  &::before{
+    content: '位置';
+    display: block;
+    font-weight: bold;
+    background: #fff;
+    color: #8b81f9;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px 1px #efefef;
+  }
+  p{
+    text-decoration: underline;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgb(255,255,255);
+    color: #666;
+    font-size: 12px;
+    height: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis; // 末尾添加省略号
+    white-space: nowrap;
+    box-shadow: 0 -0px 2px 1px #efefef;
   }
 }

@@ -120,7 +120,7 @@ export default class PostDetails extends Vue {
       data.viewer = this.$store.getters.user._id
     }
     this.$toPost.getPostById(data).then((res: any) => {
-      if (res.data._id) {
+      if (res.data && res.data._id) {
         this.postDetails = res.data
         this.getfComments()
         this.showMask = false

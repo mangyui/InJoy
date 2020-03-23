@@ -44,7 +44,7 @@
           </van-uploader>
         </div>
         <div><van-icon class="input-icon" name="volume" color="#9E9E9E"></van-icon><p>语音</p></div>
-        <div @click="$router.push('/mapChoose')"><van-icon class="input-icon" name="map-marked" color="#2196F3"></van-icon><p>位置</p></div>
+        <div @click="toLocation"><van-icon class="input-icon" name="map-marked" color="#2196F3"></van-icon><p>位置</p></div>
       </div>
     </div>
   </div>
@@ -80,6 +80,10 @@ export default class InputBox extends Vue {
       this.$emit('toSend', this.sendText)
       this.sendText = ''
     }
+  }
+  toLocation () {
+    this.$store.commit('RM_JOIN_ADDRESS')
+    this.$router.push('/mapChoose')
   }
   readImg (file: any) {
     let data = new FormData()

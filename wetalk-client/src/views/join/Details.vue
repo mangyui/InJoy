@@ -6,29 +6,29 @@
     </van-nav-bar>
     <div class="my-content-fix max1100">
       <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange">
-        <van-swipe-item v-for="(image, index) in currjoin.imgList" :key="index" @click="toShowImg(index)">
+        <van-swipe-item v-for="(image, index) in currJoin.imgList" :key="index" @click="toShowImg(index)">
           <img :src="image" />
         </van-swipe-item>
         <div class="custom-indicator" slot="indicator">
-          {{ current + 1 }}/{{currjoin.imgList.length}}
+          {{ current + 1 }}/{{currJoin.imgList.length}}
         </div>
       </van-swipe>
       <div class="join-details-warp">
         <div class="join-title join-wrap">
           <div class="flex-rlc">
-            <h2>{{currjoin.title}}</h2>
-            <span><b class="join-number">{{currjoin.count}}</b>/{{currjoin.total}} 人</span>
+            <h2>{{currJoin.title}}</h2>
+            <span><b class="join-number">{{currJoin.count}}</b>/{{currJoin.total}} 人</span>
           </div>
           <div>
-            <p><van-icon name="label" /> {{['线上约', '线下约'][currjoin.type]}}</p>
-            <p><van-icon name="underway" />{{$commomTime(currjoin.time)}}</p>
+            <p><van-icon name="label" /> {{['线上约', '线下约'][currJoin.type]}}</p>
+            <p><van-icon name="underway" />{{$commomTime(currJoin.time)}}</p>
           </div>
         </div>
         <div class="join-user join-wrap">
           <div class="people-box">
-            <img :src="currjoin.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + currjoin.user._id)">
+            <img :src="currJoin.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + currJoin.user._id)">
             <div class="people-text mg-l-5">
-              <span @click.stop="$router.push('/userhomepage/' + currjoin.user._id)">{{currjoin.user.name||'匿名'}}</span>
+              <span @click.stop="$router.push('/userhomepage/' + currJoin.user._id)">{{currJoin.user.name||'匿名'}}</span>
             </div>
             <van-icon name="arrow" color="#ccc" />
           </div>
@@ -36,16 +36,17 @@
         <div class="join-text join-wrap">
           <h3>活动详情</h3>
           <p>
-            {{currjoin.details}}
+            {{currJoin.details}}
           </p>
         </div>
-        <div v-if="currjoin.place" class="join-place join-wrap">
+        <div v-if="currJoin.place" class="join-place join-wrap">
           <h3>地址详情</h3>
           <p @click="gotoLocation">
-            <img src="/imgs/mapMin.png">{{currjoin.place}}
+            <img src="/imgs/mapMin.png">{{currJoin.place}}
           </p>
         </div>
       </div>
+      <van-cell class="join-apply-cell" title="申请人数" is-link :value="currJoin.applyCount || 0" @click="$router.push('/applyList/'+currJoin._id)"/>
       <div class="comment-line">全部留言</div>
       <div v-show="!joinComment[0]" class="white-wrap my-tip-box">
         还没有人抢沙发
@@ -53,10 +54,13 @@
     </div>
     <div class="join-bottom-btn max1100">
       <van-button type="info" @click.stop="">留言</van-button>
-      <van-button type="primary" :disabled="currjoin.alreadyApply?true:false" @click.stop="$router.push('/applyJoin/'+currjoin._id)">{{currjoin.alreadyApply?'已申请':'立即参与'}}</van-button>
-      <van-button class="btn-theme" type="info" @click.stop="$router.push('/userchat/'+currjoin.user._id)">聊一聊</van-button>
+      <van-button v-if="currJoin.user&&user._id!==currJoin.user._id" type="primary" :disabled="currJoin.alreadyApply?true:false" @click.stop="$router.push('/applyJoin/'+currJoin._id)">{{currJoin.alreadyApply?'已申请':'立即参与'}}</van-button>
+      <van-button v-if="currJoin.user&&user._id===currJoin.user._id" class="btn-theme" type="info" @click.stop="$router.push('/joinEdit/'+currJoin._id)">修改</van-button>
+      <van-button v-else class="btn-theme" type="info" @click.stop="$router.push('/userchat/'+currJoin.user._id)">聊一聊</van-button>
     </div>
     <van-action-sheet
+      title=""
+      close-icon=""
       v-model="showEdit"
       :actions="actions"
       cancel-text="取消"
@@ -77,12 +81,10 @@ export default class JoinDetails extends Vue {
   showEdit: boolean = false
   showMask: boolean = true
   actions: Array<any> = [
-    { name: '修改' },
-    { name: '删除', color: '#ee0a24' },
     { name: '举报', disabled: true }
   ]
   current: number = 0
-  currjoin: any = {
+  currJoin: any = {
     title: '',
     type: 1,
     details: '',
@@ -102,8 +104,8 @@ export default class JoinDetails extends Vue {
       viewer: this.user._id
     }
     this.$toPost.getJoinById(data).then((res: any) => {
-      if (res.data._id) {
-        this.currjoin = res.data
+      if (res.data && res.data._id) {
+        this.currJoin = res.data
         this.showMask = false
       } else {
         this.$notify({ type: 'warning', message: '活动不存在' })
@@ -120,14 +122,14 @@ export default class JoinDetails extends Vue {
   }
   toShowImg (index: number) {
     this.$ImagePreview({
-      images: this.currjoin.imgList,
+      images: this.currJoin.imgList,
       startPosition: index,
       closeOnPopstate: true,
       loop: false
     })
   }
   gotoLocation () {
-    let point = new this.$win.BMap.Point(this.currjoin.pointX, this.currjoin.pointY)
+    let point = new this.$win.BMap.Point(this.currJoin.pointX, this.currJoin.pointY)
     this.$store.commit('SET_TO_LOCATION', { point })
     this.$router.push('/location')
   }
@@ -159,9 +161,17 @@ export default class JoinDetails extends Vue {
   background: #fff;
   margin-bottom: 10px;
 }
+.join-apply-cell{
+  margin-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .join-wrap{
   padding: 15px 0;
   border-bottom: 1px solid #f8f8f8;
+  h3{
+    font-size: 15px;
+  }
 }
 .join-title{
   & div {

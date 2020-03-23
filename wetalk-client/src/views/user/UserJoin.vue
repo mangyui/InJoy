@@ -34,6 +34,7 @@
         </div>
       </div>
     </van-pull-refresh>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 
@@ -42,6 +43,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class UserJoin extends Vue {
+  showMask: boolean = true
   isRefresh: boolean = false
   joinType: number = -1
   joinList: Array<any> = []
@@ -49,19 +51,13 @@ export default class UserJoin extends Vue {
     id: this.$store.getters.user._id
   }
   getMyJoin () {
-    this.$toast.loading({
-      mask: true,
-      duration: 0,
-      message: '加载中...'
-    })
     this.$toPost.getJoinList(this.getData).then((res: any) => {
       res.data.pop()
       this.joinList = res.data
-      this.$toast.clear()
+      this.showMask = false
       this.isRefresh = false
     }).catch((error: any) => {
       console.log(error)
-      this.$toast.clear()
       this.isRefresh = false
     })
   }
@@ -77,5 +73,10 @@ export default class UserJoin extends Vue {
 }
 .van-panel__footer .van-button {
     margin-left: 5px;
+}
+.van-pull-refresh{
+  /deep/ .van-pull-refresh__track{
+    height: 100%;
+  }
 }
 </style>

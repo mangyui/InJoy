@@ -1,6 +1,6 @@
 <template>
   <div class="talk-room bgMax">
-    <van-nav-bar class="litheme" :border="false" fixed :title="toUser.name||'乐聊'" left-arrow  @click-left="$router.go(-1)">
+    <van-nav-bar class="litheme" :border="false" fixed :title="showMask?'':(toUser.name||'乐聊')" left-arrow  @click-left="$router.go(-1)">
       <van-icon name="ellipsis" slot="right" @click="clickMore"/>
     </van-nav-bar>
     <div class="chat-mesg-box max1100" @click="$refs.inputB.noMore()" ref="content">
@@ -154,7 +154,6 @@ export default class UserChat extends Vue {
         Vue.nextTick(() => {
           // @ts-ignore
           this.$refs.content.scrollTop = this.$refs.content.scrollHeight
-          this.toLocation()
           this.showMask = false
         })
         setTimeout(() => {
@@ -188,61 +187,27 @@ export default class UserChat extends Vue {
     this.$store.commit('SET_TO_LOCATION', { point })
     this.$router.push('/location')
   }
-  created () {
-    this.getUser()
+  activated () {
+    // @ts-ignore
+    if (this.$store.getters.isForward) {
+      this.$store.commit('RM_JOIN_ADDRESS') // 确保没有位置信息
+      this.showMask = true
+      this.getUser()
+    } else { // 返回页面时 如果有位置信息就发送
+      this.toLocation()
+      Vue.nextTick(() => {
+        // @ts-ignore
+        this.$refs.content.scrollTop = this.$refs.content.scrollHeight
+        this.showMask = false
+      })
+    }
   }
+  // created () {
+  //   this.getUser()
+  // }
 }
 </script>
 
 <style lang="less" scoped>
 @import '../../styles/chatroom.less';
-.chat-mesg-box{
-  position: fixed;
-  top: 46px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
-}
-.mess-location-wrap{
-  background-image: url('/imgs/mapMin.png');
-  background-size: 70%;
-  background-position-x: center;
-  background-position-y: 5px;
-  box-shadow: 0 0px 2px 1px #efefef;
-  border-radius: 3px;
-  width: 220px;
-  height: 180px;
-  position: relative;
-  overflow: hidden;
-  &::before{
-    content: '位置';
-    display: block;
-    font-weight: bold;
-    background: #fff;
-    color: #8b81f9;
-    width: 100%;
-    text-align: center;
-    padding: 5px;
-    box-sizing: border-box;
-    box-shadow: 0 1px 2px 1px #efefef;
-  }
-  p{
-    text-decoration: underline;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background: rgb(255,255,255);
-    color: #666;
-    font-size: 12px;
-    height: 40px;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis; // 末尾添加省略号
-    white-space: nowrap;
-    box-shadow: 0 -0px 2px 1px #efefef;
-  }
-}
 </style>

@@ -7,7 +7,7 @@
             <img :src="item.user.avatar||'./imgs/avatar.png'">
             <div class="mess-right-l">
               <b>{{item.user.name}}</b>
-              <p>{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':item.mesgList[item.mesgList.length-1].content}}</p>
+              <p>{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':(item.mesgList[item.mesgList.length-1].type==3?'[位置]':item.mesgList[item.mesgList.length-1].content)}}</p>
             </div>
             <span>{{$formatTime(item.mesgList[item.mesgList.length-1].time)}}</span>
           </div>
@@ -90,11 +90,6 @@ export default class PrivateChat extends Vue {
       position: absolute;
       right: 15px;
     }
-  }
-}
-.refrsh-box{
-  /deep/ .van-pull-refresh__track{
-    min-height: 500px;
   }
 }
 </style>

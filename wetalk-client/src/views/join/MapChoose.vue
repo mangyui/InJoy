@@ -40,6 +40,11 @@ export default class MapChoose extends Vue {
     this.map.addEventListener('click', (e: any) => {
       this.bindSquareEvent(e.point)
     })
+
+    if (this.joinAddress.point) {
+      this.bindSquareEvent(this.joinAddress.point)
+    }
+
     this.map.disableDragging()
     // 触摸移动--开启拖动
     this.map.addEventListener('touchmove', () => {
@@ -114,7 +119,7 @@ export default class MapChoose extends Vue {
     }
   }
   spaceBack () {
-    this.$store.commit('RM_JOIN_ADDRESS')
+    // this.$store.commit('RM_JOIN_ADDRESS')
     this.$router.go(-1)
   }
   mounted () {
@@ -122,6 +127,7 @@ export default class MapChoose extends Vue {
       duration: 0,
       message: '加载中...'
     })
+    this.joinAddress = this.$store.getters.joinAddress
     this.BMap = this.$win.BMap
     this.getLocation()
   }

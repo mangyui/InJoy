@@ -102,7 +102,7 @@ const tools = require('@/util/tools.js')
 
 @Component
 export default class UserEdit extends Vue {
-  private user: any = this.$store.getters.user
+  user: any = {}
   areaList: JSON = areaList
   showSex: boolean = false
   showDate: boolean = false
@@ -185,6 +185,9 @@ export default class UserEdit extends Vue {
     }, (e: any) => {
       _this.$toast('定位失败')
     }, { provider: 'baidu' })
+  }
+  created () {
+    this.user = JSON.parse(JSON.stringify(this.$store.getters.user))
   }
 }
 </script>

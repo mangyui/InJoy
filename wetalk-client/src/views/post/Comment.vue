@@ -63,7 +63,7 @@ export default class PostComment extends Vue {
   PostDetails: any ={}
   getPostById () {
     this.$toPost.getPostById({ id: this.$route.params.id }).then((res: any) => {
-      if (res.data._id) {
+      if (res.data && res.data._id) {
         this.PostDetails = res.data
       } else {
         this.$notify({ type: 'warning', message: '帖子不存在' })

@@ -6,7 +6,7 @@
       </navigation>
     </transition> -->
     <transition :name="transitionName">
-      <keep-alive exclude="Location,MyMap,GarbageList,WebView,PostComment,TopicPost,UserChat,UserComment,UserFollower,UserFollowing,JoinDetails">
+      <keep-alive exclude="Location,MyMap,GarbageList,WebView,PostComment,TopicPost,UserFollower,UserFollowing,UserEdit,MapChoose,JoinDetails">
         <router-view class="Router"/>
       </keep-alive>
     </transition>

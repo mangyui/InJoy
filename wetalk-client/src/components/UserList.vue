@@ -1,6 +1,6 @@
 <template>
-  <div class="my-content-box" @scroll="scroll" ref="content">
-    <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getUserList">
+  <div class="my-content-box white-wrap" @scroll="scroll" ref="content">
+    <van-pull-refresh class="max1100 refrsh-box" :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getUserList">
       <div class="post-box">
         <van-list
             v-model="loading"
@@ -95,7 +95,10 @@ export default class UserList extends Vue {
 
 <style lang="less" scoped>
 @import '../styles/listitem.less';
-.list-box .list-item img{
-  border-radius: 50%;
+.list-box{
+  padding: 0 10px;
+  .list-item img{
+    border-radius: 50%;
+  }
 }
 </style>

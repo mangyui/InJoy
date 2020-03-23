@@ -14,9 +14,9 @@
             <b>{{item.name}}</b>
             <p>{{item.desc}}</p>
           </div>
-          <!-- <div class="list-item-right">
-            <van-button size="small" @click="">选择</van-button>
-          </div> -->
+          <div class="list-item-right">
+            <van-button size="small" >选择</van-button>
+          </div>
         </div>
         <br />
         <van-divider>话题添加中</van-divider>

@@ -19,6 +19,7 @@
         </div>
       </div>
     </van-pull-refresh>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 
@@ -27,21 +28,16 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class UserFollower extends Vue {
+  showMask: boolean = true
   isRefresh: boolean = false
   followingList: Array<any> = []
   getFollowing () {
-    this.$toast.loading({
-      mask: true,
-      duration: 0,
-      message: '加载中...'
-    })
     this.$toPost.getFollowing({ userId: this.$route.params.id }).then((res: any) => {
       this.followingList = res.data
-      this.$toast.clear()
+      this.showMask = false
       this.isRefresh = false
     }).catch((error: any) => {
       console.log(error)
-      this.$toast.clear()
       this.isRefresh = false
     })
   }
@@ -55,5 +51,10 @@ export default class UserFollower extends Vue {
 @import '../../styles/listitem.less';
 .list-box .list-item  img{
   border-radius: 50%;
+}
+.van-pull-refresh{
+  /deep/ .van-pull-refresh__track{
+    height: 100%;
+  }
 }
 </style>

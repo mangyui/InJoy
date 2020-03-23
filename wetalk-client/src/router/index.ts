@@ -10,11 +10,13 @@ import UserCenter from '@/views/user/UserCenter.vue'
 import UserJoin from '@/views/user/UserJoin.vue'
 
 import MapJoin from '@/views/join/MapJoin.vue'
+import JoinAdd from '@/views/join/JoinAdd.vue'
 import JoinEdit from '@/views/join/JoinEdit.vue'
 import JoinDetails from '@/views/join/Details.vue'
 import MapChoose from '@/views/join/MapChoose.vue'
 
 import ApplyJoin from '@/views/join/Apply.vue'
+import ApplyList from '@/views/join/ApplyList.vue'
 
 import Location from '@/views/common/Location.vue'
 
@@ -103,7 +105,12 @@ const router:Router = new Router({
       component: MapJoin // () => import('@/views/join/MapJoin.vue')
     },
     {
-      path: '/joinEdit',
+      path: '/joinAdd',
+      name: 'JoinAdd',
+      component: JoinAdd // () => import('@/views/join/JoinAdd.vue')
+    },
+    {
+      path: '/joinEdit/:id',
       name: 'JoinEdit',
       component: JoinEdit // () => import('@/views/join/JoinEdit.vue')
     },
@@ -121,6 +128,11 @@ const router:Router = new Router({
       path: '/applyJoin/:id',
       name: 'ApplyJoin',
       component: ApplyJoin // () => import('@/views/join/Apply.vue')
+    },
+    {
+      path: '/applyList/:id',
+      name: 'ApplyList',
+      component: ApplyList // () => import('@/views/join/ApplyList.vue')
     },
     {
       path: '/search',

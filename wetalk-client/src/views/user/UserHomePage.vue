@@ -1,32 +1,36 @@
 <template>
   <div class="usercenter">
-    <van-nav-bar class="litheme" fixed :title="(user._id==me._id?'我':user.name)+'的主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
-      <van-icon v-if="user._id&&user._id!==me._id" name="ellipsis" slot="right" @click="showEdit=true"/>
-      <van-icon v-if="user._id&&user._id==me._id" name="edit" slot="right"  @click="$router.push('/UserEdit')"/>
+    <van-nav-bar class="litheme" fixed :title="(user._id&&user._id!==meId?user.name:'我')+'的主页'" :border="false" left-arrow  @click-left="$router.go(-1)">
+      <van-icon v-if="user._id&&user._id!==meId" name="ellipsis" slot="right" @click="showEdit=true"/>
+      <van-icon v-if="user._id&&user._id==meId" name="edit" slot="right"  @click="$router.push('/UserEdit')"/>
     </van-nav-bar>
     <div class="my-content-fix" @scroll="scroll" ref="content">
       <div class="usercenter-top">
-        <div class="user-bg">
-          <div class="bg-mask" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/avatar.png')+')'}"></div>
+        <div class="user-bg" :style="{backgroundImage: 'url('+ (user.avatar || './imgs/avatar.png')+')'}">
+          <div class="bg-mask" ></div>
           <div class="top-mask"></div>
-        </div>
-        <div class="user-box max1100">
-          <img :src="user.avatar||'./imgs/avatar.png'">
-          <div class="user-info">
-            <b class="my-one-line">{{user.name||user.phone}}</b>
-            <p>{{user.sex==1?'男':'女'}} &nbsp;&nbsp;{{user.age}} &nbsp;&nbsp; {{user.city}}</p>
-          </div>
-          <div class="user-right-box">
-            <!-- <div v-if="user._id!==me._id" class="right-box-btn" @click.stop="userFollow"><van-icon :name="user.alreadyFollow?'like':'like-o'" /><p>{{user.alreadyFollow?'已':''}}关注</p></div> -->
-            <div class="flex-rlc">
-              <div class="right-box-fan" @click="$router.push('/following/'+user._id)">{{user.following||0}}<p>关注</p></div>
-              <div class="right-box-fan" @click="$router.push('/followers/'+user._id)">{{user.followers||0}}<p>粉丝</p></div>
+          <div class="user-box max1100">
+            <img :src="user.avatar||'./imgs/avatar.png'">
+            <div class="user-info">
+              <b class="my-one-line">{{user.name||user.phone}}</b>
+              <div>
+                <van-tag color="#ec6899" round type="primary">{{user.sex==1?'男':'女'}}</van-tag>
+                &nbsp;
+                <van-tag color="#1989fa" round type="primary">{{user.age}}</van-tag>
+                &nbsp;
+                <van-tag color="#8b81f9" round type="primary">{{user.city}}</van-tag>
+              </div>
+              <p class="van-multi-ellipsis--l2">{{user.intro||'这个人很懒，什么都没留下'}}</p>
+            </div>
+            <div class="user-right-box">
+              <div class="right-box-fan" @click="$router.push('/following/'+user._id)"><b>{{user.following||0}}</b>关注</div>
+              <div class="right-box-fan" @click="$router.push('/followers/'+user._id)"><b>{{user.followers||0}}</b>粉丝</div>
             </div>
           </div>
         </div>
       </div>
       <div class="max1100">
-        <van-tabs v-model="active" swipeable animated sticky :border="false" line-width="26" :offset-top="44" @change="tabChange">
+        <van-tabs v-model="active" swipeable animated sticky  line-width="26" :offset-top="44" @change="tabChange">
           <van-tab title="帖子" name="post">
             <PostList v-if="!showMask" ref="postBox" :userId="user._id"/>
           </van-tab>
@@ -36,7 +40,7 @@
         </van-tabs>
       </div>
     </div>
-    <div v-if="user._id&&user._id!==me._id" class="user-bottom-btn max1100">
+    <div v-if="user._id&&user._id!==meId" class="user-bottom-btn max1100">
       <van-button type="info" :plain="user.alreadyFollow?false:true" @click.stop="userFollow">{{user.alreadyFollow?'已关注':'关注TA'}}</van-button>
       <van-button class="btn-theme" type="info" @click="toUserChat">私信TA</van-button>
     </div>
@@ -68,7 +72,7 @@ export default class UserHomePage extends Vue {
     { name: '举报' }
   ]
   private user: any = {}
-  private me: any = this.$store.getters.user
+  private meId: any = this.$store.getters.user._id
   scrollTop: number = 0
   isLoading: boolean = false
   active: string = 'post'
@@ -85,8 +89,9 @@ export default class UserHomePage extends Vue {
     this.$toPost.getUserById(data).then((res: any) => {
       if (res.data && res.data._id) {
         this.user = res.data
-        if (this.me._id === res.data._id && JSON.stringify(this.me) !== JSON.stringify(res.data)) { // 此处还得再优化
+        if (this.meId === res.data._id) { // 此处还得再优化
           this.$store.commit('initUserInfo', res.data)
+          this.user = this.$store.getters.user
         }
       } else {
         this.$notify({ type: 'warning', message: '用户不存在' })
@@ -97,7 +102,9 @@ export default class UserHomePage extends Vue {
       this.showMask = false
     }).catch((err: any) => {
       console.log(err)
-      this.showMask = false
+      setTimeout(() => {
+        this.$router.go(-1)
+      }, 200)
     })
   }
   tabChange (name: string) {
@@ -139,6 +146,9 @@ export default class UserHomePage extends Vue {
     this.scrollTop = this.$refs.content.scrollTop
   }
   activated () {
+    if (this.meId === this.user._id) {
+      this.user = this.$store.getters.user
+    }
     // @ts-ignore
     this.$refs.content.scrollTop = this.scrollTop
     if (this.$store.getters.isForward || !this.user._id) {
@@ -148,8 +158,6 @@ export default class UserHomePage extends Vue {
     } else {
       this.showMask = false
     }
-  }
-  mounted () {
   }
   created () {
     // this.getUser()
@@ -165,7 +173,6 @@ export default class UserHomePage extends Vue {
 .usercenter{
   .usercenter-top{
     background: #fff;
-    padding-bottom: 15px;
   }
 }
 .my-content-fix{
@@ -173,9 +180,10 @@ export default class UserHomePage extends Vue {
 }
 .user-bg{
   width: 100%;
-  height: 150px;
   position: relative;
   overflow: hidden;
+  background-size: cover;
+  background-position: center;
   .edit-btn{
     position: absolute;
     top: 10px;
@@ -186,28 +194,25 @@ export default class UserHomePage extends Vue {
 }
 .bg-mask{
   position: absolute;
-  background-size: cover;
-  background-position: center;
+  background: inherit;
   width: 100%;
   height: 100%;
-  filter: blur(20px);
+  filter: blur(10px);
   z-index: 10;
 }
 .top-mask{
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.2);
+  background:rgba(0,0,0,0.1);
   z-index: 11;
 }
 .user-box{
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-  margin-top: -50px;
+  padding: 10px 20px;
   position: relative;
   z-index: 20;
   img {
+    margin-top: 30px;
     background: #fefefe;
     width: 100px;
     height: 100px;
@@ -218,58 +223,43 @@ export default class UserHomePage extends Vue {
   }
   .user-info{
     text-align: left;
-    width: 0;
     flex-grow: 1;
     b{
+      margin: 10px 0;
       font-weight: bold;
       color: #fff;
-      font-size: 18px;
-      text-shadow: 0 0 5px rgba(0,0,0,0.5);
-      padding-left: 5px;
+      font-size: 20px;
       overflow-y: visible;
+      text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .van-tag{
+      padding: 3px 8px;
     }
     p{
-      padding-left: 5px;
       margin: 10px 0;
       font-size: 13px;
-      color: #666;
+      color: #eee;
       text-align: left;
+      text-shadow: 0 0 5px rgba(0,0,0,0.5);
     }
   }
   .user-right-box{
-    text-align: right;
-    font-size: 12px;
+    display: flex;
     position: absolute;
-    right: 20px;
-    top: -95px;
-    min-width: 95px;
-    .right-box-btn{
-      padding: 10px 15px;
-      background: rgba(139, 129, 249,1);
-      align-items: center;
-      display: flex;
-      color: #eee;
-      border-radius: 50px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      .van-icon{
-        font-size: 16px;
-      }
-      p{
-        width: 50px;
-        text-align: center;
-      }
-    }
+    top: 15px;
+    right: 15px;
     .right-box-fan{
       text-align: center;
-      margin-left: 5px;
+      margin-left: 20px;
       padding-top: 5px;
-      color: rgb(255, 255, 255);
+      color: #eee;
       text-shadow: 0 0 5px rgba(0,0,0,0.5);
-      height: 40px;
       box-sizing: border-box;
       font-size: 13px;
-      p{
-        margin-top: 10px;
+      b{
+        margin-right: 5px;
+        font-size: 17px;
+        color: #fff;
       }
     }
   }

@@ -5,7 +5,7 @@
         <van-list
             v-model="loading"
             :finished="finished"
-            :finished-text="postList[0]?'没有更多啦~':'求你发个帖子吧！'"
+            :finished-text="postList[0]?'没有更多啦~':''"
             @load="getMore"
           >
           <div class="post-item" v-for="(item,index) in postList" :key="index" @click="$router.push('/postdetails/'+item._id)">
@@ -33,6 +33,9 @@
             <van-icon class="post-more-btn" name="ellipsis" @click.stop="choosePost(index)"/>
           </div>
         </van-list>
+        <div v-show="!postList[0]" class="white-wrap my-tip-box">
+          求你发个帖子吧！
+        </div>
       </div>
     </van-pull-refresh>
     <van-popup
@@ -97,9 +100,7 @@ export default class UserPost extends Vue {
     if (this.text && this.text.trim() !== '') {
       this.getData.name = this.text.trim()
     }
-    if (this.userId) {
-      this.getData.userId = this.userId
-    }
+    this.getData.userId = this.userId
     if (this.topicId) {
       this.getData.topicId = this.topicId
     }
@@ -194,7 +195,9 @@ export default class UserPost extends Vue {
     this.$refs.content.scrollTop = this.scrollTop
   }
   mounted () {
-    this.getPostList()
+    if (this.userId) {
+      this.getPostList()
+    }
   }
 }
 </script>

@@ -47,6 +47,7 @@
       <van-button class="max-btn btn-theme" hairline type="danger" @click="applyJoin">立即申请</van-button>
       <br>
     </div>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 
@@ -80,7 +81,7 @@ export default class ApplyJoin extends Vue {
       id: this.$route.params.id
     }
     this.$toPost.getJoinById(data).then((res: any) => {
-      if (res.data._id) {
+      if (res.data && res.data._id) {
         this.currjoin = res.data
         this.showMask = false
       } else {
@@ -100,7 +101,7 @@ export default class ApplyJoin extends Vue {
       this.$toast('已发送申请')
       setTimeout(() => {
         this.$router.go(-1)
-      }, 1500)
+      }, 1000)
     }).catch((err: any) => {
       console.log(err)
     })
