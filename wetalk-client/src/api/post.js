@@ -291,6 +291,22 @@ const toPost = {
       method: 'post',
       data: qs.stringify(addSign(datas))
     })
+  },
+  // 添加活动评论
+  addJoinComment (datas) {
+    return request({
+      url: baseUrl + '/joinComment/add',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取活动评论
+  getJoinCommentList (datas) {
+    return request({
+      url: baseUrl + '/joinComment/getList',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
   }
   // addOrUpdate (datas) {
   //   return request({

@@ -10,11 +10,18 @@
           :status="item.count+'/'+item.total"
           @click="$router.push('/joinDetails/' + item._id)">
             <div>{{item.details}}</div>
-            <div class="join-imgs-warp">
-              <img :src="item.imgList[0]">
-              <img v-show="item.imgList[1]" :src="item.imgList[1]">
-              <img v-show="item.imgList[2]" :src="item.imgList[2]">
-            </div>
+            <br/>
+            <van-grid v-show="item.imgList[0]" :border="false" :column-num="3" square>
+              <van-grid-item>
+                <van-image fit="cover" lazy-load v-show="item.imgList[0]" :src="item.imgList[0]" />
+              </van-grid-item>
+              <van-grid-item>
+                <van-image fit="cover" lazy-load v-show="item.imgList[1]" :src="item.imgList[1]" />
+              </van-grid-item>
+              <van-grid-item>
+                <van-image fit="cover" lazy-load v-show="item.imgList[2]" :src="item.imgList[2]" />
+              </van-grid-item>
+            </van-grid>
             <div v-if="item.user" class="people-box mg-t-15">
               <img :src="item.user.avatar || '/imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
               <div class="people-text mg-l-5">
@@ -76,6 +83,13 @@ export default class UserJoin extends Vue {
 }
 .van-pull-refresh{
   /deep/ .van-pull-refresh__track{
+    height: 100%;
+  }
+}
+.van-grid-item /deep/ .van-grid-item__content{
+  overflow: hidden;
+  padding: 0 2px;
+  .van-image{
     height: 100%;
   }
 }

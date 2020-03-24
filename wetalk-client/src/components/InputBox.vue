@@ -8,7 +8,7 @@
     </div>
     <div class="send-more" :style="isMore==0?'height: 0':''">
       <div v-show="isMore==2" class="emoticon-wrap">
-        <van-swipe :autoplay="0" indicator-color="#8b81f9" :width="screenWidth-20" :loop="false">
+        <van-swipe ref="vanSwipe" :autoplay="0" indicator-color="#8b81f9" :loop="false">
           <van-swipe-item>
             <div class="emoticon-box">
               <span v-for="(item, index) in Emoticon" :key="index" @click="sendText+=item">
@@ -61,15 +61,17 @@ export default class InputBox extends Vue {
   screenWidth: any = document.body.clientWidth
   sendText: string = ''
   isMore: number = 0
-  Emoticon: Array<any> = ['😏', '😡', '😀', '😄', '😆', '😅', '😂', '😊',
-    '😇', '🙂', '🙃', '😉', '😓', '😪', '😴', '🙄', '🤔',
-    '👻', '🔥', '⚡️', '💤'
-  ]
-  Emoticon2: Array<any> = ['🐶', '🐱', '🐭', '🐹', '🐰', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐙', '🐵']
+  Emoticon: Array<any> = ['😏', '😡', '😄', '😆', '😅', '😂', '😊',
+    '🙂', '🙃', '😉', '😓', '😴', '🙄', '🤔',
+    '🤑', '🤬', '🥶', '🥵', '🤢', '🤮', '🤯']
+  Emoticon2: Array<any> = ['🔥', '⚡️', '💤', '👻', '😈', '🐶', '🐱', '🐭', '🐹', '🐰', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐙', '🐵']
   Emoticon3: Array<any> = ['🍏', '🍎', '🍊', '🍐', '🍋', '🍌', '🍉', '🍈', '🍑', '🍍', '🍅', '🌽', '🍠', '🍯', '🍞', '🧀', '🍗']
   @Watch('isMore')
   changeAge (newValue: number, oldValue: number) {
-    // console.log(`newValue: ${newValue}, oldValue: ${oldValue}`)
+    Vue.nextTick(() => {
+      // @ts-ignore
+      this.$refs.vanSwipe.resize()
+    })
     this.$emit('changeMore', this.isMore)
   }
   public noMore () {
@@ -95,13 +97,15 @@ export default class InputBox extends Vue {
       this.$toast.fail('图片发送功能异常')
     })
   }
+  mounted () {
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .send-more{
   padding: 0 10px;
-  height: 150px;
+  height: 180px;
   display: flex;
   align-items: center;
   background: #fdfdfd;
@@ -144,8 +148,8 @@ export default class InputBox extends Vue {
     display: inline-block;
     text-align: center;
     width: 49px;
-    font-size: 20px;
-    margin-bottom: 10px;
+    font-size: 22px;
+    margin-bottom: 15px;
   }
 }
 </style>

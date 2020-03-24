@@ -81,7 +81,9 @@
           </div>
         </div>
       </van-pull-refresh>
-      <InputBox v-if="isComment" :replyName="commentItem.user.name" @toSend="toSend"/>
+      <transition name="van-slide-up">
+        <InputBox v-if="isComment" :replyName="commentItem.user.name" @toSend="toSend"/>
+      </transition>
     </div>
     <Loading :showMask="showMask"></Loading>
   </div>

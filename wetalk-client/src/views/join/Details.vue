@@ -5,59 +5,93 @@
        <van-icon name="ellipsis" slot="right" @click="showEdit=true"/>
     </van-nav-bar>
     <div class="my-content-fix max1100">
-      <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange">
-        <van-swipe-item v-for="(image, index) in currJoin.imgList" :key="index" @click="toShowImg(index)">
-          <img :src="image" />
-        </van-swipe-item>
-        <div class="custom-indicator" slot="indicator">
-          {{ current + 1 }}/{{currJoin.imgList.length}}
-        </div>
-      </van-swipe>
-      <div class="join-details-warp">
-        <div class="join-title join-wrap">
-          <div class="flex-rlc">
-            <h2>{{currJoin.title}}</h2>
-            <span><b class="join-number">{{currJoin.count}}</b>/{{currJoin.total}} 人</span>
+      <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getJoinById"  @click.native="isComment=false">
+        <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange">
+          <van-swipe-item v-for="(image, index) in currJoin.imgList" :key="index" @click="toShowImg(index)">
+            <van-image fit="cover" :src="image"/>
+          </van-swipe-item>
+          <div class="custom-indicator" slot="indicator">
+            {{ current + 1 }}/{{currJoin.imgList.length}}
           </div>
-          <div>
-            <p><van-icon name="label" /> {{['线上约', '线下约'][currJoin.type]}}</p>
-            <p><van-icon name="underway" />{{$commomTime(currJoin.time)}}</p>
-          </div>
-        </div>
-        <div class="join-user join-wrap">
-          <div class="people-box">
-            <img :src="currJoin.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + currJoin.user._id)">
-            <div class="people-text mg-l-5">
-              <span @click.stop="$router.push('/userhomepage/' + currJoin.user._id)">{{currJoin.user.name||'匿名'}}</span>
+        </van-swipe>
+        <div class="join-details-warp">
+          <div class="join-title join-wrap">
+            <div class="flex-rlc">
+              <h2>{{currJoin.title}}</h2>
+              <span><b class="join-number">{{currJoin.count}}</b>/{{currJoin.total}} 人</span>
             </div>
-            <van-icon name="arrow" color="#ccc" />
+            <div>
+              <p><van-icon name="label" /> {{['线上约', '线下约'][currJoin.type]}}</p>
+              <p><van-icon name="underway" />{{$commomTime(currJoin.time)}}</p>
+            </div>
+          </div>
+          <div class="join-user join-wrap">
+            <div class="people-box">
+              <img :src="currJoin.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + currJoin.user._id)">
+              <div class="people-text mg-l-5">
+                <span @click.stop="$router.push('/userhomepage/' + currJoin.user._id)">{{currJoin.user.name||'匿名'}}</span>
+              </div>
+              <van-icon name="arrow" color="#ccc" />
+            </div>
+          </div>
+          <div class="join-text join-wrap">
+            <h3>活动详情</h3>
+            <p>
+              {{currJoin.details}}
+            </p>
+          </div>
+          <div v-if="currJoin.place" class="join-place join-wrap">
+            <h3>地址详情</h3>
+            <p @click="gotoLocation">
+              <img src="/imgs/mapMin.png">{{currJoin.place}}
+            </p>
           </div>
         </div>
-        <div class="join-text join-wrap">
-          <h3>活动详情</h3>
-          <p>
-            {{currJoin.details}}
-          </p>
+        <van-cell class="join-apply-cell" title="申请人数" is-link :value="currJoin.applyCount || 0" @click="$router.push('/applyList/'+currJoin._id)"/>
+        <div class="comment-line">全部留言({{commentList.length}})</div>
+        <div class="comment-box post-box white-wrap">
+          <div class="post-item" v-for="(item,index) in commentList" :key="index">
+            <div class="post-user">
+              <img :src="item.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + item.user._id)">
+              <div class="post-user-text">
+                <div class="flex-c">
+                  <b @click.stop="$router.push('/userhomepage/' + item.user._id)">{{item.user.name}}</b>
+                  <van-tag v-show="item.user._id===currJoin.user._id" color="#7232dd" plain>主办人</van-tag>
+                </div>
+                <p>{{$formatTime(item.time)}}</p>
+              </div>
+              <div>
+                <span class="comment-item-btn" @click.stop="replyComment(item)">回复Ta</span>
+              </div>
+            </div>
+            <div class="post-content">
+              <p class="my-max-height">{{item.content}}</p>
+              <div v-if="item.replyList&&item.replyList[0]" class="scomment-box">
+                <p v-for="scmoment in item.replyList" :key="scmoment._id">
+                  <router-link :to="'/userhomepage/' + scmoment.user._id">{{scmoment.user.name}}</router-link>
+                  : {{scmoment.content}}
+                </p>
+              </div>
+              <van-divider />
+            </div>
+          </div>
+          <div class="white-wrap my-tip-box">
+            {{!commentList[0]?'还没有人抢沙发':'没有更多了'}}
+          </div>
         </div>
-        <div v-if="currJoin.place" class="join-place join-wrap">
-          <h3>地址详情</h3>
-          <p @click="gotoLocation">
-            <img src="/imgs/mapMin.png">{{currJoin.place}}
-          </p>
-        </div>
-      </div>
-      <van-cell class="join-apply-cell" title="申请人数" is-link :value="currJoin.applyCount || 0" @click="$router.push('/applyList/'+currJoin._id)"/>
-      <div class="comment-line">全部留言</div>
-      <div v-show="!joinComment[0]" class="white-wrap my-tip-box">
-        还没有人抢沙发
-      </div>
+      </van-pull-refresh>
     </div>
-    <div class="join-bottom-btn max1100">
-      <van-button type="info" @click.stop="">留言</van-button>
-      <van-button v-if="currJoin.user&&user._id!==currJoin.user._id" type="primary" :disabled="currJoin.alreadyApply?true:false" @click.stop="$router.push('/applyJoin/'+currJoin._id)">{{currJoin.alreadyApply?'已申请':'立即参与'}}</van-button>
-      <van-button v-if="currJoin.user&&user._id===currJoin.user._id" class="btn-theme" type="info" @click.stop="$router.push('/joinEdit/'+currJoin._id)">修改</van-button>
-      <van-button v-else class="btn-theme" type="info" @click.stop="$router.push('/userchat/'+currJoin.user._id)">聊一聊</van-button>
-    </div>
+    <transition name="van-slide-up">
+      <div class="join-bottom-btn max1100" v-show="!isComment">
+        <van-button type="info" @click.stop="replyComment(null)">留言</van-button>
+        <van-button v-if="currJoin.user&&user._id!==currJoin.user._id" type="primary" :disabled="currJoin.alreadyApply?true:false" @click.stop="$router.push('/applyJoin/'+currJoin._id)">{{currJoin.alreadyApply?'已申请':'立即参与'}}</van-button>
+        <van-button v-if="currJoin.user&&user._id===currJoin.user._id" class="btn-theme" type="info" @click.stop="$router.push('/joinEdit/'+currJoin._id)">修改</van-button>
+        <van-button v-else class="btn-theme" type="info" @click.stop="$router.push('/userchat/'+currJoin.user._id)">聊一聊</van-button>
+      </div>
+    </transition>
+    <transition name="van-slide-up">
+      <InputBox v-if="isComment" :replyName="commentItem?commentItem.user.name:''" @toSend="toSend"/>
+    </transition>
     <van-action-sheet
       title=""
       close-icon=""
@@ -73,13 +107,21 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import InputBox from '@/components/InputBox.vue'
 
 @Component({
+  components: {
+    InputBox
+  }
 })
 export default class JoinDetails extends Vue {
   @Getter user!: any
   showEdit: boolean = false
   showMask: boolean = true
+  isRefresh: boolean = false
+  isComment: boolean = false
+  commentItem: any = {}
+  commentList: Array<any> = []
   actions: Array<any> = [
     { name: '举报', disabled: true }
   ]
@@ -97,7 +139,6 @@ export default class JoinDetails extends Vue {
     imgList: [],
     user: {}
   }
-  joinComment: Array<any> = []
   getJoinById () {
     let data: any = {
       id: this.$route.params.id,
@@ -107,6 +148,8 @@ export default class JoinDetails extends Vue {
       if (res.data && res.data._id) {
         this.currJoin = res.data
         this.showMask = false
+        this.isRefresh = false
+        this.getJoinComment()
       } else {
         this.$notify({ type: 'warning', message: '活动不存在' })
         setTimeout(() => {
@@ -133,6 +176,61 @@ export default class JoinDetails extends Vue {
     this.$store.commit('SET_TO_LOCATION', { point })
     this.$router.push('/location')
   }
+  getJoinComment () {
+    this.$toPost.getJoinCommentList({ joinId: this.$route.params.id }).then((res: any) => {
+      res.data.pop()
+      this.optionCommentList(res.data)
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  optionCommentList (arr: any) {
+    arr.forEach((element: any) => {
+      if (!element.comment) {
+        element.replyList = []
+        this.commentList.unshift(element)
+      }
+    })
+    arr.forEach((element: any) => {
+      if (element.comment) {
+        this.commentList.forEach((item: any, index: number) => {
+          if (item._id === element.comment) {
+            this.commentList[index].replyList.unshift(element)
+          }
+        })
+      }
+    })
+  }
+  replyComment (item: any) {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
+    this.commentItem = item
+    this.isComment = true
+  }
+  toSend (sendText: string): void {
+    if (!this.$store.getters.user._id) {
+      this.$router.push('/login')
+      return
+    }
+    let data: any = {
+      content: sendText,
+      user: this.$store.getters.user._id,
+      join: this.$route.params.id
+    }
+    if (this.commentItem && this.commentItem._id) {
+      data.comment = this.commentItem._id
+    }
+    this.$toPost.addJoinComment(data).then((res: any) => {
+      this.$toast('已回复')
+      let newComment = res.data[0]
+      newComment.user = this.user
+      this.optionCommentList([newComment])
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
   created () {
     this.getJoinById()
   }
@@ -141,7 +239,7 @@ export default class JoinDetails extends Vue {
 
 <style lang="less" scoped>
 .my-content-fix{
-  padding-bottom: 70px;
+  padding-bottom: 55px;
 }
 .join-bottom-btn{
   position: fixed;
@@ -234,5 +332,15 @@ export default class JoinDetails extends Vue {
   img{
     width: 100%;
   }
+}
+.comment-item-btn{
+  display: inline-block;
+  font-size: 13px;
+  color: #7232dd;
+  margin-bottom: 10px;
+}
+.post-box .post-item {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 </style>

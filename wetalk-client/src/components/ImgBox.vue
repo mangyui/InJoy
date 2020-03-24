@@ -8,15 +8,15 @@
         @click.stop="toShowImg(0)"
         />
     </div>
-    <div v-else :class="imgList.length==4?'img9-box img4-box':'img9-box'">
-      <div v-for="(imgitem,imgindex) in imgList" :key="imgindex"  @click.stop="toShowImg(imgindex)">
+    <van-grid v-else :border="false" :column-num="3" square gutter="6">
+      <van-grid-item v-for="(imgitem,imgindex) in imgList" :key="imgindex"  @click.stop="toShowImg(imgindex)">
         <van-image
           fit="cover"
           lazy-load
           :src="imgitem"
         />
-      </div>
-    </div>
+      </van-grid-item>
+    </van-grid>
   </div>
 </template>
 
@@ -84,11 +84,13 @@ export default class ImgBox extends Vue {
   }
 }
 
-.img4-box{
-  >div{
-    margin-right: 7.6px;
-    &:nth-child(3n){
-      margin-right: 7.6px;
+.van-grid-item /deep/ .van-grid-item__content{
+  overflow: hidden;
+  padding: 0;
+  .van-image{
+    height: 100%;
+    img{
+      border-radius: 5px;
     }
   }
 }
