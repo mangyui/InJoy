@@ -31,7 +31,7 @@
           </div>
         </van-list>
         <div v-show="!commentList[0]" class="white-wrap my-tip-box">
-          求你评论个帖子吧！
+          暂无评论记录
         </div>
       </div>
     </van-pull-refresh>

@@ -49,12 +49,12 @@
   height: 100%;
   padding-top: 0!important;
   padding-bottom: 46px;
-  .van-tabs--line {
+  .my-theme-tabs {
     height: 100%;
     .van-tabs__content {
       height: 100%;
     }
-    .van-tabs__wrap{
+    > div > div > .van-tabs__wrap{
       height: 46px;
       background: @themeColr;
       .van-tabs__nav--line{
@@ -70,7 +70,9 @@
   }
 }
 
-
+.van-panel .post-address{
+  margin-top: 5px;
+}
 .litheme{
   background: @themeColr;
   color: #fff;
@@ -138,6 +140,7 @@ textarea.van-field__control{
   max-width: 1100px;
   left: 50%;
   transform: translateX(-50%);
+  box-sizing: border-box;
 }
 
 .van-panel__content{
@@ -156,4 +159,26 @@ textarea.van-field__control{
   flex: none;
   box-sizing: border-box;
   width: 90px;
+}
+
+.join-box{
+  .van-cell__title span{
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .van-panel__content .join-text{
+    font-size: 15px;
+  }
+  .van-panel__header-value{
+    font-weight: bold;
+    font-size: 17px;
+    color: #7678f2;
+  }
+  .van-grid-item /deep/ .van-grid-item__content{
+    overflow: hidden;
+    padding: 0 2px;
+    .van-image{
+      height: 100%;
+    }
+  }
 }

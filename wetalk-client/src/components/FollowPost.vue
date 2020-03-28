@@ -5,7 +5,7 @@
         <van-list
             v-model="loading"
             :finished="finished"
-            :finished-text="postList[0]?'没有更多啦~':''"
+            :finished-text="postList[0]?'没有更多啦~':'空空路也'"
             @load="getMore"
           >
           <div class="post-item" v-for="(item,index) in postList" :key="index" @click="$router.push('/postdetails/'+item._id)">
@@ -20,11 +20,12 @@
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
             </div>
-            <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
-              <div>
-                <p>{{item.topic.name}}</p>
-              </div>
-            </b>
+            <div class="flex-rlc">
+              <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
+              {{item.topic.name}}
+              </b>
+              <p v-if="item.address" class="van-ellipsis post-address"><van-icon name="location" />{{item.address}}</p>
+            </div>
             <div class="post-san">
               <div><van-icon name="share" @click.stop="openShare(item)"/>分享</div>
               <div><van-icon name="comment-o" @click.stop="$router.push('/postcomment/'+ item._id)" />{{item.count_comment}}</div>

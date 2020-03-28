@@ -1,6 +1,6 @@
 <template>
   <div class="bgWhite">
-    <van-nav-bar class="litheme" :border="false" title="发帖子" fixed left-arrow right-text="发表"
+    <van-nav-bar class="litheme" :border="false" title="发动态" fixed left-arrow right-text="发表"
       @click-left="$router.go(-1)"
       @click-right="toPublish"
        />
@@ -24,7 +24,26 @@
         </div>
         <div class="pad15">
           <van-cell-group>
-            <van-cell icon="smile-comment" :title="topic?topic.name:' '" is-link :value="topic?'':'请选择合适的话题'" to="/topic"/>
+            <van-field
+              :value="joinAddress.place || ''"
+              label="位置"
+              left-icon="map-marked"
+              right-icon="clear"
+              placeholder="设置当前位置(可选)"
+              @click="$router.push('/mapChoose')"
+              @click-right-icon.stop="clearAddress"
+            />
+            <!-- <van-cell icon="map-marked" :title="joinAddress.place||''" is-link :value="joinAddress.place?'':'设置当前位置'" to="/mapChoose"/>
+            <van-cell icon="smile-comment" :title="topic?topic.name:' '" is-link :value="topic?'':'请选择合适的话题'" to="/topic"/> -->
+            <van-field
+              :value="topic.name||''"
+              label="话题"
+              left-icon="smile-comment"
+              right-icon="clear"
+              placeholder="选择合适的话题(可选)"
+              @click="$router.push('/topic')"
+              @click-right-icon.stop="clearTopic"
+            />
           </van-cell-group>
         </div>
       </div>
@@ -38,6 +57,7 @@ import { Getter } from 'vuex-class'
 @Component({
 })
 export default class PostAdd extends Vue {
+  @Getter joinAddress!: any
   @Getter topic!: any
   text: string =''
   fileList: Array<any> = []
@@ -77,6 +97,9 @@ export default class PostAdd extends Vue {
     if (this.topic && this.topic._id) {
       postData.topic = this.topic._id
     }
+    if (this.joinAddress && this.joinAddress.place.trim() !== '') {
+      postData.address = this.joinAddress.place.trim()
+    }
     if (this.imgList[0]) {
       postData.imgList = this.imgList.join(',')
     }
@@ -109,6 +132,12 @@ export default class PostAdd extends Vue {
       console.log(err)
       this.$toast.fail('图片上传失败')
     })
+  }
+  clearAddress () {
+    this.$store.commit('RM_JOIN_ADDRESS')
+  }
+  clearTopic () {
+    this.$store.commit('REMOVE_TOPIC')
   }
   afterRead (file: any) {
   }

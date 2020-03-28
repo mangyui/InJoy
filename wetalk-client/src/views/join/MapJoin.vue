@@ -5,6 +5,9 @@
     </van-nav-bar>
     <div id="MapBox">
     </div>
+    <!-- <div class="my-distance-slider">
+      <van-slider v-model="distanceValue" vertical min="1" max="100"/>
+    </div> -->
     <van-action-sheet v-model="showDetails" :overlay="false" :round="true" close-icon="cross"
     :title="chooseJoin>-1?joinList[chooseJoin].title:''" @close="planeClose">
       <div class="details-content">
@@ -12,7 +15,7 @@
           {{joinList[chooseJoin]?joinList[chooseJoin].details : ''}}
         </div>
         <div class="flex-rlc">
-          <span class="join-distance">距离您：{{distance}}m</span>
+          <span class="join-distance">距离您：{{distance>1000?(distance/1000).toFixed(2)+'k':distance}}m</span>
           <van-button size="small" class="btn-theme" type="info" @click="$router.push('/joinDetails/'+joinList[chooseJoin]._id)">查看详情 >></van-button>
         </div>
       </div>
@@ -35,16 +38,17 @@ export default class MapJoin extends Vue {
   map: any
   mk: any // 我的定位标注
   chooseJoin: number = -1
+  ZoomNum: number = 16 // 地图放大倍数
   distance: number = 0
   joinList: Array<any> = []
   getJoinList () {
-    let data = {
-      pointX: this.myAddress.point.lng,
-      pointY: this.myAddress.point.lat,
-      long: 1.0,
-      type: 1
+    if (this.ZoomNum <= 12) {
+      return
     }
-    this.$toPost.getJoinByLocation(data).then((res: any) => {
+    let data = {
+      city: this.myAddress.place
+    }
+    this.$toPost.getJoinByCity(data).then((res: any) => {
       this.joinList = res.data
       this.bindSquareEvent()
     }).catch((err: any) => {
@@ -60,6 +64,18 @@ export default class MapJoin extends Vue {
     this.map.addControl(new this.BMap.NavigationControl({ anchor: this.$win.BMAP_ANCHOR_TOP_LEFT }))
     this.map.addControl(new this.BMap.ScaleControl({ anchor: this.$win.BMAP_ANCHOR_TOP_LEFT }))
 
+    this.map.addEventListener('zoomend', () => {
+      this.ZoomNum = this.map.getZoom() // 12（5公里）且不包含12为分界线
+      if (this.ZoomNum <= 12) {
+        this.map.clearOverlays()
+        this.joinList = []
+        this.map.addOverlay(this.mk)
+      } else {
+        if (!this.joinList[0]) {
+          this.getJoinList()
+        }
+      }
+    })
     this.map.disableDragging()
     // 触摸移动--开启拖动
     this.map.addEventListener('touchmove', () => {
@@ -134,7 +150,6 @@ export default class MapJoin extends Vue {
     this.mk = new this.BMap.Marker(me, { icon: icon })
     this.initMap()
     this.map.addOverlay(this.mk)
-    this.map.panTo(me)
   }
   toMe () {
     if (this.myAddress.point) {
@@ -173,5 +188,11 @@ export default class MapJoin extends Vue {
     color: #aaa;
     font-size: 12px;
   }
+}
+.my-distance-slider{
+  height: 180px;
+  position: fixed;
+  right: 30px;
+  top: 70px;
 }
 </style>

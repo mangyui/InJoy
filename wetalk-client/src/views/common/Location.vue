@@ -6,7 +6,7 @@
     </div>
     <div class="join-bottom-btn max1100">
       <p>{{placeName}}</p>
-      <span>距离：{{distance}}m</span>
+      <span>距离：{{distance>1000?(distance/1000).toFixed(2)+'k':distance}}m</span>
     </div>
   </div>
 </template>

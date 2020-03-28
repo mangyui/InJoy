@@ -12,7 +12,7 @@
           </div>
         </div>
         <qrcode
-          :url="'myEnjoy-UserHomePage-'+user._id"
+          :url="codeUrl"
           :iconurl="user.avatar||'./imgs/avatar.png'"
           :wid="160"
           :hei="160"/>
@@ -36,8 +36,9 @@ import qrcode from 'vue_qrcodes'
 })
 export default class UserQrCode extends Vue {
   @Getter user!: any
+  codeUrl: String = ''
   created () {
-
+    this.codeUrl = 'http://47.106.130.141:9566/#/userhomepage/' + this.user._id
   }
 }
 </script>

@@ -4,24 +4,7 @@
       @click-left="$router.go(-1)">
     </van-nav-bar>
     <div class="my-content-fix max1100">
-      <van-panel :title="currjoin.title"
-        :desc="['线上活动', '线下活动'][currjoin.type]"
-        :status="currjoin.count+'/'+currjoin.total"
-        @click="$router.push('/joinDetails/' + currjoin._id)">
-        <div>{{currjoin.details}}</div>
-        <div class="join-imgs-warp">
-          <img :src="currjoin.imgList[0]">
-          <img v-show="currjoin.imgList[1]" :src="currjoin.imgList[1]">
-          <img v-show="currjoin.imgList[2]" :src="currjoin.imgList[2]">
-        </div>
-        <div class="people-box mg-t-15">
-          <img :src="currjoin.user.avatar || './imgs/avatar.png'" @click.stop="$router.push('/userhomepage/' + currjoin.user._id)">
-          <div class="people-text mg-l-5">
-            <span @click.stop="$router.push('/userhomepage/' + currjoin.user._id)">{{currjoin.user.name||'匿名'}}</span>
-          </div>
-          <p class="join-right-time"><span>{{$commomTime(currjoin.time).substring(5, 16)}}</span><van-icon name="clock" /></p>
-        </div>
-      </van-panel>
+      <JoinBox :currjoin="currjoin" />
       <div>
         <van-cell-group>
           <div class="comment-line">申请信息</div>
@@ -54,8 +37,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
+import JoinBox from '@/components/JoinBox.vue'
 
 @Component({
+  components: {
+    JoinBox
+  }
 })
 export default class ApplyJoin extends Vue {
   @Getter user!: any

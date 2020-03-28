@@ -17,6 +17,7 @@ import MapChoose from '@/views/join/MapChoose.vue'
 
 import ApplyJoin from '@/views/join/Apply.vue'
 import ApplyList from '@/views/join/ApplyList.vue'
+import MyApply from '@/views/join/MyApply.vue'
 
 import Location from '@/views/common/Location.vue'
 
@@ -133,6 +134,11 @@ const router:Router = new Router({
       path: '/applyList/:id',
       name: 'ApplyList',
       component: ApplyList // () => import('@/views/join/ApplyList.vue')
+    },
+    {
+      path: '/myApply',
+      name: 'MyApply',
+      component: MyApply // () => import('@/views/join/MyApply.vue')
     },
     {
       path: '/search',

@@ -2,11 +2,12 @@
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" fixed title="活动详情" left-arrow
       @click-left="$router.go(-1)">
-       <van-icon name="ellipsis" slot="right" @click="showEdit=true"/>
+      <van-icon name="qr" slot="right" @click="showQr=true"/>
+      <van-icon name="ellipsis" slot="right" @click="showEdit=true"/>
     </van-nav-bar>
     <div class="my-content-fix max1100">
       <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getJoinById"  @click.native="isComment=false">
-        <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange">
+        <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange"  :style="{backgroundImage: 'url(./imgs/noimg.jpg)'}">
           <van-swipe-item v-for="(image, index) in currJoin.imgList" :key="index" @click="toShowImg(index)">
             <van-image fit="cover" :src="image"/>
           </van-swipe-item>
@@ -43,7 +44,7 @@
           <div v-if="currJoin.place" class="join-place join-wrap">
             <h3>地址详情</h3>
             <p @click="gotoLocation">
-              <img src="/imgs/mapMin.png">{{currJoin.place}}
+              <img :src="'./imgs/mapMin.png'">{{currJoin.place}}
             </p>
           </div>
         </div>
@@ -92,6 +93,16 @@
     <transition name="van-slide-up">
       <InputBox v-if="isComment" :replyName="commentItem?commentItem.user.name:''" @toSend="toSend"/>
     </transition>
+    <van-action-sheet v-model="showQr" :round="true" close-icon="cross"
+    title="活动扫码分享">
+      <div>
+        <qrcode
+          :url="'http://47.106.130.141:9566/#/joinDetails/' + $route.params.id"
+          :wid="160"
+          :hei="160"/>
+        <p>打开乐中扫一扫，扫我</p>
+      </div>
+    </van-action-sheet>
     <van-action-sheet
       title=""
       close-icon=""
@@ -108,16 +119,20 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import InputBox from '@/components/InputBox.vue'
+// @ts-ignore
+import qrcode from 'vue_qrcodes'
 
 @Component({
   components: {
-    InputBox
+    InputBox,
+    qrcode
   }
 })
 export default class JoinDetails extends Vue {
   @Getter user!: any
   showEdit: boolean = false
   showMask: boolean = true
+  showQr: boolean = false
   isRefresh: boolean = false
   isComment: boolean = false
   commentItem: any = {}
@@ -249,6 +264,7 @@ export default class JoinDetails extends Vue {
   padding: 10px 5px;
   background: rgba(255, 255, 255, 0.8);
   display: flex;
+  box-sizing: border-box;
   >.van-button{
     width: 100%;
     margin: 0 5px;
@@ -314,7 +330,7 @@ export default class JoinDetails extends Vue {
   }
 }
 .van-swipe {
-  background: url('/imgs/noimg.jpg');
+  // background: url('./imgs/noimg.jpg');
   background-size: cover;
   .custom-indicator {
     position: absolute;
@@ -342,5 +358,19 @@ export default class JoinDetails extends Vue {
 .post-box .post-item {
   border-bottom: 0;
   padding-bottom: 0;
+}
+.van-action-sheet__content{
+  padding: 15px;
+  text-align: center;
+  >div{
+    background: rgba(139, 129, 249, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+  }
+  p{
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 10px;
+  }
 }
 </style>

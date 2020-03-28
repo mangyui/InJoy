@@ -20,6 +20,7 @@
               <ImgBox v-if="postDetails.imgList" :imgList="postDetails.imgList.split(',')"/>
             </div>
             <br />
+            <p v-if="postDetails.address" class="van-ellipsis post-address"><van-icon name="location" />{{postDetails.address}}</p>
             <div class="post-san">
               <div><van-icon name="share"/>{{postDetails.count_forward}}</div>
               <div><van-icon name="comment-o" @click="$router.push('/postcomment/'+ $route.params.id)"/>{{postDetails.count_comment}}</div>

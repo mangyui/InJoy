@@ -13,7 +13,8 @@
                 <img class="icon-sex" :src="chatList[chatKey].user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
-                <div class="mess-location-wrap" v-if="item.type==3" @click.stop="gotoLocation(item.content)">
+                <div class="mess-location-wrap"  :style="{backgroundImage: 'url(./imgs/mapMin.png'}"
+                 v-if="item.type==3" @click.stop="gotoLocation(item.content)">
                   <p>{{item.content.split(',')[0]}}</p>
                 </div>
                 <van-image v-else-if="item.type==2" lazy-load :src="item.content"  @click="lookImg(item.content)"/>
@@ -26,7 +27,11 @@
                 <img class="icon-sex" :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
-                <div class="mess-location-wrap" v-if="item.type==3" @touchstart.native="gtouchstart(index)" @touchend.native="gtouchend" @click.stop="gotoLocation(item.content)">
+                <div class="mess-location-wrap"  :style="{backgroundImage: 'url(./imgs/mapMin.png'}"
+                  v-if="item.type==3"
+                  @touchstart.native="gtouchstart(index)"
+                  @touchend.native="gtouchend"
+                  @click.stop="gotoLocation(item.content)">
                   <p>{{item.content.split(',')[0]}}</p>
                 </div>
                 <van-image v-else-if="item.type==2" @touchstart.native="gtouchstart(index)" @touchend.native="gtouchend" :src="item.content" @click="lookImg(item.content)"/>

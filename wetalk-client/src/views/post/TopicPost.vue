@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" :title="topicDetails.name||'话题'" fixed left-arrow @click-left="$router.go(-1)">
       <span slot="right" @click="topicAddPost">发帖</span>
     </van-nav-bar>
-    <div class="max1100 my-content-fix">
+    <div class="max1100 my-content-fix" @scroll="scroll" ref="content">
       <div class="topic-top-box">
         <van-image
             fit="cover"
@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import PostList from '@/components/PostList.vue'
+import PostList from '@/views/user/UserPost.vue'
 
 @Component({
   components: {
@@ -32,6 +32,7 @@ import PostList from '@/components/PostList.vue'
   }
 })
 export default class TopicPost extends Vue {
+  scrollTop: number = 0
   topicDetails: any = {}
   getTopic () {
     this.$toPost.getTopicById({ id: this.$route.params.id }).then((res: any) => {
@@ -47,6 +48,14 @@ export default class TopicPost extends Vue {
       this.$store.commit('SELECT_TOPIC', this.topicDetails)
       this.$router.push('/postadd')
     }
+  }
+  scroll () {
+    // @ts-ignore
+    this.scrollTop = this.$refs.content.scrollTop
+  }
+  activated () {
+    // @ts-ignore
+    this.$refs.content.scrollTop = this.scrollTop
   }
   mounted () {
     // // @ts-ignore

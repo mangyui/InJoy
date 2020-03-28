@@ -1,5 +1,5 @@
 <template>
-  <div @scroll="scroll" ref="content">
+  <div ref="content">
     <van-pull-refresh class="max1100 white-wrap" :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getPostList">
       <div class="post-box">
         <van-list
@@ -20,22 +20,23 @@
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
             </div>
-            <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
-              <div>
-                <span>#</span><p>{{item.topic.name}}</p><span>#</span>
-              </div>
-            </b>
+            <div class="flex-rlc">
+              <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
+              {{item.topic.name}}
+              </b>
+              <p v-if="item.address" class="van-ellipsis post-address"><van-icon name="location" />{{item.address}}</p>
+            </div>
             <div class="post-san">
               <div><van-icon name="share" @click.stop="openShare(item)"/>分享</div>
               <div><van-icon name="comment-o" />{{item.count_comment}}</div>
               <div :class="item.alreadyAgree===true?'post-san-active':''"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(item)"/>{{item.count_agree}}</div>
             </div>
-            <van-icon class="post-more-btn" name="ellipsis" @click.stop="choosePost(index)"/>
+            <van-icon v-if="$store.getters.user && $store.getters.user._id === userId" class="post-more-btn" name="ellipsis" @click.stop="choosePost(index)"/>
           </div>
         </van-list>
-        <div v-show="!postList[0]" class="white-wrap my-tip-box">
-          求你发个帖子吧！
-        </div>
+        <!-- <div v-show="!postList[0]" class="white-wrap my-tip-box">
+          {{tip}}
+        </div> -->
       </div>
     </van-pull-refresh>
     <van-popup
@@ -82,7 +83,7 @@ export default class UserPost extends Vue {
   isRefresh: boolean = false
   loading: boolean = false
   finished: boolean = false
-  scrollTop: number = 0
+  // scrollTop: number = 0
   sharePost: any = {}
   getData: any = {
     page: 1,
@@ -186,14 +187,14 @@ export default class UserPost extends Vue {
     let url = 'http://connect.qq.com/widget/shareqq/index.html?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中@一只鱼'
     window.open(url)
   }
-  scroll () {
-    // @ts-ignore
-    this.scrollTop = this.$refs.content.scrollTop
-  }
-  activated () {
-    // @ts-ignore
-    this.$refs.content.scrollTop = this.scrollTop
-  }
+  // scroll () {
+  //   // @ts-ignore
+  //   this.scrollTop = this.$refs.content.scrollTop
+  // }
+  // activated () {
+  //   // @ts-ignore
+  //   this.$refs.content.scrollTop = this.scrollTop
+  // }
   mounted () {
     if (this.userId) {
       this.getPostList()

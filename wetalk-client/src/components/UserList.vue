@@ -1,5 +1,5 @@
 <template>
-  <div class="my-content-box white-wrap" @scroll="scroll" ref="content">
+  <div class="white-wrap">
     <van-pull-refresh class="max1100 refrsh-box" :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getUserList">
       <div class="post-box">
         <van-list
@@ -37,7 +37,6 @@ export default class UserList extends Vue {
   isRefresh: boolean = false
   loading: boolean = false
   finished: boolean = false
-  scrollTop: number = 0
   getData: any = {
     page: 1,
     number: 20
@@ -79,14 +78,6 @@ export default class UserList extends Vue {
     }).catch((err: any) => {
       console.log(err)
     })
-  }
-  scroll () {
-    // @ts-ignore
-    this.scrollTop = this.$refs.content.scrollTop
-  }
-  activated () {
-    // @ts-ignore
-    this.$refs.content.scrollTop = this.scrollTop
   }
   created () {
   }

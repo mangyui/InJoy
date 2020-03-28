@@ -1,7 +1,7 @@
 
 export default {
   state: {
-    topic: null,
+    topic: {},
     joinAddress: {},
     myAddress: {},
     toLocation: {}
@@ -11,7 +11,7 @@ export default {
       state.topic = newTopic
     },
     REMOVE_TOPIC (state: any) {
-      state.topic = null
+      state.topic = {}
     },
     SET_JOIN_ADDRESS (state: any, ja: any) {
       state.joinAddress = ja

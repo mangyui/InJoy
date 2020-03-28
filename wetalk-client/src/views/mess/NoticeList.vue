@@ -1,30 +1,39 @@
 <template>
   <div class="max1100">
-    <van-pull-refresh class="refrsh-box" :success-duration="1000" success-text="刷新完成" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getApply">
+    <van-pull-refresh class="refrsh-box" :success-duration="1000" success-text="刷新完成" pulling-text="下拉刷新" v-model="isRefresh">
       <div class="list-box max1100">
-        <template v-for="(item, index) in applyList">
-          <van-swipe-cell :key="index">
-            <div class="apply-box" @click.stop="$router.push('/joinDetails/' + item.join._id)">
-              <div class="flex-rlc van-hairline--bottom">
-                <van-tag mark :type="item.state==0?'default':'primary'">{{item.state==0?'待通过':'已加入'}}</van-tag>
-                <span>{{$commomTime(item.time).substring(5, 16)}}</span>
-              </div>
-              <div class="apply-box-join">
-                <p>活动：{{item.join.title}}<van-tag plain  :type="item.join.type===1?'warning':'success'" size="small">{{item.join.type===1?'线下':'线上'}}</van-tag></p>
-                <p>主办方：{{item.join.user.name}}</p>
-                <p>剩余时间：{{diffNow(item.join.time)}}</p>
-              </div>
-              <div class="apply-box-text van-multi-ellipsis--l2">{{item.text}}</div>
+        <van-tabs sticky swipeable animated color="#8b81f9">
+          <van-tab title="点赞">
+            <div class="white-wrap my-tip-box">
+              <br/>
+              暂无点赞
             </div>
-            <template slot="right" v-if="item.state==0">
-              <van-button @click="deleteApply(index)" square type="danger" text="撤销" />
-            </template>
-          </van-swipe-cell>
-        </template>
-        <div v-show="!applyList[0]" class="white-wrap my-tip-box">
-          <br/>
-          赶紧去参与活动吧！
-        </div>
+          </van-tab>
+          <van-tab title="评论">
+            <div class="white-wrap my-tip-box">
+              <br/>
+              暂无评论
+            </div>
+          </van-tab>
+          <van-tab title="申请">
+            <div class="white-wrap my-tip-box">
+              <br/>
+              暂无申请
+            </div>
+          </van-tab>
+          <van-tab title="关注">
+            <div class="white-wrap my-tip-box">
+              <br/>
+              暂无关注
+            </div>
+          </van-tab>
+          <van-tab title="留言">
+            <div class="white-wrap my-tip-box">
+              <br/>
+              暂无留言
+            </div>
+          </van-tab>
+        </van-tabs>
       </div>
     </van-pull-refresh>
   </div>
@@ -39,61 +48,12 @@ const tools = require('@/util/tools.js')
 export default class NoticeList extends Vue {
   @Getter user!: any
   isRefresh: boolean = true
-  applyList: Array<any> = []
-  diffNow: any = tools.diffNow
-  getApply () {
-    this.$toPost.getApplyByUser({ id: this.user._id }).then((res: any) => {
-      this.applyList = res.data
-      this.isRefresh = false
-    }).catch((err: any) => {
-      console.log(err)
-    })
-  }
-  deleteApply (index: number) {
-    this.$toast.loading({
-      message: '执行中...',
-      forbidClick: true
-    })
-    this.$toPost.deleteApply({ id: this.applyList[index]._id }).then((res: any) => {
-      this.applyList.splice(index, 1)
-      this.$toast.success('操作成功！')
-    }).catch((err: any) => {
-      console.log(err)
-    })
-  }
   created () {
-    this.getApply()
+
   }
 }
 </script>
 
 <style lang="less" scoped>
-.apply-box{
-  padding: 20px;
-  color: #555;
-  border-bottom: 4px solid #f8f8f8;
-  .flex-rlc{
-    padding: 10px 0;
-    font-size: 12px;
-    color: #888;
-  }
-  .apply-box-join {
-    margin-top: 10px;
-    flex-wrap: wrap;
-    p{
-      width: 50%;
-      margin-bottom: 10px;
-    }
-    .van-tag{
-      font-size: 11px;
-      margin-left: 5px;
-      padding: 2px 5px;
-    }
-  }
-  .apply-box-text{
-    background: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-  }
-}
+
 </style>

@@ -37,7 +37,7 @@
       </van-cell-group>
       <van-cell-group v-show="addJoin.type==1">
         <van-field
-          :value="addJoin.place || joinAddress.place || ''"
+          :value="joinAddress.place || ''"
           label="地点定位"
           @click="$router.push('/mapChoose')"
           right-icon="map-marked"

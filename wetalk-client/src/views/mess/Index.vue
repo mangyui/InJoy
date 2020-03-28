@@ -1,7 +1,7 @@
 <template>
   <div class="mess-wrap bgWhite" ref="content">
-    <van-tabs v-model="active" :border="false" sticky animated line-width="26" :offset-top="0">
-      <van-tab title="我的申请" name="m1">
+    <van-tabs class="my-theme-tabs" v-model="active" :border="false" sticky animated line-width="26" :offset-top="0">
+      <van-tab title="提醒" name="m1">
         <NoticeList />
       </van-tab>
       <van-tab title="私信" name="m2">

@@ -19,6 +19,8 @@
             <van-icon class="me-icon" name="arrow" />
           </div>
         </div>
+      </div>
+      <div class="my-info max1100">
         <div class="my-user-digit">
           <div @click="$router.push('/userjoin/')">
             <span>{{dataNumber.joinCount||0}}</span>
@@ -37,18 +39,13 @@
             <p>粉丝</p>
           </div>
         </div>
-      </div>
-      <div class="my-info max1100">
-        <!-- <van-cell-group title="">
-          <van-cell title="收藏" is-link icon="./icons/star.svg" to='/other' />
-        </van-cell-group> -->
         <van-cell-group title="">
           <van-cell title="垃圾分类" is-link icon="./icons/bottle.svg" to='/refuseclass' />
           <van-cell title="地图" is-link icon="./icons/map.svg" to='/MyMap' />
           <!-- <van-cell title="天气" is-link icon="./icons/weather.svg" to='/weather' /> -->
         </van-cell-group>
         <van-cell-group title="">
-          <van-cell title="扫一扫" is-link icon="./icons/scan.svg" to='/other' />
+          <van-cell title="扫一扫" is-link icon="./icons/scan.svg" @click="scanQrCode" />
           <van-cell title="听一听" is-link icon="./icons/music.svg" to='/music' />
           <van-cell title="用一用" is-link icon="./icons/expression.svg" to='/applications' />
         </van-cell-group>
@@ -84,7 +81,34 @@ export default class UserCenter extends Vue {
       console.log(err)
     })
   }
-  mounted () {
+  scanQrCode () {
+    // @ts-ignore
+    cordova.plugins.barcodeScanner.scan(
+      (result: any) => {
+        if (result.cancelled) {
+          this.$toast('取消扫描')
+        } else if (result.text) {
+          this.$toast(result.text)
+          let arr = result.text.split('#')
+          if (arr[0] === 'http://47.106.130.141:9566/') {
+            let arr2 = arr[1].split('/')
+            if (arr2[2].length === 24) {
+              this.$router.push(arr[1])
+            } else {
+              this.$toast.fail('该二维码无效')
+            }
+          } else {
+            this.$toast.fail('无法识别非本应用的二维码')
+          }
+        }
+      },
+      (error: any) => {
+        console.log(error)
+        this.$toast(error)
+      }
+    )
+  }
+  activated () {
     if (this.user._id) {
       this.getUserNumber()
     }
@@ -105,6 +129,7 @@ export default class UserCenter extends Vue {
 .bgtheme{
   background: #8b81f9;
   background: linear-gradient(to top,#7678f2,#8b81f9)!important;
+  padding-bottom: 65px;
 }
 .my-user-digit{
   display: flex;
@@ -114,19 +139,18 @@ export default class UserCenter extends Vue {
   border-radius: 5px;
   padding: 20px 10px;
   position: relative;
-  bottom: -20px;
   box-shadow: 0 2px 6px 1px rgba(0,0,0,0.03);
   & > div {
     text-align: center;
     span{
-      font-size: 19px;
+      font-size: 21px;
       color: #7979f3;
       font-weight: bold;
     }
     p{
-      font-size: 12px;
       margin-top: 8px;
       color: #888;
+      font-size: 13px;
     }
   }
 }
@@ -177,6 +201,6 @@ export default class UserCenter extends Vue {
 }
 .my-info{
   padding-bottom: 55px;
-  margin-top: 35px;
+  margin-top: -50px;
 }
 </style>

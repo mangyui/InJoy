@@ -1,6 +1,6 @@
 <template>
   <div class="bgMax post-wrap">
-    <van-tabs v-model="active" :border="false" sticky swipeable animated
+    <van-tabs class="my-theme-tabs" v-model="active" :border="false" sticky swipeable animated
      line-width="26"
      color="#fff"
      :offset-top="0"
@@ -15,11 +15,13 @@
         <div v-show="isOver" style="min-height: 100%" class="white-wrap max1100 scroll-wrap">
           <PostList ref="postBox" @getOver="getOver"/>
         </div>
-        <div v-show="!isOver" class="my-content-box white-wrap max1100">
+        <div v-show="!isOver" class="white-wrap max1100">
           <div v-for="item in 3"  :key="item">
             <br/>
             <van-skeleton  title avatar :row="3" />
           </div>
+          <br/>
+          <br/>
         </div>
       </van-tab>
     </van-tabs>

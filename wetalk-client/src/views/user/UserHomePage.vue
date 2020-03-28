@@ -171,9 +171,7 @@ export default class UserHomePage extends Vue {
   box-shadow: 0 0 3px rgba(0,0,0,0.1)
 }
 .usercenter{
-  .usercenter-top{
-    background: #fff;
-  }
+  background: #eff0f7;
 }
 .my-content-fix{
   padding-bottom: 50px;
@@ -204,32 +202,35 @@ export default class UserHomePage extends Vue {
   position: absolute;
   width: 100%;
   height: 100%;
-  background:rgba(0,0,0,0.1);
+  background:rgba(139, 129, 249, 0.3);
   z-index: 11;
 }
 .user-box{
-  padding: 10px 20px;
+  padding: 10px;
   position: relative;
   z-index: 20;
+  box-sizing: border-box;
   img {
     margin-top: 30px;
     background: #fefefe;
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-left: 10px;
     border: 1px solid #fff;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
   }
   .user-info{
     text-align: left;
     flex-grow: 1;
+    b, div, p {
+      padding-left: 10px;
+    }
     b{
       margin: 10px 0;
       font-weight: bold;
       color: #fff;
       font-size: 20px;
-      overflow-y: visible;
       text-shadow: 0 0 5px rgba(0,0,0,0.5);
     }
     .van-tag{
@@ -237,7 +238,6 @@ export default class UserHomePage extends Vue {
     }
     p{
       margin: 10px 0;
-      font-size: 13px;
       color: #eee;
       text-align: left;
       text-shadow: 0 0 5px rgba(0,0,0,0.5);

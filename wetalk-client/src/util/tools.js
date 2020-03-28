@@ -108,10 +108,24 @@ function diffNow (time) {
   }
 }
 
+function debounce (fn, timeout) {
+  var timers
+  return function () {
+    if (timers) {
+      clearTimeout(timers)
+    }
+    let args = arguments
+    timers = setTimeout(() => {
+      fn.apply(this, args)
+    }, timeout)
+  }
+}
+
 module.exports = {
   imageToBase64,
   dealImage,
   formatTime,
   commomTime,
-  diffNow
+  diffNow,
+  debounce
 }

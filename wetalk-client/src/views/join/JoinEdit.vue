@@ -150,7 +150,9 @@ export default class JoinEdit extends Vue {
     // 还原图片
     this.fileList = []
     this.editJoin.imgList.forEach((item: any) => {
-      this.fileList.push({ url: item, isImage: true })
+      if (item.trim() !== '') {
+        this.fileList.push({ url: item, isImage: true })
+      }
     })
   }
   saveJoin () {

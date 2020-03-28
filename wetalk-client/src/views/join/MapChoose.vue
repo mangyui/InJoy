@@ -75,6 +75,7 @@ export default class MapChoose extends Vue {
         point: point,
         place: rs.address
       }
+      this.map.panTo(point)
     })
   }
   getLocation () {
@@ -100,7 +101,6 @@ export default class MapChoose extends Vue {
     this.mk = new this.BMap.Marker(me, { icon: icon })
     this.initMap()
     this.map.addOverlay(this.mk)
-    this.map.panTo(me)
   }
   toMe () {
     if (this.myAddress.point) {

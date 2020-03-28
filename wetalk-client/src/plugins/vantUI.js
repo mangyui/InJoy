@@ -14,7 +14,8 @@ import {
   IndexBar, IndexAnchor, Skeleton,
   Swipe, SwipeItem, DropdownMenu,
   DropdownItem, Panel, sticky,
-  Loading, Stepper, Grid, GridItem
+  Loading, Stepper, Grid, GridItem,
+  Slider
 } from 'vant'
 
 Vue.use(Button).use(Tabbar).use(TabbarItem)
@@ -32,5 +33,6 @@ Vue.use(IndexBar).use(IndexAnchor).use(Skeleton)
 Vue.use(Swipe).use(SwipeItem).use(DropdownMenu)
 Vue.use(DropdownItem).use(Panel).use(sticky)
 Vue.use(Loading).use(Stepper).use(Grid).use(GridItem)
+Vue.use(Slider)
 
 Vue.prototype.$ImagePreview = ImagePreview
