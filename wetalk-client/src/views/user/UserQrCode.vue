@@ -5,7 +5,7 @@
     </van-nav-bar>
     <div class="my-content-fix max1100">
       <div class="my-theme-box">
-        <div class="people-box">
+        <div class="people-box van-hairline--bottom">
           <img :src="user.avatar || './imgs/avatar.png'">
           <div class="people-text mg-l-5">
             <span>{{user.name}}</span>
@@ -49,7 +49,6 @@ export default class UserQrCode extends Vue {
   background: linear-gradient(to top,#7678f2,#8b81f9)!important;
 }
 .people-box{
-  border-bottom: 1px solid #f6f6f6;
   padding: 10px 0;
   margin-bottom: 30px;
   text-align: left;

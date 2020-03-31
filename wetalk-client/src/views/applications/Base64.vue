@@ -11,7 +11,7 @@
       </div>
       <van-button class="base-btn" icon="exchange" type="info" :loading="isLoading" @click="toChange">转换</van-button>
       <div>
-        <textarea class="text-input" name="result" id="guo" cols="30" rows="10" v-model="result"></textarea>
+        <textarea disabled class="text-input" name="result" id="guo" cols="30" rows="10" v-model="result"></textarea>
       </div>
     </div>
     <van-action-sheet
@@ -52,8 +52,12 @@ export default class Base64 extends Vue {
     }
     this.showSetting = false
   }
+  isCan (str: string) {
+    let reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g')
+    return reg.test(str)
+  }
   toChange () {
-    if (this.text !== '') {
+    if (this.text !== '' && !this.isCan(this.text)) {
       this.isLoading = true
       if (this.isJie) {
         this.result = window.atob(this.text)
@@ -61,6 +65,8 @@ export default class Base64 extends Vue {
         this.result = window.btoa(this.text)
       }
       this.isLoading = false
+    } else {
+      this.$toast('输入不合法')
     }
   }
   created () {

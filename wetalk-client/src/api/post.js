@@ -4,7 +4,7 @@ import qs from 'qs'
 import md5 from 'js-md5'
 import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://47.106.130.141:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
 
 // eslint-disable-next-line
 function addSign (data) {
@@ -100,7 +100,7 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
-  // 发表帖子
+  // 发表动态
   addPost (datas) {
     return request({
       url: baseUrl + '/post/add',
@@ -108,7 +108,7 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
-  // 删除帖子
+  // 删除动态
   deletePost (datas) {
     return request({
       url: baseUrl + '/post/rm',
@@ -220,7 +220,7 @@ const toPost = {
       data: qs.stringify(addSign(datas), { arrayFormat: 'repeat' }) // 数组格式化a=b&a=c (图片数组)
     })
   },
-  // 发布活动
+  // 编辑活动
   editJoin (datas) {
     return request({
       url: baseUrl + '/join/update',
@@ -292,7 +292,7 @@ const toPost = {
       data: qs.stringify(addSign(datas))
     })
   },
-  // 修改申请状态
+  // 撤销申请
   deleteApply (datas) {
     return request({
       url: baseUrl + '/apply/rm',

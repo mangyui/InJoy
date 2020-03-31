@@ -13,13 +13,27 @@
           rows="6"
           autosize
         />
-        <div class="pad15">
+        <div class="imgorvideo">
+          <van-icon name="photo" :color="isVideo?'#bbb':'#8b81f9'" @click="isVideo=false"/>
+          <van-icon class="van-hairline--left" name="video" :color="isVideo?'#8b81f9':'#bbb'" @click="isVideo=true"/>
+        </div>
+        <div class="pad15" v-show="!isVideo">
           <van-uploader
             :preview-size="100"
             v-model="fileList"
             multiple
-            :after-read="afterRead"
             :max-count="9"
+          />
+        </div>
+        <div class="update-video-box" v-show="isVideo">
+          <video v-if="videoUrl" :src="videoUrl" controls="controls"></video>
+          <van-uploader
+            accept="video/*"
+            v-model="videoList"
+            :after-read="afterRead"
+            @delete="deleteVideo"
+            upload-icon="video"
+            :max-count="1"
           />
         </div>
         <div class="pad15">
@@ -46,6 +60,8 @@
             />
           </van-cell-group>
         </div>
+        <br/>
+        <br/>
       </div>
     </div>
   </div>
@@ -60,7 +76,10 @@ export default class PostAdd extends Vue {
   @Getter joinAddress!: any
   @Getter topic!: any
   text: string =''
+  isVideo: boolean = false
+  videoUrl: string = ''
   fileList: Array<any> = []
+  videoList: Array<any> = []
   imgList: Array<string> = []
   toPublish () {
     if (!this.$store.getters.user || !this.$store.getters.user._id) {
@@ -97,16 +116,21 @@ export default class PostAdd extends Vue {
     if (this.topic && this.topic._id) {
       postData.topic = this.topic._id
     }
-    if (this.joinAddress && this.joinAddress.place.trim() !== '') {
+    if (this.joinAddress.place && this.joinAddress.place.trim() !== '') {
       postData.address = this.joinAddress.place.trim()
     }
-    if (this.imgList[0]) {
+    if (!this.isVideo && this.imgList[0]) {
       postData.imgList = this.imgList.join(',')
+    }
+    if (this.isVideo && this.videoUrl !== '') {
+      postData.video = this.videoUrl
     }
     this.$toPost.addPost(postData).then((res: any) => {
       this.text = ''
       this.fileList = []
       this.imgList = []
+      this.videoUrl = ''
+      this.videoList = []
       this.$toast.clear()
       this.$toast('发表成功！')
       this.$router.go(-1)
@@ -121,7 +145,7 @@ export default class PostAdd extends Vue {
       duration: 0,
       message: '图片上传中...'
     })
-    var data = new FormData()
+    let data = new FormData()
     for (let i = 0; i < this.fileList.length; i++) {
       data.append('myimg', this.fileList[i].file)
     }
@@ -140,8 +164,72 @@ export default class PostAdd extends Vue {
     this.$store.commit('REMOVE_TOPIC')
   }
   afterRead (file: any) {
+    file.status = 'uploading'
+    file.message = '上传中...'
+    let data = new FormData()
+    data.append('myvideo', file.file)
+    this.$toUpload.uploadVideo(data).then((res: any) => {
+      file.status = 'done'
+      this.videoUrl = res.data
+    }).catch((err: any) => {
+      file.status = 'failed'
+      file.message = '上传失败'
+      console.log(err)
+      this.$toast.fail('视频上传失败')
+    })
+  }
+  deleteVideo (file: any) {
+    this.videoUrl = ''
   }
   created () {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.update-video-box{
+  width: 100%;
+  height: 55vw;
+  max-height: 500px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  video{
+    width: 85%;
+    height: 85%;
+    position: absolute;
+    z-index: 11;
+  }
+  .van-uploader{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    /deep/ .van-uploader__file{
+      background: #000;
+    }
+    /deep/ .van-uploader__wrapper,/deep/ .van-uploader__upload, /deep/ .van-uploader__preview, /deep/ .van-uploader__file {
+      width: 100%!important;
+      height: 100%!important;
+      margin: 0!important;
+    }
+  }
+}
+.imgorvideo{
+  padding: 5px;
+  font-size: 25px;
+  color: #aaa;
+  text-align: right;
+  .van-icon{
+    padding: 10px;
+  }
+}
+</style>

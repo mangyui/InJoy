@@ -19,6 +19,7 @@
             <div class="post-content">
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
+              <video class="post-video" v-if="item.video" :src="item.video" controls="controls"></video>
             </div>
             <div class="flex-rlc">
               <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
@@ -81,7 +82,6 @@ export default class PostList extends Vue {
   }
   postList: Array<any> = []
   getPostList () {
-    this.postList = []
     this.getData.page = 1
     if (this.text && this.text.trim() !== '') {
       this.getData.name = this.text.trim()

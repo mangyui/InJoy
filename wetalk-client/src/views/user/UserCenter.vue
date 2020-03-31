@@ -196,7 +196,7 @@ export default class UserCenter extends Vue {
   }
   span{
     font-size: 12px;
-    color: #ddd;
+    color: #dfdfdf;
   }
 }
 .my-info{

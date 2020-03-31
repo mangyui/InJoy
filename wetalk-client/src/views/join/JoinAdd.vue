@@ -59,7 +59,7 @@
       </van-cell-group>
       <van-panel title="活动图片(可选)">
         <van-uploader
-          :preview-size="100"
+          :preview-size="95"
           v-model="fileList"
           multiple
           :max-count="9"

@@ -8,13 +8,25 @@
     <br/>
     <van-grid v-show="currjoin.imgList[0]" :border="false" :column-num="3" square>
       <van-grid-item>
-        <van-image fit="cover" lazy-load v-show="currjoin.imgList[0]" :src="currjoin.imgList[0]" />
+        <van-image fit="cover" lazy-load v-show="currjoin.imgList[0]" :src="currjoin.imgList[0]" >
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
       </van-grid-item>
       <van-grid-item>
-        <van-image fit="cover" lazy-load v-show="currjoin.imgList[1]" :src="currjoin.imgList[1]" />
+        <van-image fit="cover" lazy-load v-show="currjoin.imgList[1]" :src="currjoin.imgList[1]" >
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
       </van-grid-item>
       <van-grid-item>
-        <van-image fit="cover" lazy-load v-show="currjoin.imgList[2]" :src="currjoin.imgList[2]" />
+        <van-image fit="cover" lazy-load v-show="currjoin.imgList[2]" :src="currjoin.imgList[2]" >
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
       </van-grid-item>
     </van-grid>
     <p v-if="currjoin.place" class="van-ellipsis post-address"><van-icon name="location" />{{currjoin.place}}</p>

@@ -43,7 +43,6 @@ export default class UserList extends Vue {
   }
   userList: Array<any> = []
   getUserList () {
-    this.userList = []
     this.getData.page = 1
     if (this.text && this.text.trim() !== '') {
       this.getData.name = this.text.trim()

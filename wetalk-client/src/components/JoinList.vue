@@ -7,7 +7,7 @@
           :finished-text="joinList[0]?'没有更多啦~':''"
           @load="getMore"
         >
-        <template v-for="(item, index) in joinList" v-show="joinType==-1||joinType==item.type">
+        <template v-for="(item, index) in joinList">
           <transition name="van-slide-up" :key="index">
             <JoinBox v-show="!item.place || sameCity(item.place)" :currjoin="item" />
           </transition>
@@ -45,7 +45,6 @@ export default class JoinList extends Vue {
     return !this.isCity || this.$win.eval('/' + this.myAddress.place + '$/').test(place.split('市')[0] + '市')
   }
   getJoinList () {
-    this.joinList = []
     this.getData.page = 1
     if (this.text && this.text.trim() !== '') {
       this.getData.name = this.text.trim()
@@ -60,6 +59,7 @@ export default class JoinList extends Vue {
     }
     this.$toPost.getJoinList(this.getData).then((res: any) => {
       res.data.pop()
+      // this.joinList = []
       this.joinList = res.data
       if (res.data.length < this.getData.number) {
         this.finished = true

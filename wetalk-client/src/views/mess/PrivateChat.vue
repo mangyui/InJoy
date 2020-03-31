@@ -5,9 +5,9 @@
         <van-swipe-cell v-for="(item, index) in chatList" :key="index">
           <div class="list-item"  v-if="index.split('To')[0] === user._id&&item.mesgList[item.mesgList.length-1]" @click="$router.push('/UserChat/' + index.split('To')[1])">
             <img :src="item.user.avatar||'./imgs/avatar.png'">
-            <div class="mess-right-l">
+            <div class="mess-right-l van-hairline--bottom">
               <b>{{item.user.name}}</b>
-              <p>{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':(item.mesgList[item.mesgList.length-1].type==3?'[位置]':item.mesgList[item.mesgList.length-1].content)}}</p>
+              <p class="van-ellipsis">{{item.mesgList[item.mesgList.length-1].type==2?'[图片]':(item.mesgList[item.mesgList.length-1].type==3?'[位置]':item.mesgList[item.mesgList.length-1].content)}}</p>
             </div>
             <span>{{$formatTime(item.mesgList[item.mesgList.length-1].time)}}</span>
           </div>
@@ -57,22 +57,19 @@ export default class PrivateChat extends Vue {
       background-color: #ebe9ff;
     }
     >img{
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
     }
     .mess-right-l{
       flex-grow: 1;
       padding: 5px 0px 15px 15px;
-      border-bottom: 1px solid #f9f9f9;
       width: 0;
       p{
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #888;
+        color: #8f92a9;
         padding-top: 5px;
         line-height: 19px;
+        font-size: 13px;
       }
       b{
         display: block;

@@ -19,6 +19,7 @@
         <PostList ref="postBox" :topicId="$route.params.id"/>
       </div>
     </div>
+    <Loading :showMask="showMask"></Loading>
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import PostList from '@/views/user/UserPost.vue'
   }
 })
 export default class TopicPost extends Vue {
+  showMask: boolean = true
   scrollTop: number = 0
   topicDetails: any = {}
   getTopic () {
@@ -39,6 +41,7 @@ export default class TopicPost extends Vue {
       this.topicDetails = res.data
       // @ts-ignore
       this.$refs.postBox.getPostList()
+      this.showMask = false
     }).catch((err: any) => {
       console.log(err)
     })
@@ -56,13 +59,17 @@ export default class TopicPost extends Vue {
   activated () {
     // @ts-ignore
     this.$refs.content.scrollTop = this.scrollTop
-  }
-  mounted () {
-    // // @ts-ignore
-    // this.$refs.postBox.getPostList()
+    if (this.$store.getters.isForward) {
+      this.showMask = true
+      // @ts-ignore
+      this.$refs.content.scrollTop = 0
+      this.getTopic()
+    } else {
+      this.showMask = false
+    }
   }
   created () {
-    this.getTopic()
+
   }
 }
 </script>

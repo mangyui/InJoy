@@ -47,8 +47,8 @@
         </van-dropdown-menu>
       </van-sticky>
       <div class="join-wrap">
-        <div v-show="!this.$refs.joinBox || !this.$refs.joinBox.joinList[0]" class="my-content-box white-wrap">
-          <div v-for="item in 2"  :key="item">
+        <div v-show="!this.$refs.joinBox || !this.$refs.joinBox.joinList[0]" class="my-content-box white-wrap my-skeleton-wrap">
+          <div v-for="item in 3"  :key="item">
             <br/>
             <van-skeleton  title :row="3" />
           </div>
@@ -76,7 +76,7 @@ export default class Join extends Vue {
   isOver: boolean = false
   searchValue: string = ''
   joinType: number = -1
-  joinOrder: string = 'near'
+  joinOrder: string = 'new'
   joinCity: boolean = true
   joinTypeList: Array<object> = [
     { text: '所有类型', value: -1 },
@@ -174,6 +174,12 @@ export default class Join extends Vue {
 }
 .join-wrap{
   padding-bottom: 50px;
+  position: relative;
+}
+.my-skeleton-wrap{
+  position: absolute;
+  width: 100%;
+  height: 480px;
 }
 .van-skeleton{
   margin-bottom: 15px;
@@ -197,6 +203,9 @@ export default class Join extends Vue {
   /deep/ .van-icon{
     color: #eee;
     font-weight: bold;
+  }
+  /deep/ input::-webkit-input-placeholder {
+    color: #dfdfdf;
   }
 }
 .icon-menu{

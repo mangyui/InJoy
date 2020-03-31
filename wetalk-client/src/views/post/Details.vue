@@ -293,6 +293,9 @@ export default class PostDetails extends Vue {
     }
   }
 }
+.my-max-height{
+  -webkit-line-clamp: unset;
+}
 .comment-item-btn{
   display: inline-block;
   font-size: 13px;

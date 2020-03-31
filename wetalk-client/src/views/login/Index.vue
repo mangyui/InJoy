@@ -7,11 +7,11 @@
           <img :src="'./imgs/ico.png'">
         </div>
         <div class="login-box">
-          <div class="login-item">
+          <div class="login-item van-hairline--bottom">
             <van-icon name="phone-o" />
             <input v-model="loginForm.phone" placeholder="手机号" type="text">
           </div>
-          <div class="login-item">
+          <div class="login-item van-hairline--bottom">
             <van-icon name="certificate" />
             <input v-model="loginForm.vcode" placeholder="验证码" type="text">
             <van-button class="code-btn" size="small" color="#16cff0" @click="getVcode">{{msgText}}</van-button>
@@ -129,7 +129,6 @@ export default class Login extends Vue {
   display: flex;
   align-items: center;
   padding: 5px 0;
-  border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   .van-icon{
     font-size: 25px;
@@ -152,7 +151,8 @@ export default class Login extends Vue {
   margin-top: 30px;
   padding: 20px;
   p,.van-divider{
-    color: #ccc;
+    color: #ddd;
+    font-size: 12px;
   }
   .van-icon{
     font-size: 30px;

@@ -6,7 +6,11 @@
         lazy-load
         :src="imgList[0]"
         @click.stop="toShowImg(0)"
-        />
+        >
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
     </div>
     <van-grid v-else :border="false" :column-num="3" square gutter="6">
       <van-grid-item v-for="(imgitem,imgindex) in imgList" :key="imgindex"  @click.stop="toShowImg(imgindex)">
@@ -14,7 +18,11 @@
           fit="cover"
           lazy-load
           :src="imgitem"
-        />
+        >
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
       </van-grid-item>
     </van-grid>
   </div>

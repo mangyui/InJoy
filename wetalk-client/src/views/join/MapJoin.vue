@@ -1,7 +1,8 @@
 <template>
   <div>
     <van-nav-bar class="map-nav litheme" fixed :border="false" title="线下活动" left-arrow @click-left="$router.go(-1)">
-      <van-icon name="aim" slot="right" @click="toMe"/>
+      <span slot="right">{{currCity}}</span>
+      <van-icon name="hotel-o" slot="right" @click="showArea=true"/>
     </van-nav-bar>
     <div id="MapBox">
     </div>
@@ -20,13 +21,19 @@
         </div>
       </div>
     </van-action-sheet>
+    <van-popup v-model="showArea" position="bottom">
+      <van-area :area-list="areaList" :columns-num="2" title="切换城市"
+      :value="cityCode"
+      @cancel="showArea=false"
+      @confirm="areaConfirm"/>
+    </van-popup>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-
+import { areaList } from '@/util/Area.ts'
 var mapSquare = require('@/util/mapSquare.js')
 
 @Component
@@ -34,6 +41,10 @@ export default class MapJoin extends Vue {
   // private user: any = this.$store.getters.user
   @Getter myAddress!: any
   showDetails: boolean = false
+  showArea: boolean = false
+  areaList: JSON = areaList
+  currCity: string = ''
+  cityCode: string = ''
   BMap: any
   map: any
   mk: any // 我的定位标注
@@ -46,7 +57,7 @@ export default class MapJoin extends Vue {
       return
     }
     let data = {
-      city: this.myAddress.place
+      city: this.currCity
     }
     this.$toPost.getJoinByCity(data).then((res: any) => {
       this.joinList = res.data
@@ -90,9 +101,11 @@ export default class MapJoin extends Vue {
     this.$toast.clear()
   }
   bindSquareEvent () {
+    this.map.clearOverlays()
+    this.map.addOverlay(this.mk)
     this.joinList.forEach((item, index) => {
       // 添加自定义覆盖物
-      var mySquare = new mapSquare.SquareOverlay(new this.BMap.Point(item.pointX, item.pointY), 110, 40, '#7678f2', item.title)
+      var mySquare = new mapSquare.SquareOverlay(new this.BMap.Point(item.pointX, item.pointY), 110, 35, '#7678f2', item.title.substr(0, 7))
       this.map.addOverlay(mySquare)
       mySquare._div.addEventListener('click', (e: any) => {
         e.stopPropagation()
@@ -149,7 +162,7 @@ export default class MapJoin extends Vue {
     let icon = new this.BMap.Icon('./imgs/mapThis.png', new this.BMap.Size(30, 40))
     this.mk = new this.BMap.Marker(me, { icon: icon })
     this.initMap()
-    this.map.addOverlay(this.mk)
+    this.currCity = this.myAddress.place
   }
   toMe () {
     if (this.myAddress.point) {
@@ -157,6 +170,13 @@ export default class MapJoin extends Vue {
     } else {
       this.getLocation()
     }
+  }
+  areaConfirm (value: Array<any>) {
+    this.currCity = value[1].name
+    this.cityCode = value[1].code
+    this.map.centerAndZoom(this.currCity, 13)
+    this.showArea = false
+    this.getJoinList()
   }
   mounted () {
     this.$toast.loading({
@@ -183,6 +203,7 @@ export default class MapJoin extends Vue {
     margin-bottom: 10px;
     border-radius: 5px;
     min-height: 60px;
+    line-height: 20px;
   }
   & .join-distance {
     color: #aaa;

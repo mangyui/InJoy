@@ -62,7 +62,7 @@ export default class UserComment extends Vue {
       return
     }
     this.getData.userId = this.userId
-    this.commentList = []
+    // this.commentList = []
     this.getData.page = 1
     if (this.$store.getters.user._id) {
       this.getData.viewer = this.$store.getters.user._id
