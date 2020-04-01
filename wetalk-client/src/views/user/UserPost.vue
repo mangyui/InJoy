@@ -19,7 +19,8 @@
             <div class="post-content">
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
-              <video class="post-video" v-if="item.video" :src="item.video" controls="controls"></video>
+              <video class="post-video" v-if="item.video" :src="item.video" controls="controls"
+              @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
             </div>
             <div class="flex-rlc">
               <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
@@ -44,7 +45,7 @@
       v-model="showShare"
       closeable
       position="bottom"
-      get-container="#app">
+      get-container=".usercenter">
       <div class="comment-line">分享</div>
       <div class="share-box">
         <div @click="shareQQ">
@@ -63,6 +64,7 @@
       cancel-text="取消"
       @select="onSelect"
       @cancel="showMore=false"
+      get-container=".usercenter"
     />
   </div>
 </template>

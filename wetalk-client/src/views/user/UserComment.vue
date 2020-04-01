@@ -24,8 +24,8 @@
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
             </div>
-            <div class="flex-rlc comment-post-box" @click="$router.push('/postdetails/'+item.post._id)">
-              <p>原帖：{{item.post.content}}</p>
+            <div class="flex-rlc comment-post-box" @click="item.post?$router.push('/postdetails/'+item.post._id):''">
+              <p class="van-multi-ellipsis--l2">原帖：{{item.post?item.post.content:'[已删除]'}}</p>
               <van-icon name="arrow"/>
             </div>
           </div>
@@ -132,13 +132,8 @@ export default class UserComment extends Vue {
 .comment-post-box{
   margin-top: 5px;
   padding: 15px;
-  background: #f3f3f3;
+  background: #f1f2fb;
   border-radius: 5px;
   color: #666;
-  p{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 }
 </style>

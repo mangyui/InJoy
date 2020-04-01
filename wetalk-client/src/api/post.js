@@ -4,7 +4,7 @@ import qs from 'qs'
 import md5 from 'js-md5'
 import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://47.106.130.141:9612' // api的base_url
 
 // eslint-disable-next-line
 function addSign (data) {
@@ -80,6 +80,14 @@ const toPost = {
   getUserNumber (datas) {
     return request({
       url: baseUrl + '/user/getUserNumber',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取操作数据（点赞，评论，关注）
+  getOptionData (datas) {
+    return request({
+      url: baseUrl + '/user/getOptionData',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

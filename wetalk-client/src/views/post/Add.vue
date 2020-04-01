@@ -26,7 +26,8 @@
           />
         </div>
         <div class="update-video-box" v-show="isVideo">
-          <video v-if="videoUrl" :src="videoUrl" controls="controls"></video>
+          <video v-if="videoUrl" :src="videoUrl" controls="controls"
+            @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
           <van-uploader
             accept="video/*"
             v-model="videoList"

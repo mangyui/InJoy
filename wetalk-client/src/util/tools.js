@@ -53,6 +53,16 @@ function dealImage (base64, w, callback) {
   }
 }
 
+// 截取视频第一帧图片
+function setVideoPoster (e) {
+  let ele = e.target
+  let canvas = document.createElement('canvas')
+  canvas.width = ele.videoWidth
+  canvas.height = ele.videoHeight
+  canvas.getContext('2d').drawImage(ele, 0, 0, canvas.width, canvas.height)
+  ele.setAttribute('poster', canvas.toDataURL('image/png'))
+}
+
 // 时间过去格式化
 function formatTime (time) {
   // time = +time * 1000
@@ -124,6 +134,7 @@ function debounce (fn, timeout) {
 module.exports = {
   imageToBase64,
   dealImage,
+  setVideoPoster,
   formatTime,
   commomTime,
   diffNow,

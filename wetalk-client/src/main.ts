@@ -33,6 +33,7 @@ Vue.config.productionTip = false
 const tools = require('@/util/tools.js')
 Vue.prototype.$formatTime = tools.formatTime
 Vue.prototype.$commomTime = tools.commomTime
+Vue.prototype.$setVideoPoster = tools.setVideoPoster
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -46,6 +47,7 @@ declare module 'vue/types/vue' {
     $navigation: any
     $formatTime: any
     $commomTime: any
+    $setVideoPoster: any
   }
 }
 

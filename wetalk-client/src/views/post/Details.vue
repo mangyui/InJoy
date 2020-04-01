@@ -18,6 +18,8 @@
             <div class="post-content">
               <p class="my-max-height">{{postDetails.content}}</p>
               <ImgBox v-if="postDetails.imgList" :imgList="postDetails.imgList.split(',')"/>
+              <video class="post-video"  v-if="postDetails.video" :src="postDetails.video" controls="controls"
+                @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
             </div>
             <br />
             <p v-if="postDetails.address" class="van-ellipsis post-address"><van-icon name="location" />{{postDetails.address}}</p>
