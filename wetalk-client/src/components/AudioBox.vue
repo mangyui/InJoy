@@ -1,5 +1,5 @@
 <template>
-  <div class="audioBox" v-show="currentSong&&isPlay==1" @click="$store.commit('TOPAUSE')">
+  <div class="audioBox" v-show="$route.name!='MusicDetails'&&currentSong&&isPlay==1" @click="$store.commit('TOPAUSE')">
     <van-circle
       v-model="timeNow"
       :rate="timeDuration"
@@ -20,20 +20,20 @@ import { Getter } from 'vuex-class'
 export default class AudioBox extends Vue {
   @Getter isPlay!: number // ！声明肯定会有值
   @Getter currentSong!: any
-
+  @Getter songTime!: any
   timeNow: number = 0
   timeDuration: number = 100
+  audioDom: any = ''
   gradientColor: object = {
     '0%': '#ffd01e',
     '100%': '#ee0a24'
   }
   @Watch('isPlay')
-  changeAge (newValue: number, oldValue: number) {
-    let au: any = document.getElementById('Audio')
+  changePlay (newValue: number, oldValue: number) {
     if (newValue === 2) {
-      au.pause()
+      this.audioDom.pause()
     } else if (newValue === 1 && oldValue === 2) {
-      au.play()
+      this.audioDom.play()
     }
   }
   // getDuration () { // 该方法只走一首歌还好，点另一首就NaN
@@ -41,6 +41,13 @@ export default class AudioBox extends Vue {
   // }
   updateTime (e: any) {
     this.timeNow = parseInt(e.target.currentTime) / parseInt(e.target.duration) * 100
+    this.$store.commit('SET_SONG_TIME', this.timeNow)
+  }
+  mounted () {
+    this.audioDom = document.getElementById('Audio')
+    this.audioDom.addEventListener('error', () => {
+      this.$toast.fail('该歌曲无法播放')
+    }, true)
   }
 }
 </script>

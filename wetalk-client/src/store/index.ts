@@ -39,6 +39,7 @@ export default new Vuex.Store({
     isForward: state => state.isForward,
     isPlay: state => state.isPlay,
     currentSong: state => state.currentSong,
+    songTime: state => state.songTime,
     isShowInOut: state => state.isShowInOut,
     otherWeb: state => state.otherWeb,
     topic: state => state.topic,

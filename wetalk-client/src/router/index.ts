@@ -45,6 +45,7 @@ import Setting from '@/views/Setting.vue'
 import Weather from '@/views/more/MyWeather.vue'
 
 import Music from '@/views/more/Music.vue'
+import MusicDetails from '@/views/more/MusicDetails.vue'
 import MyMap from '@/views/more/MyMap.vue'
 import Games from '@/views/more/Games.vue'
 import Applications from '@/views/more/Applications.vue'
@@ -244,6 +245,11 @@ const router:Router = new Router({
       path: '/music',
       name: 'Music',
       component: Music // () => import('@/views/more/Music.vue')
+    },
+    {
+      path: '/musicDetails',
+      name: 'MusicDetails',
+      component: MusicDetails // () => import('@/views/more/MusicDetails.vue')
     },
     {
       path: '/mymap',

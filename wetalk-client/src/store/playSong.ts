@@ -3,6 +3,7 @@
 export default {
   state: {
     isPlay: 0,
+    songTime: 0,
     currentSong: {
       songid: 0
     }
@@ -17,6 +18,9 @@ export default {
     },
     TOJIXU (state: any) {
       state.isPlay = 1
+    },
+    SET_SONG_TIME (state: any, time: any) {
+      state.songTime = time
     }
   }
 }

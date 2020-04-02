@@ -115,17 +115,19 @@ export default class Music extends Vue {
     let currSong = {
       songid: this.musics[index].id,
       url: 'https://music.163.com/song/media/outer/url?id=' + this.musics[index].id + '.mp3',
-      img: this.musics[index].album.picUrl
+      img: this.musics[index].album.picUrl,
+      name: this.musics[index].name,
+      art: this.musics[index].artists[0].name || '匿名',
+      time: this.musics[index].duration
     }
     if (this.currentSong.songid === currSong.songid) {
-      if (this.isPlay === 1) {
-        this.$store.commit('TOPAUSE')
-      } else {
+      if (this.isPlay === 2) {
         this.$store.commit('TOJIXU')
       }
     } else {
       this.$store.commit('TOPLAY', currSong)
     }
+    this.$router.push('/musicDetails')
   }
   created () {
     this.getRecommend()
