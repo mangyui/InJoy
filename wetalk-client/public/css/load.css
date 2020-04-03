@@ -5,6 +5,16 @@
   width: 100%;
   text-align: center;
 }
+.loading-logo {
+  position: absolute;
+  width: 100%;
+  top: 40%;
+  transform: translateY(-50%);
+}
+.loading-logo img {
+  width: 120px;
+  height: 120px;
+}
 .loading-box .copy{
   font-size: 11px;
   color: #777;
@@ -23,7 +33,7 @@
 .Myh1{
   position: absolute;
   width: 100%;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
 }
 .Myh1 span
@@ -45,7 +55,7 @@
 {
   color:#00bcd4;
   filter: drop-shadow(3px 3px 3px #26c6da);
-  animation-duration: 100ms;
+  animation-duration: 1500ms;
 }
 .Myh1 span:nth-child(3)
 {
@@ -53,12 +63,14 @@
 }
 .Myh1 span:nth-child(4)
 {
-  color:#2196f3;
-  filter: drop-shadow(3px 3px 3px #2196f3);
-  animation-duration: 1500ms;
+  color:#8b81f9;
+  filter: drop-shadow(3px 3px 3px #8b81f9);
+  animation-duration: 100ms;
 }
 .Myh1 span:nth-child(5)
 {
+  color:#2196f3;
+  filter: drop-shadow(3px 3px 3px #2196f3);
   animation-duration: 3000ms;
 }
 .Myh1 span:nth-child(6)

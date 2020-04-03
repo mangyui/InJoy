@@ -13,20 +13,19 @@
                 <b @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">{{postDetails.user?postDetails.user.name:'该用户不存在'}}</b>
                 <p>{{$formatTime(postDetails.time)}}</p>
               </div>
-              <van-button round size="mini" type="info" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">关注</van-button>
+              <van-button round size="mini" type="info" @click.stop="$router.push('/userhomepage/' + postDetails.user._id)">{{$store.getters.user._id===postDetails.user._id?'我的':'关注'}}</van-button>
             </div>
             <div class="post-content">
               <p class="my-max-height">{{postDetails.content}}</p>
               <ImgBox v-if="postDetails.imgList" :imgList="postDetails.imgList.split(',')"/>
               <video class="post-video"  v-if="postDetails.video" :src="postDetails.video" controls="controls"
-                @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
+                @loadeddata="$setVideoPoster" preload controlslist="nodownload" :poster="'./imgs/ico.png'" crossorigin="Anonymous"></video>
             </div>
             <br />
             <p v-if="postDetails.address" class="van-ellipsis post-address"><van-icon name="location" />{{postDetails.address}}</p>
             <div class="post-san">
-              <div><van-icon name="share"/>{{postDetails.count_forward}}</div>
-              <div><van-icon name="comment-o" @click="$router.push('/postcomment/'+ $route.params.id)"/>{{postDetails.count_comment}}</div>
-              <div :class="postDetails.alreadyAgree===true?'post-san-active':''"><van-icon :name="postDetails.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(postDetails)"/>{{postDetails.count_agree}}</div>
+              <div  @click="$router.push('/postcomment/'+ $route.params.id)"><van-icon name="comment-o"/>{{postDetails.count_comment}}</div>
+              <div :class="postDetails.alreadyAgree===true?'post-san-active':''"  @click.stop="postAgree(postDetails)"><van-icon :name="postDetails.alreadyAgree===true?'good-job':'good-job-o'"/>{{postDetails.count_agree}}</div>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
     <van-nav-bar class="litheme" :border="false" fixed title="听一听" left-arrow @click-left="$router.go(-1)" >
       <span v-show="!isRecommend" slot="right" @click="getRecommend">推荐</span>
     </van-nav-bar>
-    <div class="my-content-fix max1100">
+    <div class="my-content-fix max1100" @scroll="scroll" ref="content">
       <van-search
         v-model="text"
         placeholder="搜索音乐"
@@ -43,6 +43,7 @@ import { Getter } from 'vuex-class'
 export default class Music extends Vue {
   @Getter isPlay!: number // ！声明肯定会有值
   @Getter currentSong!: any
+  scrollTop: number = 0
   loading: boolean = false
   finished: boolean = false
   musics: Array<any> = []
@@ -126,8 +127,17 @@ export default class Music extends Vue {
       }
     } else {
       this.$store.commit('TOPLAY', currSong)
+      this.$store.commit('SET_SONG_TIME', 0)
     }
     this.$router.push('/musicDetails')
+  }
+  scroll () {
+    // @ts-ignore
+    this.scrollTop = this.$refs.content.scrollTop
+  }
+  activated () {
+    // @ts-ignore
+    this.$refs.content.scrollTop = this.scrollTop
   }
   created () {
     this.getRecommend()

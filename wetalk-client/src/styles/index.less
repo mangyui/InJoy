@@ -347,6 +347,7 @@ ul{
     text-overflow: ellipsis;
     white-space: nowrap;
     padding: 0 5px;
+    animation: MyScale 0.4s linear 1;
     &::after {
       display: block;
       content: '';
@@ -366,6 +367,15 @@ ul{
     &::after {
       border-color: #5c60e0 transparent  transparent transparent;
     }
+  }
+}
+
+@keyframes MyScale{
+  from{
+      transform: scale(0.1);
+  }
+  to{
+      transform: scale(1);
   }
 }
 

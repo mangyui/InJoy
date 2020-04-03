@@ -66,7 +66,11 @@ export default class TipList extends Vue {
     }
   }
   gotoRouter (item: any) {
-    this.$router.push(this.typeObj[this.type]['router'] + item[this.typeObj[this.type]['idType']]._id)
+    if (this.type === '关注') {
+      this.$router.push(this.typeObj[this.type]['router'] + item[this.typeObj[this.type]['idType']])
+    } else {
+      this.$router.push(this.typeObj[this.type]['router'] + item[this.typeObj[this.type]['idType']]._id)
+    }
   }
   created () {
 

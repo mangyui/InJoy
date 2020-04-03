@@ -56,6 +56,7 @@ function dealImage (base64, w, callback) {
 // 截取视频第一帧图片
 function setVideoPoster (e) {
   let ele = e.target
+  ele.disablePictureInPicture = true
   let canvas = document.createElement('canvas')
   canvas.width = ele.videoWidth
   canvas.height = ele.videoHeight

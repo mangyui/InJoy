@@ -1,5 +1,5 @@
 <template>
-  <div class="audioBox" v-show="$route.name!='MusicDetails'&&currentSong&&isPlay==1" @click="$store.commit('TOPAUSE')">
+  <div class="audioBox" v-show="$route.name!='MusicDetails'&&currentSong&&isPlay==1" @click="$router.push('/musicDetails')">
     <van-circle
       v-model="timeNow"
       :rate="timeDuration"
@@ -7,7 +7,7 @@
       :color="gradientColor"
       size="40px"
     />
-    <van-icon class="pause-icon" name="pause" color="#ee0a24"/>
+    <van-icon class="pause-icon" name="music" color="#ee0a24"/>
     <audio id="Audio" ref="mAudio" @timeupdate="updateTime" :src="currentSong.url" autoplay loop="loop"> </audio>
   </div>
 </template>

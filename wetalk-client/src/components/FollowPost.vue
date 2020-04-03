@@ -20,7 +20,7 @@
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
               <video class="post-video" v-if="item.video" :src="item.video" controls="controls"
-                @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
+                @loadeddata="$setVideoPoster" preload controlslist="nodownload" :poster="'./imgs/ico.png'" crossorigin="Anonymous"></video>
             </div>
             <div class="flex-rlc">
               <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">
@@ -29,9 +29,9 @@
               <p v-if="item.address" class="van-ellipsis post-address"><van-icon name="location" />{{item.address}}</p>
             </div>
             <div class="post-san">
-              <div><van-icon name="share" @click.stop="openShare(item)"/>分享</div>
-              <div><van-icon name="comment-o" @click.stop="$router.push('/postcomment/'+ item._id)" />{{item.count_comment}}</div>
-              <div :class="item.alreadyAgree===true?'post-san-active':''"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'" @click.stop="postAgree(item)"/>{{item.count_agree}}</div>
+              <div @click.stop="openShare(item)"><van-icon name="share"/>分享</div>
+              <div @click.stop="$router.push('/postcomment/'+ item._id)" ><van-icon name="comment-o"/>{{item.count_comment}}</div>
+              <div :class="item.alreadyAgree===true?'post-san-active':''"  @click.stop="postAgree(item)"><van-icon :name="item.alreadyAgree===true?'good-job':'good-job-o'"/>{{item.count_agree}}</div>
             </div>
             <van-icon class="post-more-btn" name="ellipsis" />
           </div>
@@ -150,11 +150,11 @@ export default class PostList extends Vue {
     }
   }
   shareWeibo () {
-    let url = 'http://service.weibo.com/share/share.php?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
+    let url = 'http://service.weibo.com/share/share.php?url=http://47.106.130.141:9566/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
     window.open(url)
   }
   shareQQ () {
-    let url = 'http://connect.qq.com/widget/shareqq/index.html?url=http://localhost:8080/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
+    let url = 'http://connect.qq.com/widget/shareqq/index.html?url=http://47.106.130.141:9566/#/postdetails/' + this.sharePost._id + '&title= ' + this.sharePost.content + '&source= 乐中，乐在其中'
     window.open(url)
   }
   scroll () {

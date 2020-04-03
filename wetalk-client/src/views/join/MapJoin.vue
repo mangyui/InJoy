@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar class="map-nav litheme" fixed :border="false" title="线下活动" left-arrow @click-left="$router.go(-1)">
-      <span slot="right">{{currCity}}</span>
+      <span slot="right" @click="showArea=true">{{currCity}}</span>
       <van-icon name="hotel-o" slot="right" @click="showArea=true"/>
     </van-nav-bar>
     <div id="MapBox">
@@ -161,8 +161,8 @@ export default class MapJoin extends Vue {
   mapMyLocation (me: any) {
     let icon = new this.BMap.Icon('./imgs/mapThis.png', new this.BMap.Size(30, 40))
     this.mk = new this.BMap.Marker(me, { icon: icon })
-    this.initMap()
     this.currCity = this.myAddress.place
+    this.initMap()
   }
   toMe () {
     if (this.myAddress.point) {
