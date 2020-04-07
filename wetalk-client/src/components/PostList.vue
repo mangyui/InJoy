@@ -20,7 +20,7 @@
               <p>{{item.content}}</p>
               <ImgBox v-if="item.imgList" :imgList="item.imgList.split(',')"/>
               <video class="post-video" v-if="item.video" :src="item.video" controls="controls" onenterpictureinpicture="true"
-                @loadeddata="$setVideoPoster" preload controlslist="nodownload" :poster="'./imgs/ico.png'" crossorigin="Anonymous"></video>
+                @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
             </div>
             <div class="flex-rlc">
               <b v-if="item.topic" class="post-tag" @click.stop="$router.push('/topicpost/'+item.topic._id)">

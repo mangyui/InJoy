@@ -70,11 +70,17 @@
         max-width: 100%;
         max-height: 320px;
         background: #000;
-        border-radius: 5px;
+        border-radius: 9px;
         overflow: hidden;
       }
       video::-webkit-media-controls-volume-slider, video::-webkit-media-controls-mute-button{ //隐藏android端video标签自带的音量调节按钮
         display: none;
+      }
+      video::-webkit-media-controls-panel {
+        border-radius: 9px;
+      }
+      video::-webkit-media-controls-timeline {
+        padding-bottom: 10px;
       }
       .scomment-box {
         font-size: 13px;

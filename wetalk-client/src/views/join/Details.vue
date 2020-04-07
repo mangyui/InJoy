@@ -7,12 +7,16 @@
     </van-nav-bar>
     <div class="my-content-fix max1100">
       <van-pull-refresh class="max1100"  :success-duration="1000" success-text="已刷新" pulling-text="下拉刷新" v-model="isRefresh" @refresh="getJoinById"  @click.native="isComment=false">
-        <van-swipe :autoplay="5000" style="height: 240px;" @change="onChange"  :style="{backgroundImage: 'url(./imgs/noimg.jpg)'}">
+        <van-swipe :autoplay="0" style="height: 65vw; max-height:625px" @change="onChange"  :style="{backgroundImage: 'url(./imgs/noimg.jpg)'}">
+          <van-swipe-item v-if="currJoin.video">
+            <video :src="currJoin.video" controls="controls"
+            @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
+          </van-swipe-item>
           <van-swipe-item v-for="(image, index) in currJoin.imgList" :key="index" @click="toShowImg(index)">
             <van-image fit="cover" :src="image"/>
           </van-swipe-item>
-          <div class="custom-indicator" slot="indicator">
-            {{ current + 1 }}/{{currJoin.imgList.length}}
+          <div v-if="currJoin.video||currJoin.imgList[0]" class="custom-indicator" slot="indicator">
+            {{ current + 1 }}/{{currJoin.video?(currJoin.imgList.length+1):currJoin.imgList.length}}
           </div>
         </van-swipe>
         <div class="join-details-warp">
@@ -162,6 +166,9 @@ export default class JoinDetails extends Vue {
     this.$toPost.getJoinById(data).then((res: any) => {
       if (res.data && res.data._id) {
         this.currJoin = res.data
+        if (this.currJoin.imgList && this.currJoin.imgList[0].trim() === '') {
+          this.currJoin.imgList = []
+        }
         this.showMask = false
         this.isRefresh = false
         this.getJoinComment()
@@ -335,7 +342,7 @@ export default class JoinDetails extends Vue {
   .custom-indicator {
     position: absolute;
     right: 10px;
-    bottom: 10px;
+    top: 10px;
     padding: 4px 10px;
     color: #fff;
     font-size: 12px;
@@ -345,6 +352,15 @@ export default class JoinDetails extends Vue {
 }
 .van-swipe-item{
   text-align: center;
+  .van-image{
+    width: 100%;
+    height: 100%;
+  }
+  video{
+    width: 100%;
+    height: 100%;
+    background: #000;
+  }
   img{
     width: 100%;
   }

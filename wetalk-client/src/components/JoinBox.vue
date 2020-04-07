@@ -6,7 +6,9 @@
     @click="$router.push('/joinDetails/' + currjoin._id)">
     <div class="join-text">{{currjoin.details}}</div>
     <br/>
-    <van-grid v-show="currjoin.imgList[0]" :border="false" :column-num="3" square>
+    <video class="join-video" v-if="currjoin.video" :src="currjoin.video" controls="controls" onenterpictureinpicture="true"
+                @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
+    <van-grid v-show="!currjoin.video && currjoin.imgList[0]" :border="false" :column-num="3" square>
       <van-grid-item>
         <van-image fit="cover" lazy-load v-show="currjoin.imgList[0]" :src="currjoin.imgList[0]" >
           <template v-slot:loading>
@@ -49,3 +51,14 @@ export default class JoinBox extends Vue {
   @Prop() currjoin!: any
 }
 </script>
+
+<style lang="less" scoped>
+.join-video{
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 0 15px 0 0;
+}
+video::-webkit-media-controls-volume-slider, video::-webkit-media-controls-mute-button{ //隐藏android端video标签自带的音量调节按钮
+  display: none;
+}
+</style>

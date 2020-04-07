@@ -87,7 +87,7 @@ export default class MusicDetails extends Vue {
   background: linear-gradient(to top,#7678f2,#8b81f9)!important;
 }
 .music-wrap{
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
   img{
     width: 240px;

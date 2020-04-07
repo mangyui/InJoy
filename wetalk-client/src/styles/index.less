@@ -391,7 +391,7 @@ ul{
 
 .join-right-time{
   display: flex;
-  color: #aaa;
+  color: #bcbcec;
   align-items: center;
   justify-content: flex-end;
   span{
@@ -399,7 +399,44 @@ ul{
     font-size: 12px;
   }
   .van-icon {
-    font-size: 16px;
+    font-size: 15px;
+  }
+}
+
+.update-video-box{
+  width: 100%;
+  height: 55vw;
+  max-height: 500px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  video{
+    width: 85%;
+    height: 85%;
+    position: absolute;
+    z-index: 11;
+  }
+  .van-uploader{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    /deep/ .van-uploader__file{
+      background: #000;
+    }
+    /deep/ .van-uploader__wrapper,/deep/ .van-uploader__upload, /deep/ .van-uploader__preview, /deep/ .van-uploader__file {
+      width: 100%!important;
+      height: 100%!important;
+      margin: 0!important;
+    }
   }
 }
 

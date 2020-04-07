@@ -33,8 +33,10 @@
             v-model="videoList"
             :after-read="afterRead"
             @delete="deleteVideo"
+            @oversize="overSize"
             upload-icon="video"
             :max-count="1"
+            :max-size="(240 * 1024 * 1024)"
           />
         </div>
         <div class="pad15">
@@ -164,6 +166,9 @@ export default class PostAdd extends Vue {
   clearTopic () {
     this.$store.commit('REMOVE_TOPIC')
   }
+  overSize () {
+    this.$toast.fail('请上传小于240M的视频')
+  }
   afterRead (file: any) {
     file.status = 'uploading'
     file.message = '上传中...'
@@ -188,42 +193,6 @@ export default class PostAdd extends Vue {
 </script>
 
 <style lang="less" scoped>
-.update-video-box{
-  width: 100%;
-  height: 55vw;
-  max-height: 500px;
-  position: relative;
-  box-sizing: border-box;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  video{
-    width: 85%;
-    height: 85%;
-    position: absolute;
-    z-index: 11;
-  }
-  .van-uploader{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 15px;
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    /deep/ .van-uploader__file{
-      background: #000;
-    }
-    /deep/ .van-uploader__wrapper,/deep/ .van-uploader__upload, /deep/ .van-uploader__preview, /deep/ .van-uploader__file {
-      width: 100%!important;
-      height: 100%!important;
-      margin: 0!important;
-    }
-  }
-}
 .imgorvideo{
   padding: 5px;
   font-size: 25px;

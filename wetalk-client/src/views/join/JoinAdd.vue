@@ -57,6 +57,22 @@
           autosize
         />
       </van-cell-group>
+      <van-panel title="宣传视频(可选)">
+        <div class="update-video-box">
+          <video v-if="videoUrl" :src="videoUrl" controls="controls"
+            @loadeddata="$setVideoPoster" preload controlslist="nodownload" crossorigin="Anonymous"></video>
+          <van-uploader
+            accept="video/*"
+            v-model="videoList"
+            :after-read="afterRead"
+            @delete="deleteVideo"
+            @oversize="overSize"
+            upload-icon="video"
+            :max-count="1"
+            :max-size="(240 * 1024 * 1024)"
+          />
+        </div>
+      </van-panel>
       <van-panel title="活动图片(可选)">
         <van-uploader
           :preview-size="95"
@@ -108,6 +124,8 @@ export default class JoinAdd extends Vue {
   maxDate: any = new Date(2120, 10, 1)
   minDate: any = new Date(Date.now() + 600000)
   fileList: Array<any> = []
+  videoList: Array<any> = []
+  videoUrl: string = ''
   optionType: string = '发布'
   addJoin: any = {
     title: '',
@@ -119,6 +137,7 @@ export default class JoinAdd extends Vue {
     place: '',
     pointX: '',
     pointY: '',
+    video: '',
     imgList: null,
     user: this.$store.getters.user._id
   }
@@ -148,6 +167,9 @@ export default class JoinAdd extends Vue {
       this.addJoin.place = this.joinAddress.place
       this.addJoin.pointX = this.joinAddress.point.lng
       this.addJoin.pointY = this.joinAddress.point.lat
+    }
+    if (this.videoUrl.trim() !== '') {
+      this.addJoin.video = this.videoUrl
     }
     this.$toPost.addJoin(this.addJoin).then((res: any) => {
       this.$toast.success(this.optionType + '成功')
@@ -205,5 +227,39 @@ export default class JoinAdd extends Vue {
       this.$toast.fail('图片上传失败')
     })
   }
+  overSize () {
+    this.$toast.fail('请上传小于240M的视频')
+  }
+  afterRead (file: any) {
+    file.status = 'uploading'
+    file.message = '上传中...'
+    let data = new FormData()
+    data.append('myvideo', file.file)
+    this.$toUpload.uploadVideo(data).then((res: any) => {
+      file.status = 'done'
+      this.videoUrl = res.data
+    }).catch((err: any) => {
+      file.status = 'failed'
+      file.message = '上传失败'
+      console.log(err)
+      this.$toast.fail('视频上传失败')
+    })
+  }
+  deleteVideo (file: any) {
+    this.videoUrl = ''
+  }
 }
 </script>
+
+<style lang="less" scoped>
+.update-video-box{
+  padding: 0;
+  .van-uploader{
+    padding: 0;
+  }
+  video{
+    width: 95%;
+    height: 100%;
+  }
+}
+</style>
