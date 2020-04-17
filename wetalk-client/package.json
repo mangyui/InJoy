@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "ReconnectingWebSocket": "git+https://github.com/joewalnes/reconnecting-websocket.git",
     "amfe-flexible": "^2.2.1",
     "core-js": "^2.6.5",
     "js-md5": "^0.7.3",

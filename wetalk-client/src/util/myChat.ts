@@ -2,25 +2,36 @@ import Vue from 'vue'
 import store from '@/store'
 import Message from '@/model/message'
 import { Notify } from 'vant'
+const ReconnectingWebSocket = require('ReconnectingWebSocket')
 
 class MyChat {
   public ws: any
   public user: any
   // public isOver: boolean = false
-  constructor (user: any) {
+  constructor () {
     // this.ws = new WebSocket('ws://localhost:9612?userId=' + user._id)
-    this.ws = new WebSocket('ws://47.106.130.141:9612?userId=' + user._id)
-    this.user = user
+    let user = store.getters.user
+    this.ws = new ReconnectingWebSocket('ws://47.106.130.141:9612?userId=' + user._id)
+    this.user = {
+      _id: user._id,
+      name: user.name,
+      avatar: user.avatar,
+      sex: user.sex
+    }
   }
+
   public creatSending (toUser: any, content: string, type: number): any {
+    // 验证是否断开
+
     var time = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
-    var message = new Message(time, content, type, this.user)
+    var message = new Message(time, content, type, this.user._id)
     var data = {
       from_user: this.user,
       to_user: [toUser._id],
       message: message,
       my_type: 1 // 1添加消息 2撤回消息
     }
+
     this.ws.send(JSON.stringify(data))
 
     // 本地操作自己的消息

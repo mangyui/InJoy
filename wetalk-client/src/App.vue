@@ -86,7 +86,7 @@ export default Vue.extend({
         document.addEventListener('resume', () => {
           if (this.$store.getters.chatWS && this.$store.getters.chatWS.ws.readyState !== 1 && this.$store.getters.user._id) {
             this.$store.commit('CLOSE_WS')
-            this.$store.commit('INIT_WS', this.$store.getters.user)
+            this.$store.commit('INIT_WS')
           }
         }, false)
       }

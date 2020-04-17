@@ -4,13 +4,13 @@
       <van-icon name="ellipsis" slot="right" @click="clickMore"/>
     </van-nav-bar>
     <div class="chat-mesg-box max1100" @click="$refs.inputB.noMore()" ref="content">
-      <div class="mess-box" :style="{paddingBottom: isMore!=0?'210px':'60px'}">
+      <div class="mess-box" :style="{paddingBottom: isMore!=0?'240px':'60px'}">
         <div class="mess-list"  v-if="chatList[chatKey]">
           <div class="list-item" v-for="(item,index) in chatList[chatKey].mesgList" :key="index">
-            <div class="mess-item" v-if="item.type>0&&item.user._id!=user._id">
-              <div class="mu-avatar" @click.stop="$router.push('/userhomepage/' + chatList[chatKey].user._id)">
-                <img :src="chatList[chatKey].user.avatar||'./imgs/avatar.png'">
-                <img class="icon-sex" :src="chatList[chatKey].user.sex==1?'./icons/male.svg':'./icons/female.svg'">
+            <div class="mess-item" v-if="item.type>0&&item.user!=user._id">
+              <div class="mu-avatar" @click.stop="$router.push('/userhomepage/' + toUser._id)">
+                <img :src="toUser.avatar||'./imgs/avatar.png'">
+                <img class="icon-sex" :src="toUser.sex==1?'./icons/male.svg':'./icons/female.svg'">
               </div>
               <div class="mess-item-right">
                 <div class="mess-location-wrap"  :style="{backgroundImage: 'url(./imgs/mapMin.png'}"
@@ -21,7 +21,7 @@
                 <p v-else class="mess-item-content">{{item.content}}</p>
               </div>
             </div>
-            <div class="mess-item-me" v-else-if="item.type>0&&item.user._id==user._id">
+            <div class="mess-item-me" v-else-if="item.type>0&&item.user==user._id">
               <div class="mu-avatar"  @click.stop="$router.push('/userhomepage/' + user._id)">
                 <img :src="user.avatar||'./imgs/avatar.png'">
                 <img class="icon-sex" :src="user.sex==1?'./icons/male.svg':'./icons/female.svg'">
@@ -58,7 +58,6 @@
 </template>
 
 <script lang="ts">
-import Message from '@/model/message'
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import InputBox from '@/components/InputBox.vue'
@@ -90,6 +89,9 @@ export default class UserChat extends Vue {
 
   changeMore (newValue: number): void {
     this.isMore = newValue
+  }
+  toAllRead () {
+    this.$store.commit('ALL_READ', this.chatKey)
   }
   backMess (index: number): void {
     try {
@@ -161,6 +163,7 @@ export default class UserChat extends Vue {
           this.$refs.content.scrollTop = this.$refs.content.scrollHeight
           this.showMask = false
         })
+        this.toAllRead()
         setTimeout(() => {
           // @ts-ignore
           if (this.$refs.content) {
