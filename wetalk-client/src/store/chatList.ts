@@ -70,7 +70,6 @@ export default {
       }
       // @ts-ignore
       currMsg.mesgList.push(data.msg)
-      console.log(!(router.currentRoute.name === 'UserChat' && router.currentRoute.params.id === data.user._id))
       if (data.meId !== data.msg.user && !(router.currentRoute.name === 'UserChat' && router.currentRoute.params.id === data.user._id)) {
         currMsg.noRead += 1
         // @ts-ignore
