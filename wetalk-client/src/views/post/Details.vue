@@ -1,6 +1,6 @@
 <template>
   <div class="bgMax">
-    <van-nav-bar class="litheme" :border="false" title="帖子详情" fixed left-arrow right-text="评论"
+    <van-nav-bar class="litheme" :border="false" title="动态详情" fixed left-arrow right-text="评论"
       @click-left="$router.go(-1)"
       @click-right="$router.push('/postcomment/'+ $route.params.id)" />
     <div class="my-content-fix" @scroll="scroll" ref="content">

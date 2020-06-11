@@ -1,7 +1,7 @@
 <template>
   <div class="bgMax">
     <van-nav-bar class="litheme" :border="false" :title="topicDetails.name||'话题'" fixed left-arrow @click-left="$router.go(-1)">
-      <span slot="right" @click="topicAddPost">发帖</span>
+      <span slot="right" @click="topicAddPost">发动态</span>
     </van-nav-bar>
     <div class="max1100 my-content-fix" @scroll="scroll" ref="content">
       <div class="topic-top-box">
@@ -14,7 +14,7 @@
           <p>{{topicDetails.desc}}</p>
         </div>
       </div>
-      <div class="comment-line">新帖</div>
+      <div class="comment-line">新动态</div>
       <div class="white-wrap max1100 scroll-wrap">
         <PostList ref="postBox" :topicId="$route.params.id"/>
       </div>

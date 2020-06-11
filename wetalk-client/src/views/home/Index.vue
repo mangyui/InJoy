@@ -23,7 +23,7 @@
       <div class="home-add-icon" @click="$router.push('/joinAdd')">
         <van-icon name="plus" />
       </div>
-      <van-tabbar-item :replace="$store.getters.user._id?true:false" :badge="chatNum==0?'':chatNum" to="/home/message">
+      <van-tabbar-item :replace="$store.getters.user._id?true:false" :badge="chatNum" to="/home/message">
         <span>消息</span>
         <img
           slot="icon"
@@ -51,15 +51,18 @@ import { Getter } from 'vuex-class'
 })
 export default class Home extends Vue {
   @Getter chatList!: any
+  @Getter user!: any
   isActive: number = 0
   isTop: boolean = false
   get chatNum () {
     let num = 0
     for (var key of Object.keys(this.chatList)) {
-      let noRead = (this.chatList[key].noRead && this.chatList[key].noRead >= 0) ? this.chatList[key].noRead : 0
-      num += noRead
+      if (key.split('To')[0] === this.user._id && this.chatList[key].mesgList[this.chatList[key].mesgList.length - 1]) {
+        let noRead = (this.chatList[key].noRead && this.chatList[key].noRead >= 0) ? this.chatList[key].noRead : 0
+        num += noRead
+      }
     }
-    return num
+    return num === 0 ? '' : num
   }
   tabbarChange () {
     this.isTop = false

@@ -1,6 +1,6 @@
 <template>
   <div class="bgMax">
-    <van-nav-bar class="litheme" :border="false" title="评论帖子" fixed left-arrow
+    <van-nav-bar class="litheme" :border="false" title="评论动态" fixed left-arrow
       @click-left="$router.go(-1)"
        />
     <div class="my-content-fix">

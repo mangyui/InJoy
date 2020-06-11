@@ -4,7 +4,7 @@ import qs from 'qs'
 import md5 from 'js-md5'
 import store from '../store'
 
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://47.106.130.141:9612' // api的base_url
+const baseUrl = process.env.NODE_ENV === 'production' ? 'http://47.106.130.141:9612' : 'http://localhost:9612' // api的base_url
 
 // eslint-disable-next-line
 function addSign (data) {
@@ -264,6 +264,14 @@ const toPost = {
   getJoinByCity (datas) {
     return request({
       url: baseUrl + '/join/getByCity',
+      method: 'post',
+      data: qs.stringify(addSign(datas))
+    })
+  },
+  // 获取猜你喜欢活动
+  getLikeJoin (datas) {
+    return request({
+      url: baseUrl + '/join/getLikeJoin',
       method: 'post',
       data: qs.stringify(addSign(datas))
     })

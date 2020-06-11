@@ -84,6 +84,15 @@
             {{!commentList[0]?'还没有人抢沙发':'没有更多了'}}
           </div>
         </div>
+        <div class="other-like-wrap">
+          <div class="comment-line">猜你喜欢</div>
+          <div v-for="(item, index) in likeJoinList" :key="index">
+            <JoinBox :currjoin="item" />
+          </div>
+          <div class="white-wrap my-tip-box">
+            没有更多了
+          </div>
+        </div>
       </van-pull-refresh>
     </div>
     <transition name="van-slide-up">
@@ -123,12 +132,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import InputBox from '@/components/InputBox.vue'
+import JoinBox from '@/components/JoinBox.vue'
 // @ts-ignore
 import qrcode from 'vue_qrcodes'
 
 @Component({
   components: {
     InputBox,
+    JoinBox,
     qrcode
   }
 })
@@ -141,6 +152,7 @@ export default class JoinDetails extends Vue {
   isComment: boolean = false
   commentItem: any = {}
   commentList: Array<any> = []
+  likeJoinList: Array<any> = []
   actions: Array<any> = [
     { name: '举报', disabled: true }
   ]
@@ -172,6 +184,7 @@ export default class JoinDetails extends Vue {
         this.showMask = false
         this.isRefresh = false
         this.getJoinComment()
+        this.getLikeJoin()
       } else {
         this.$notify({ type: 'warning', message: '活动不存在' })
         setTimeout(() => {
@@ -197,6 +210,25 @@ export default class JoinDetails extends Vue {
     let point = new this.$win.BMap.Point(this.currJoin.pointX, this.currJoin.pointY)
     this.$store.commit('SET_TO_LOCATION', { point })
     this.$router.push('/location')
+  }
+  getLikeJoin () {
+    this.$toPost.getLikeJoin({ id: this.$route.params.id }).then((res: any) => {
+      if (res.data.length === 0) {
+        this.getLikeJoinByUser()
+      } else {
+        this.likeJoinList = res.data
+      }
+    }).catch((err: any) => {
+      console.log(err)
+    })
+  }
+  getLikeJoinByUser () {
+    this.$toPost.getJoinList({ id: this.currJoin.user._id }).then((res: any) => {
+      res.data.pop()
+      this.likeJoinList = res.data
+    }).catch((err: any) => {
+      console.log(err)
+    })
   }
   getJoinComment () {
     this.$toPost.getJoinCommentList({ joinId: this.$route.params.id }).then((res: any) => {
@@ -387,6 +419,12 @@ export default class JoinDetails extends Vue {
     font-size: 13px;
     color: #aaa;
     margin-top: 10px;
+  }
+}
+.other-like-wrap{
+  margin-top: 10px;
+  .van-cell-group{
+    margin: 2px 0;
   }
 }
 </style>
